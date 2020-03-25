@@ -1,5 +1,5 @@
-export const TOKEN_KEY = '@movie-token';
-export const EMAIL_USER = '@movie-email';
+export const TOKEN_KEY = '@decel-token';
+export const EMAIL_USER = '@decel-email';
 
 export const istAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
