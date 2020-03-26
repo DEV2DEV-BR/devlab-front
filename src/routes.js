@@ -4,7 +4,7 @@ import Main from './pages/Main'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
-
+import Activitys from './pages/Activitys'
 
 import { istAuthenticated } from './services/auth';
 
@@ -27,11 +27,12 @@ const Routes = () => (
             <Route path="/" exact component={Main} />
             <Route path="/signIn" component={SignIn} />
             <Route path="/signUp" component={SignUp} />
-            <Route path="/dashboard" component={Dashboard} />
 
-            {/* <PrivateRoute path="/watch" component={Watch} /> */}
+            <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/activitys" component={Activitys} />
         </Switch>
     </BrowserRouter>
 );
 
 export default Routes;
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,21 +13,25 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import firebase from 'firebase';
+import { toast } from 'react-toastify';
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Links color="inherit" href="https://material-ui.com/">
-                Your Website
-      </Links>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Copyright from '../../components/Copyright'
+
 
 const useStyles = makeStyles(theme => ({
+    button: {
+        display: 'block',
+        marginTop: theme.spacing(2),
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -47,8 +51,100 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function SignUp() {
+
+export default function SignUp(props) {
     const classes = useStyles();
+    const [serie, setSerie] = React.useState('');
+    const [open, setOpen] = React.useState(false);
+    const [inputName, setInputName] = useState('')
+    const [inputEmail, setInputEmail] = useState('')
+    const [inputPassword, setInputPassword] = useState('')
+    const [inputConfirmPassword, setInputConfirmPassword] = useState('')
+
+    const handleChange = event => {
+        setSerie(event.target.value);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const notifySuccess = (message) => {
+        toast.success(message, {
+            position: 'top-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
+    }
+
+    const notifyError = (message) => {
+        toast.error(message, {
+            position: 'top-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
+    }
+
+    const handleRegister = async event => {
+        event.preventDefault();
+
+        const name = inputName;
+
+        if (inputPassword === inputConfirmPassword) {
+            await firebase
+                .auth()
+                .createUserWithEmailAndPassword(
+                    inputEmail,
+                    inputPassword
+                )
+                .then(function (success) {
+                    const cloudFirestore = firebase.firestore();
+
+                    cloudFirestore
+                        .collection('users')
+                        .add({
+                            name,
+                            serie,
+                            email: success.user.email,
+                            uid: success.user.uid,
+                            id: '',
+                        })
+                        .then(function (doc) {
+                            cloudFirestore
+                                .collection('users')
+                                .doc(doc.id)
+                                .update({
+                                    id: doc.id,
+                                });
+                        })
+                        .catch(function (error) {
+                            console.error('Error adding domcument', error);
+                        });
+                })
+                .catch(function (error) {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorCode, errorMessage);
+                });
+
+            notifySuccess('Congratulations!');
+            setTimeout(() => {
+                props.history.push('/signIn');
+            }, 1500);
+        } else {
+            notifyError('Password does not match!');
+        }
+    };
 
     return (
         <Container component="main" maxWidth="xs">
@@ -58,31 +154,22 @@ export default function SignUp() {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    Cadastre-se
         </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={handleRegister}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <TextField
                                 autoComplete="fname"
-                                name="firstName"
+                                name="fullName"
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
-                                label="First Name"
+                                id="fullName"
+                                value={inputName}
+                                onChange={event => setInputName(event.target.value)}
+                                label="Nome Completo"
                                 autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -91,9 +178,56 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                value={inputEmail}
+                                onChange={event => setInputEmail(event.target.value)}
+                                label="E-mail"
                                 name="email"
                                 autoComplete="email"
+                            />
+                        </Grid>
+
+                        <FormControl variant="outlined" fullWidth className={classes.formControl}>
+                            <Grid item xs={12}>
+                                <InputLabel htmlFor="serie">Série*</InputLabel>
+                                <Select
+                                    native
+                                    value={serie}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    required
+                                    label="Série"
+                                    inputProps={{
+                                        name: 'serie',
+                                        id: 'serie',
+                                    }}
+                                >
+                                    <option aria-label="None" value="" />
+                                    <option value={1}>1º Ano</option>
+                                    <option value={2}>2º Ano</option>
+                                    <option value={3}>3º Ano</option>
+                                    <option value={4}>4º Ano</option>
+                                    <option value={5}>5º Ano</option>
+                                    <option value={6}>6º Ano</option>
+                                    <option value={7}>7º Ano</option>
+                                    <option value={8}>8º Ano</option>
+                                    <option value={9}>9º Ano</option>
+
+                                </Select>
+                            </Grid>
+                        </FormControl>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Senha"
+                                value={inputPassword}
+                                onChange={event => setInputPassword(event.target.value)}
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -101,19 +235,16 @@ export default function SignUp() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                name="password"
-                                label="Password"
+                                name="confirm-password"
+                                label="Confirmação de senha"
                                 type="password"
-                                id="password"
+                                value={inputConfirmPassword}
+                                onChange={event => setInputConfirmPassword(event.target.value)}
+                                id="confirm-password"
                                 autoComplete="current-password"
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                        </Grid>
+
                     </Grid>
                     <Button
                         type="submit"
@@ -122,27 +253,27 @@ export default function SignUp() {
                         color="primary"
                         className={classes.submit}
                     >
-                        Sign Up
+                        Cadastrar
           </Button>
                     <Grid container justify="flex-end">
                         <Grid item xs>
                             <Link to="/" >
                                 <Links href="#" variant="body2">
-                                    Back to home
+                                    Voltar para o início
                              </Links>
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link to="/signIn" >
                                 <Links href="#" variant="body2">
-                                    Already have an account? Sign in
+                                    Já tenha cadastro? Faça o login!
                             </Links>
                             </Link>
                         </Grid>
                     </Grid>
                 </form>
             </div>
-            <Box mt={5}>
+            <Box mt={5} style={{ marginBottom: 20 }}>
                 <Copyright />
             </Box>
         </Container>
