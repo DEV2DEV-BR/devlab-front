@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MainListItems from './listItems';
+import SecondListItems from './secondListItem';
 import clsx from 'clsx';
 
 const drawerWidth = 240;
@@ -126,8 +127,8 @@ export default function MenuLeft(props) {
             </div>
             <Divider />
             <MainListItems props={props} />
-            {/* <Divider /> */}
-            {/* <List>{secondaryListItems}</List> */}
+            <Divider />
+            <SecondListItems props={props} />
         </Drawer>
     );
 }

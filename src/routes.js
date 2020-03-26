@@ -5,6 +5,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import Activitys from './pages/Activitys'
+import UploadFiles from './pages/UploadFiles'
 
 import { istAuthenticated } from './services/auth';
 
@@ -30,6 +31,8 @@ const Routes = () => (
 
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/activitys" component={Activitys} />
+            <PrivateRoute path="/upload-files" component={UploadFiles} />
+
         </Switch>
     </BrowserRouter>
 );

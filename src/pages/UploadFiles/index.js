@@ -43,7 +43,7 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 
-export default function Activitys(props) {
+export default function UploadFiles(props) {
     const classes = useStyles();
 
     return (
