@@ -1,5 +1,5 @@
-export const TOKEN_KEY = '@decel-token';
-export const EMAIL_USER = '@decel-email';
+export const TOKEN_KEY = '@school-docs-token';
+export const EMAIL_USER = '@school-docs-email';
 
 export const istAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);

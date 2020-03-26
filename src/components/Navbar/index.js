@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import HomeIcon from '@material-ui/icons/Home';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { getEmail, istAuthenticated } from '../../services/auth';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -44,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 export default function Album() {
     const classes = useStyles();
 
+
     return (
 
         <AppBar position="relative" >
@@ -52,24 +55,40 @@ export default function Album() {
                     <HomeIcon className={classes.icon} />
                     <Link style={{ textDecoration: 'none', color: '#fff' }} to="/">
                         <Typography variant="h6" color="inherit" noWrap>
-                            Voluntary
+                            School Docs
                         </Typography>
                     </Link>
                 </div>
-                <div>
-                    <Link to="/signIn" style={{ marginLeft: 10, marginRight: 10, textDecoration: 'none' }}>
-                        <Button variant="contained" size="small" color="secondary">
-                            Login
-                        </Button>
-                    </Link>
-                    <Link style={{ textDecoration: 'none' }} to="/signUp">
-                        <Button variant="contained" size="small" color="secondary">
-                            Register
-                        </Button>
-                    </Link>
-                </div>
+                {!istAuthenticated() ?
+                    (
+                        <div>
+                            <Link to="/signIn" style={{ marginLeft: 10, marginRight: 10, textDecoration: 'none' }}>
+                                <Button variant="contained" size="small" color="secondary">
+                                    Login
+                            </Button>
+                            </Link>
+                            <Link style={{ textDecoration: 'none' }} to="/signUp">
+                                <Button variant="contained" size="small" color="secondary">
+                                    Cadastre-se
+                            </Button>
+                            </Link>
+                        </div>
+                    )
+                    :
+                    (
+                        <div>
+                            <Link to="/dashboard" style={{ marginLeft: 10, marginRight: 10, textDecoration: 'none' }}>
+                                <Button variant="contained" size="small" color="secondary">
+                                    Voltar para dashboard
+                                </Button>
+                            </Link>
+
+                        </div>
+                    )
+                }
+
             </Toolbar>
-        </AppBar>
+        </AppBar >
 
 
     );
