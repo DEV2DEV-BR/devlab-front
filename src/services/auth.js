@@ -1,3 +1,5 @@
+import firebase from 'firebase'
+
 export const TOKEN_KEY = '@school-docs-token';
 export const EMAIL_USER = '@school-docs-email';
 
@@ -17,3 +19,24 @@ export const logout = () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(EMAIL_USER);
 };
+
+export const getUserLogged = async () => {
+    const db = firebase.firestore();
+
+    var usersRef = db.collection("users");
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            usersRef.where("uid", "==", user.uid)
+                .get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        return doc.data()
+                    });
+                });
+        }
+    });
+}
+
+
+
