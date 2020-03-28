@@ -15,7 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
-import { login, email, getToken } from '../../services/auth';
+import { login, email } from '../../services/auth';
+import Image from '../../assets/books.jpg'
 
 function Copyright() {
     return (
@@ -35,7 +36,7 @@ const useStyles = makeStyles(theme => ({
         height: '100vh',
     },
     image: {
-        backgroundImage: 'url(https://cdn.pixabay.com/photo/2017/10/13/12/29/hands-2847508_960_720.jpg)',
+        backgroundImage: `url(${Image})`,
         backgroundRepeat: 'no-repeat',
         backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -175,16 +176,12 @@ export default function SignIn(props) {
                         <Grid container>
                             <Grid item xs>
                                 <Link to="/" >
-                                    <Links href="#" variant="body2">
-                                        Voltar para o início
-                             </Links>
+                                    Voltar para o início
                                 </Link>
                             </Grid>
                             <Grid item>
                                 <Link to="/signUp" >
-                                    <Links href="#" variant="body2">
-                                        {"Não tem acesso ainda? Cadastre-se!"}
-                                    </Links>
+                                    {"Não tem acesso ainda? Cadastre-se!"}
                                 </Link>
                             </Grid>
                         </Grid>

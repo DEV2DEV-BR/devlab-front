@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { Link } from 'react-router-dom';
-import Links from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -15,9 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
-
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Copyright from '../../components/Copyright'
@@ -55,7 +50,6 @@ const useStyles = makeStyles(theme => ({
 export default function SignUp(props) {
     const classes = useStyles();
     const [serie, setSerie] = React.useState('');
-    const [open, setOpen] = React.useState(false);
     const [inputName, setInputName] = useState('')
     const [inputEmail, setInputEmail] = useState('')
     const [inputPassword, setInputPassword] = useState('')
@@ -65,13 +59,6 @@ export default function SignUp(props) {
         setSerie(event.target.value);
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
 
     const notifySuccess = (message) => {
         toast.success(message, {
@@ -117,6 +104,7 @@ export default function SignUp(props) {
                             serie,
                             email: success.user.email,
                             uid: success.user.uid,
+                            userType: 'student',
                             id: '',
                         })
                         .then(function (doc) {
@@ -258,16 +246,12 @@ export default function SignUp(props) {
                     <Grid container justify="flex-end">
                         <Grid item xs>
                             <Link to="/" >
-                                <Links href="#" variant="body2">
-                                    Voltar para o início
-                             </Links>
+                                Voltar para o início
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link to="/signIn" >
-                                <Links href="#" variant="body2">
-                                    Já tenha cadastro? Faça o login!
-                            </Links>
+                                Já tenha cadastro? Faça o login!
                             </Link>
                         </Grid>
                     </Grid>

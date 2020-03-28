@@ -38,12 +38,9 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
 
 
-export default function SimpleTable(props) {
+export default function Activitys(props) {
     const classes = useStyles();
 
     return (

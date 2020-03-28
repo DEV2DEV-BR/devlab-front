@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MainListItems from './listItems';
+import SecondListItems from './secondListItem';
+import firebase from 'firebase'
 import clsx from 'clsx';
 
 const drawerWidth = 240;
@@ -94,6 +95,27 @@ const useStyles = makeStyles(theme => ({
 export default function MenuLeft(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
+    const [userDate, setUserDate] = useState([])
+
+    useEffect(() => {
+
+        const db = firebase.firestore();
+
+        var usersRef = db.collection("users");
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                usersRef.where("uid", "==", user.uid)
+                    .get()
+                    .then(querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                            setUserDate(doc.data())
+                        });
+                    });
+            }
+        });
+    })
+
 
 
     const handleDrawerOpen = () => {
@@ -102,8 +124,6 @@ export default function MenuLeft(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
 
     return (
         <Drawer
@@ -126,8 +146,12 @@ export default function MenuLeft(props) {
             </div>
             <Divider />
             <MainListItems props={props} />
-            {/* <Divider /> */}
-            {/* <List>{secondaryListItems}</List> */}
+            {userDate.userType === 'admin' ?
+                <><Divider />
+                    <SecondListItems props={props} /></>
+                :
+                ''
+            }
         </Drawer>
     );
 }

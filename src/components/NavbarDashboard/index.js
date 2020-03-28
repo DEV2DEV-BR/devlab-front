@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Badge from '@material-ui/core/Badge';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -79,6 +78,26 @@ const useStyles = makeStyles(theme => ({
 export default function NavBarDashboard(props) {
     const classes = useStyles();
 
+    const [userDate, setUserDate] = useState([])
+
+    useEffect(() => {
+
+        const db = firebase.firestore();
+
+        var usersRef = db.collection("users");
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                usersRef.where("uid", "==", user.uid)
+                    .get()
+                    .then(querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                            setUserDate(doc.data())
+                        });
+                    });
+            }
+        });
+    })
 
     const notifyError = (message) => {
         toast.error(message, {
@@ -109,13 +128,19 @@ export default function NavBarDashboard(props) {
                 <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                     <Link style={{ textDecoration: 'none', color: '#fff' }} to="/dashboard">
                         School Docs
-                            </Link>
+                    </Link>
                 </Typography>
+
+                <div style={{ display: 'flex', flexDirection: 'column', fontSize: 10, }}>
+                    <p style={{ padding: 0, margin: 0 }}><b>Bem vindo:</b> {userDate.name}</p>
+                    <p style={{ padding: 0, margin: 0 }}> <b>Perfil atual:</b> {userDate.userType}</p>
+                </div>
 
                 <IconButton color="inherit">
                     <Badge color="secondary">
                         <ExitToAppIcon onClick={handleLogout} />
                     </Badge>
+                    <p style={{ fontSize: 15, margin: 5 }}>Sair</p>
                 </IconButton>
             </Toolbar>
         </AppBar>
