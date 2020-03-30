@@ -104,9 +104,7 @@ export default function SignIn(props) {
                 email(success.user.email);
                 notifySuccess('Login successfull!');
 
-                setTimeout(() => {
-                    props.history.push('/dashboard');
-                }, 1500);
+                props.history.push('/dashboard');
             })
             .catch(error => {
                 const errorCode = error.code;

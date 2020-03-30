@@ -84,7 +84,7 @@ export default function NavBarDashboard(props) {
 
         const db = firebase.firestore();
 
-        var usersRef = db.collection("users");
+        const usersRef = db.collection("users");
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
@@ -98,6 +98,12 @@ export default function NavBarDashboard(props) {
             }
         });
     })
+
+    useEffect(() => {
+        return () => {
+            setUserDate(false)
+        };
+    }, []);
 
     const notifyError = (message) => {
         toast.error(message, {
@@ -114,9 +120,7 @@ export default function NavBarDashboard(props) {
         logout();
         firebase.auth().signOut();
         notifyError('See you latter');
-        setTimeout(() => {
-            props.props.push('/');
-        }, 1500);
+        props.history.push('/');
     }
 
 
@@ -136,9 +140,9 @@ export default function NavBarDashboard(props) {
                     <p style={{ padding: 0, margin: 0 }}> <b>Perfil atual:</b> {userDate.userType}</p>
                 </div>
 
-                <IconButton color="inherit">
+                <IconButton color="inherit" onClick={handleLogout} >
                     <Badge color="secondary">
-                        <ExitToAppIcon onClick={handleLogout} />
+                        <ExitToAppIcon />
                     </Badge>
                     <p style={{ fontSize: 15, margin: 5 }}>Sair</p>
                 </IconButton>

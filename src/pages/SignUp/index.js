@@ -49,14 +49,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp(props) {
     const classes = useStyles();
-    const [serie, setSerie] = React.useState('');
+    const [grade, setGrade] = React.useState('');
     const [inputName, setInputName] = useState('')
     const [inputEmail, setInputEmail] = useState('')
     const [inputPassword, setInputPassword] = useState('')
     const [inputConfirmPassword, setInputConfirmPassword] = useState('')
 
     const handleChange = event => {
-        setSerie(event.target.value);
+        setGrade(event.target.value);
     };
 
 
@@ -101,7 +101,7 @@ export default function SignUp(props) {
                         .collection('users')
                         .add({
                             name,
-                            serie,
+                            grade,
                             email: success.user.email,
                             uid: success.user.uid,
                             userType: 'student',
@@ -126,9 +126,7 @@ export default function SignUp(props) {
                 });
 
             notifySuccess('Congratulations!');
-            setTimeout(() => {
-                props.history.push('/signIn');
-            }, 1500);
+            props.history.push('/signIn');
         } else {
             notifyError('Password does not match!');
         }
@@ -179,7 +177,7 @@ export default function SignUp(props) {
                                 <InputLabel htmlFor="serie">Série*</InputLabel>
                                 <Select
                                     native
-                                    value={serie}
+                                    value={grade}
                                     onChange={handleChange}
                                     fullWidth
                                     required
@@ -190,6 +188,8 @@ export default function SignUp(props) {
                                     }}
                                 >
                                     <option aria-label="None" value="" />
+                                    <option value={0}>Infantil I</option>
+                                    <option value={10}>Infantil II</option>
                                     <option value={1}>1º Ano</option>
                                     <option value={2}>2º Ano</option>
                                     <option value={3}>3º Ano</option>

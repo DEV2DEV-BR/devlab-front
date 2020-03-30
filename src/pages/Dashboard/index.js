@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../../components/Copyright'
-import NavBarDashBoard from '../../components/NavbarDashboard'
 import MenuLeft from '../../components/MenuLeft'
 
 
@@ -26,15 +25,13 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
+
 export default function Dashboard(props) {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <NavBarDashBoard props={props.history} />
-
-
             <div>
                 <div className={classes.appBarSpacer} />
                 <MenuLeft props={props.history} />

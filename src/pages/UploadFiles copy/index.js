@@ -12,7 +12,6 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Copyright from '../../components/Copyright'
-import NavBarDashBoard from '../../components/NavbarDashboard'
 import MenuLeft from '../../components/MenuLeft'
 import { Button } from '@material-ui/core';
 import firebase from "firebase";
@@ -89,8 +88,6 @@ export default function UploadFiles(props) {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <NavBarDashBoard props={props.history} />
-
 
             <div>
                 <div className={classes.appBarSpacer} />

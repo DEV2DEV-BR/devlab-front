@@ -6,7 +6,7 @@ import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import Activitys from './pages/Activitys'
 import UploadFiles from './pages/UploadFiles'
-
+import NavbarDashBoard from './components/NavbarDashboard'
 import { istAuthenticated } from './services/auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -14,7 +14,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         {...rest}
         render={props =>
             istAuthenticated() ? (
-                <Component {...props} />
+                <>
+                    <NavbarDashBoard  {...props} />
+                    <Component {...props} />
+                </>
             ) : (
                     <Redirect to={{ pathname: '/', state: { from: props.location } }} />
                 )

@@ -5,8 +5,11 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import MainListItems from './listItems';
-import SecondListItems from './secondListItem';
+import FundamentalOne from './fundamentalOne';
+import FundamentalTwo from './fundamentalTwo';
+import ChildishOne from './childishOne';
+import ChildishTwo from './childishTwo';
+import Admin from './admin';
 import firebase from 'firebase'
 import clsx from 'clsx';
 
@@ -101,7 +104,7 @@ export default function MenuLeft(props) {
 
         const db = firebase.firestore();
 
-        var usersRef = db.collection("users");
+        const usersRef = db.collection("users");
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
@@ -117,6 +120,11 @@ export default function MenuLeft(props) {
     })
 
 
+    useEffect(() => {
+        return () => {
+            setUserDate("")
+        };
+    }, []);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -137,21 +145,26 @@ export default function MenuLeft(props) {
                 <IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
                     {open ?
                         <>
-                            <p style={{ fontSize: 12 }}>Disciplinas</p>
+                            <p style={{ fontSize: 12 }}>Menu</p>
                             <ChevronLeftIcon />
                         </>
                         :
                         <ChevronRightIcon />}
                 </IconButton>
             </div>
-            <Divider />
-            <MainListItems props={props} />
+
+            {userDate.userType === 'student' && userDate.grade === 0 ? <ChildishOne props={props} /> : ''}
+            {userDate.userType === 'student' && userDate.grade === 10 ? <ChildishTwo props={props} /> : ''}
+            {userDate.userType === 'student' && userDate.grade > 0 && userDate.grade <= 5 ? <FundamentalOne props={props} /> : ''}
+            {userDate.userType === 'student' && userDate.grade > 5 ? <FundamentalTwo props={props} /> : ''}
+
             {userDate.userType === 'admin' ?
                 <><Divider />
-                    <SecondListItems props={props} /></>
+                    <Admin props={props} /></>
                 :
                 ''
             }
+            <Divider />
         </Drawer>
     );
 }

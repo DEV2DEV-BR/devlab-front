@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,11 +12,9 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Copyright from '../../components/Copyright'
-import NavBarDashBoard from '../../components/NavbarDashboard'
 import MenuLeft from '../../components/MenuLeft'
 import { Button } from '@material-ui/core';
-
-
+import firebase from 'firebase'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,11 +41,39 @@ const useStyles = makeStyles(theme => ({
 export default function Activitys(props) {
     const classes = useStyles();
 
+    const [suppliesDate, setSuppliesDate] = useState([])
+    const [idSupplie, setIdSupplie] = useState(props.location.state.idSubject)
+
+    const loadData = async () => {
+        console.log(idSupplie)
+        const db = firebase.firestore();
+
+        db.collection("supplies").where("discipline", "==", "1")
+            .get()
+            .then(function (querySnapshot) {
+                let supplies = [];
+                querySnapshot.forEach((doc) => {
+                    // console.log(doc.id, " => ", doc.data());
+                    supplies.push(doc.data())
+                });
+                setSuppliesDate(...suppliesDate, supplies)
+            })
+            .catch(function (error) {
+                console.log("Error getting documents: ", error);
+            });
+
+    }
+
+
+
+    useEffect(() => {
+        loadData()
+    }, [])
+
+
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <NavBarDashBoard props={props.history} />
-
 
             <div>
                 <div className={classes.appBarSpacer} />
@@ -64,24 +90,24 @@ export default function Activitys(props) {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell><b>Ordem por Data</b></TableCell>
-                                        <TableCell align="right"><b>Disciplina</b></TableCell>
-                                        <TableCell align="right"><b>Título Material</b></TableCell>
+                                        <TableCell align="left"><b>Descrição</b></TableCell>
                                         <TableCell align="right"></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableRow key={Math.random}>
-                                        <TableCell component="th" scope="row">
-                                            Data
+                                    {suppliesDate.map(supplie =>
+                                        <TableRow key={supplie.id}>
+                                            <TableCell component="th" scope="row">
+                                                Data
                                         </TableCell>
-                                        <TableCell align="right">Matemática</TableCell>
-                                        <TableCell align="right">Apredendo regra de 3</TableCell>
-                                        <TableCell align="right">
-                                            <Button variant="contained" size="small" color="secondary">
-                                                Download
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
+                                            <TableCell align="left">{supplie.description}</TableCell>
+                                            <TableCell align="right">
+                                                <Button variant="contained" size="small" color="secondary">
+                                                    Download
+                                        </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
                                 </TableBody>
                             </Table>
                         </TableContainer>

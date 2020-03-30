@@ -7,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 import Copyright from '../../components/Copyright'
-import NavBarDashBoard from '../../components/NavbarDashboard'
 import MenuLeft from '../../components/MenuLeft'
 import { Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
@@ -18,9 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
-        '& > * + *': {
-            marginLeft: theme.spacing(2),
-        },
+
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
@@ -84,6 +81,14 @@ export default function UploadFiles(props) {
 
     const handleRegister = () => {
 
+        let date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth();
+        let fullYear = date.getFullYear();
+        let createdAt = day + month + fullYear;
+
+
+
         const storage = firebase.storage();
 
         setProgress(true)
@@ -112,6 +117,7 @@ export default function UploadFiles(props) {
                             .add({
                                 grade,
                                 url,
+                                date: createdAt,
                                 discipline,
                                 description,
                                 id: '',
@@ -142,11 +148,10 @@ export default function UploadFiles(props) {
         setDescription('');
     };
 
+
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <NavBarDashBoard props={props.history} />
-
 
             <div>
                 <div className={classes.appBarSpacer} />
