@@ -55,6 +55,7 @@ export default function Activitys(props) {
                 querySnapshot.forEach((doc) => {
                     // console.log(doc.id, " => ", doc.data());
                     supplies.push(doc.data())
+                    return supplies;
                 });
                 setSuppliesDate(...suppliesDate, supplies)
             })
@@ -67,7 +68,7 @@ export default function Activitys(props) {
 
 
     useEffect(() => {
-        loadData()
+        
     }, [])
 
 
