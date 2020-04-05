@@ -73,6 +73,12 @@ export default function SendSchoolWork(props) {
     }
   };
 
+  const handleClear = () => {
+    setGrade("");
+    setDiscipline("");
+    setDescription("");
+  };
+
   const handleRegister = () => {
     let date = new Date();
     let day = date.getDate();
@@ -84,7 +90,7 @@ export default function SendSchoolWork(props) {
 
     setProgress(true);
 
-    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    const uploadTask = storage.ref(`homework/${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -95,16 +101,17 @@ export default function SendSchoolWork(props) {
       () => {
         // complete function ...
         storage
-          .ref("images")
+          .ref("homework")
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
             const cloudFirestore = firebase.firestore();
 
             cloudFirestore
-              .collection("supplies")
+              .collection("homework")
               .add({
-                grade,
+                idStudent: localStorage.getItem("id"),
+                grade: localStorage.getItem("grade"),
                 url,
                 createdAt: date,
                 date: createdAt,
@@ -113,10 +120,11 @@ export default function SendSchoolWork(props) {
                 id: "",
               })
               .then(function (doc) {
-                cloudFirestore.collection("supplies").doc(doc.id).update({
+                cloudFirestore.collection("homework").doc(doc.id).update({
                   id: doc.id,
                 });
                 setProgress(false);
+                handleClear();
               })
               .catch(function (error) {
                 console.error("Error adding domcument", error);

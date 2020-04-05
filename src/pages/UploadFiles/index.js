@@ -88,7 +88,7 @@ export default function UploadFiles(props) {
 
     setProgress(true);
 
-    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    const uploadTask = storage.ref(`supplies/${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -99,7 +99,7 @@ export default function UploadFiles(props) {
       () => {
         // complete function ...
         storage
-          .ref("images")
+          .ref("supplies")
           .child(image.name)
           .getDownloadURL()
           .then((url) => {

@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Activitys from "./pages/Activitys";
 import AllNewActivitys from "./pages/AllNewActivitys";
 import SendSchoolWork from "./pages/SendSchoolWork";
+import ListHomeWork from "./pages/ListHomeWorks";
 import UploadFiles from "./pages/UploadFiles";
 import NavbarDashBoard from "./components/NavbarDashboard";
 import { istAuthenticated } from "./services/auth";
@@ -39,6 +40,7 @@ const Routes = () => (
       <PrivateRoute path="/all-new-activitys" component={AllNewActivitys} />
       <PrivateRoute path="/send-school-work" component={SendSchoolWork} />
       <PrivateRoute path="/upload-files" component={UploadFiles} />
+      <PrivateRoute path="/list-home-work" component={ListHomeWork} />
     </Switch>
   </BrowserRouter>
 );

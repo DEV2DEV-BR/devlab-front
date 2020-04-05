@@ -10,6 +10,10 @@ export default function secondaryListItems(props) {
     props.props.props.push("/upload-files");
   };
 
+  const redirectHomeWork = () => {
+    props.props.props.push("/list-home-work");
+  };
+
   return (
     <div>
       <ListSubheader inset>Upload de arquivos</ListSubheader>
@@ -18,6 +22,12 @@ export default function secondaryListItems(props) {
           <BackupIcon />
         </ListItemIcon>
         <ListItemText primary="Enviar materiais" />
+      </ListItem>
+      <ListItem button onClick={() => redirectHomeWork()}>
+        <ListItemIcon>
+          <BackupIcon />
+        </ListItemIcon>
+        <ListItemText primary="Lição de casa" />
       </ListItem>
     </div>
   );
