@@ -1,194 +1,203 @@
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { Link } from 'react-router-dom';
-import Links from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import firebase from 'firebase';
-import { toast } from 'react-toastify';
-import { login, email } from '../../services/auth';
-import Image from '../../assets/books.jpg'
+import React, { useState } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { Link } from "react-router-dom";
+import Links from "@material-ui/core/Link";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import firebase from "firebase";
+import { toast } from "react-toastify";
+import { login, email } from "../../services/auth";
+import Image from "../../assets/pencil.jpg";
 
 function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Links color="inherit" href="https://jacode.com.br">
-                by JA CODE softwares
-      </Links>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Links color="inherit" href="https://jacode.com.br">
+        by JA CODE softwares
+      </Links>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
 }
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        height: '100vh',
-    },
-    image: {
-        backgroundImage: `url(${Image})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100vh",
+  },
+  image: {
+    backgroundImage: `url(${Image})`,
+    backgroundRepeat: "no-repeat",
+    backgroundColor:
+      theme.palette.type === "light"
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
 export default function SignIn(props) {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const [inputEmail, setInputEmail] = useState('')
-    const [inputPassword, setInputPassword] = useState('')
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
 
-    const notifySuccess = (message) => {
-        toast.success(message, {
-            position: 'top-right',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(inputEmail, inputPassword)
+      .then((success) => {
+        login(success.user.refreshToken);
+        email(success.user.email);
+
+        const db = firebase.firestore();
+
+        const usersRef = db.collection("users");
+
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            usersRef
+              .where("uid", "==", user.uid)
+              .get()
+              .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                  const { grade } = doc.data();
+                  localStorage.setItem("grade", grade);
+                });
+              });
+          }
         });
-    }
+        notifySuccess("Seja bem-vindo!");
 
-    const notifyError = (message) => {
-        toast.error(message, {
-            position: 'top-right',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-        });
-    }
+        props.history.push("/dashboard");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
 
-    const handleLogin = async event => {
-        event.preventDefault();
+        console.log(errorCode, errorMessage);
+        notifyError("Login Failed!");
+      });
+  };
 
-        await firebase
-            .auth()
-            .signInWithEmailAndPassword(
-                inputEmail,
-                inputPassword
-            )
-            .then(success => {
-                login(success.user.refreshToken);
-                email(success.user.email);
-                notifySuccess('Login successfull!');
-
-                props.history.push('/dashboard');
-            })
-            .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
-                console.log(errorCode, errorMessage);
-                notifyError('Login Failed!');
-            });
-
-
-    };
-
-
-    return (
-
-        <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Login
+  return (
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Login
           </Typography>
-                    <form className={classes.form} noValidate onSubmit={handleLogin}>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="E-mail"
-                            name="email"
-                            value={inputEmail}
-                            onChange={event => setInputEmail(event.target.value)}
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Senha"
-                            type="password"
-                            value={inputPassword}
-                            onChange={event => setInputPassword(event.target.value)}
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Lembrar minha senha"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            LOGIN
-                      </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link to="/" >
-                                    Voltar para o início
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link to="/signUp" >
-                                    {"Não tem acesso ainda? Cadastre-se!"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                        <Box mt={5}>
-                            <Copyright />
-                        </Box>
-                    </form>
-                </div>
+          <form className={classes.form} noValidate onSubmit={handleLogin}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="E-mail"
+              name="email"
+              value={inputEmail}
+              onChange={(event) => setInputEmail(event.target.value)}
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Senha"
+              type="password"
+              value={inputPassword}
+              onChange={(event) => setInputPassword(event.target.value)}
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Lembrar minha senha"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{ backgroundColor: "rgba(126,64,144,1)", color: "#fff" }}
+              className={classes.submit}
+            >
+              LOGIN
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link to="/">Voltar para o início</Link>
+              </Grid>
+              <Grid item>
+                <Link to="/signUp">{"Não tem acesso ainda? Cadastre-se!"}</Link>
+              </Grid>
             </Grid>
-        </Grid>
-    );
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
+  );
 }
