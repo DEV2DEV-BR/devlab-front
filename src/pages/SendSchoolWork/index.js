@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UploadFiles(props) {
+export default function SendSchoolWork(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
   const [grade, setGrade] = useState("");
@@ -60,10 +60,6 @@ export default function UploadFiles(props) {
 
   const handleChangeDiscipline = (event) => {
     setDiscipline(event.target.value);
-  };
-
-  const handleChangeGrade = (event) => {
-    setGrade(event.target.value);
   };
 
   const handleChangeDescription = (event) => {
@@ -121,7 +117,6 @@ export default function UploadFiles(props) {
                   id: doc.id,
                 });
                 setProgress(false);
-                handleClear();
               })
               .catch(function (error) {
                 console.error("Error adding domcument", error);
@@ -131,10 +126,8 @@ export default function UploadFiles(props) {
     );
   };
 
-  const handleClear = () => {
-    setGrade("");
-    setDiscipline("");
-    setDescription("");
+  const goToHome = () => {
+    props.history.push("/dashboard");
   };
 
   return (
@@ -151,41 +144,8 @@ export default function UploadFiles(props) {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3} style={{ width: "80%" }}>
             <form className={classes.form} noValidate>
-              <h1 style={{ marginLeft: 10 }}>Cadastro de Materiais</h1>
+              <h1 style={{ marginLeft: 10 }}>Envio de Tarefas</h1>
               <Grid container spacing={2}>
-                <FormControl
-                  variant="outlined"
-                  fullWidth
-                  className={classes.formControl}
-                  style={{ margin: 10 }}
-                >
-                  <Grid item xs={12}>
-                    <InputLabel htmlFor="serie">Série*</InputLabel>
-                    <Select
-                      native
-                      value={grade}
-                      onChange={handleChangeGrade}
-                      fullWidth
-                      required
-                      label="Série"
-                      inputProps={{
-                        name: "serie",
-                        id: "serie",
-                      }}
-                    >
-                      <option aria-label="None" value="" />
-                      <option value={1}>1º Ano</option>
-                      <option value={2}>2º Ano</option>
-                      <option value={3}>3º Ano</option>
-                      <option value={4}>4º Ano</option>
-                      <option value={5}>5º Ano</option>
-                      <option value={6}>6º Ano</option>
-                      <option value={7}>7º Ano</option>
-                      <option value={8}>8º Ano</option>
-                      <option value={9}>9º Ano</option>
-                    </Select>
-                  </Grid>
-                </FormControl>
                 <FormControl
                   variant="outlined"
                   fullWidth
@@ -232,9 +192,9 @@ export default function UploadFiles(props) {
                       value={description}
                       rowsMin={10}
                       onChange={handleChangeDescription}
+                      placeholder=" Descrição"
                       id="outlined-required"
                       label="Descrição"
-                      placeholder="Descrição"
                       variant="outlined"
                     />
                   </Grid>
@@ -257,7 +217,7 @@ export default function UploadFiles(props) {
                   onClick={handleRegister}
                   className={classes.submitLeft}
                 >
-                  CADASTRAR
+                  ENVIAR
                 </Button>
                 <Button
                   fullWidth
@@ -266,10 +226,10 @@ export default function UploadFiles(props) {
                     backgroundColor: "rgba(126,64,144,1)",
                     color: "#fff",
                   }}
-                  onClick={handleClear}
+                  onClick={goToHome}
                   className={classes.submitRight}
                 >
-                  LIMPAR
+                  Cancelar
                 </Button>
               </div>
             </form>

@@ -48,8 +48,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3];
-
 export default function Album() {
   const classe = useStyles();
 

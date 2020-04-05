@@ -97,7 +97,7 @@ export default function NavBarDashboard(props) {
           });
       }
     });
-  });
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -141,7 +141,11 @@ export default function NavBarDashboard(props) {
             style={{ textDecoration: "none", color: "#fff" }}
             to="/dashboard"
           >
-            <img src={Logo} style={{ maxHeight: 90, padding: 0, margin: 0 }} />
+            <img
+              src={Logo}
+              style={{ maxHeight: 90, padding: 0, margin: 0 }}
+              alt="Logo"
+            />
           </Link>
         </Typography>
 

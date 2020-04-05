@@ -116,7 +116,7 @@ export default function MenuLeft(props) {
           });
       }
     });
-  });
+  }, []);
 
   useEffect(() => {
     return () => {
