@@ -143,7 +143,7 @@ export default function NavBarDashboard(props) {
           >
             <img
               src={Logo}
-              style={{ maxHeight: 90, padding: 0, margin: 0 }}
+              style={{ height: "50px", padding: 0, margin: 0 }}
               alt="Logo"
             />
           </Link>
