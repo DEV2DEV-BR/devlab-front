@@ -88,7 +88,7 @@ export default function UploadFiles(props) {
 
     setProgress(true);
 
-    const uploadTask = storage.ref(`supplies/${image.name}`).put(image);
+    const uploadTask = storage.ref(`all_supplies/${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -99,14 +99,14 @@ export default function UploadFiles(props) {
       () => {
         // complete function ...
         storage
-          .ref("supplies")
+          .ref("all_supplies")
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
             const cloudFirestore = firebase.firestore();
 
             cloudFirestore
-              .collection("supplies")
+              .collection("all_supplies")
               .add({
                 grade,
                 url,
@@ -117,7 +117,7 @@ export default function UploadFiles(props) {
                 id: "",
               })
               .then(function (doc) {
-                cloudFirestore.collection("supplies").doc(doc.id).update({
+                cloudFirestore.collection("all_supplies").doc(doc.id).update({
                   id: doc.id,
                 });
                 setProgress(false);

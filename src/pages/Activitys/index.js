@@ -44,7 +44,7 @@ export default function Activitys(props) {
 
   const loadData = async () => {
     const db = firebase.firestore();
-    const suppliesRef = db.collection("supplies").orderBy("createdAt", "desc");
+    const suppliesRef = db.collection("all_supplies").orderBy("createdAt", "desc");
 
     await suppliesRef
       .where("discipline", "==", `${props.location.state.idSubject}`)

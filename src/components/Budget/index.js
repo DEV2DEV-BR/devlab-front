@@ -93,7 +93,7 @@ const Budget = (props) => {
                     gutterBottom
                     variant="body2"
                   >
-                    ENVIAR TAREFAS PRONTAS
+                    ENVIAR ATIVIDADES REALIZADAS
                   </Typography>
                 </Grid>
               </Grid>
@@ -107,7 +107,7 @@ const Budget = (props) => {
                     width: "100%",
                   }}
                 >
-                  Enviar tarefa
+                  Enviar Atividades
                 </Button>
               </Link>
             </CardContent>
@@ -129,7 +129,7 @@ const Budget = (props) => {
                     gutterBottom
                     variant="body2"
                   >
-                    ENTREGAS DE TAREFAS
+                    ENTREGAS DE ATIVIDADES
                   </Typography>
                 </Grid>
               </Grid>

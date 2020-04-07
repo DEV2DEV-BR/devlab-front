@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  formControl: {
+    margin: theme.spacing(3),
+  },
 }));
 
 export default function ListHomeWork(props) {
@@ -46,47 +49,170 @@ export default function ListHomeWork(props) {
 
   const [suppliesDate, setSuppliesDate] = useState([]);
   const [progress, setProgress] = useState(false);
-  const [valueGrade, setValueGrade] = React.useState();
-  const [valueSupplie, setValueSupplie] = React.useState();
+  const [filterGrade, setFilterGrade] = useState([]);
+  const [filterDiscipline, setFilterDiscipline] = useState([]);
+  const [grade, setGrade] = React.useState({
+    year_1: false,
+    year_2: false,
+    year_3: false,
+    year_4: false,
+    year_5: false,
+    year_6: false,
+    year_7: false,
+    year_8: false,
+    year_9: false,
+  });
 
-  const handleChangeSupplie = (event) => {
-    setValueSupplie(event.target.value);
-  };
+  const [discipline, setDiscipline] = React.useState({
+    arts: false,
+    sciences: false,
+    physical_education: false,
+    history: false,
+    geography: false,
+    english: false,
+    mathematics: false,
+    language_portuguese: false,
+  });
 
   const handleChangeGrade = (event) => {
-    setValueGrade(event.target.value);
+    setGrade({ ...grade, [event.target.name]: event.target.checked });
   };
 
+  const handleChangeDiscipline = (event) => {
+    setDiscipline({ ...discipline, [event.target.name]: event.target.checked });
+  };
+
+  const toogleFilterGrade = () => {
+    const query = []
+    if (year_1) {
+      query.push("1");
+    }
+    
+    if (year_2) {
+      query.push("2");
+    }
+
+    if (year_3) {
+      query.push("3");
+    }
+
+    if (year_4) {
+      query.push("4");
+    }
+    if (year_5) {
+      query.push("5");
+    }
+    if (year_6) {
+      query.push("6");
+    }
+    if (year_7) {
+      query.push("7");
+    }
+    if (year_8) {
+      query.push("8");
+    }
+    if (year_9) {
+      query.push("9");
+    }
+
+    setFilterGrade(query)
+
+  }
+
+  // const ver = () => {
+  //   console.log("year_1 " + year_1);
+  //   console.log("year_2 " + year_2);
+  //   console.log("year_3 " + year_3);
+  //   console.log("year_4 " + year_4);
+  //   console.log("year_5 " + year_5);
+  //   console.log("year_6 " + year_6);
+  //   console.log("year_7 " + year_7);
+  //   console.log("year_8 " + year_8);
+  //   console.log("year_9 " + year_9);
+
+  //   console.log("arts " + arts);
+  //   console.log("sciences " + sciences);
+  //   console.log("physical_education " + physical_education);
+  //   console.log("geography " + geography);
+  //   console.log("history " + history);
+  //   console.log("english " + english);
+  //   console.log("mathematics " + mathematics);
+  //   console.log("language_portuguese " + language_portuguese);
+  // };
+
+  const {
+    year_1,
+    year_2,
+    year_3,
+    year_4,
+    year_5,
+    year_6,
+    year_7,
+    year_8,
+    year_9,
+  } = grade;
+
+  // const errorGrade =
+  //   [
+  //     year_1,
+  //     year_2,
+  //     year_3,
+  //     year_4,
+  //     year_5,
+  //     year_6,
+  //     year_7,
+  //     year_8,
+  //     year_9,
+  //   ].filter((v) => v).length !== 2;
+
+  const {
+    arts,
+    sciences,
+    physical_education,
+    geography,
+    english,
+    mathematics,
+    language_portuguese,
+    history,
+  } = discipline;
+
+  // const errorDiscipline =
+  //   [
+  //     arts,
+  //     sciences,
+  //     physical_education,
+  //     geography,
+  //     english,
+  //     mathematics,
+  //     language_portuguese,
+  //     history,
+  //   ].filter((v) => v).length !== 2;
+
+
   const loadData = async () => {
+    toogleFilterGrade()
     const db = firebase.firestore();
-    const suppliesRef = db.collection("supplies").orderBy("createdAt", "desc");
+    const suppliesRef = db.collection("all_supplies").orderBy("createdAt", "desc");   
 
     await suppliesRef
-      .where("discipline", "==", `1`)
-      .where("grade", "==", `1`)
+      .where('discipline', 'array-contains', filterGrade)
       .get()
       .then((querySnapshot) => {
         const supplies = [];
         querySnapshot.forEach((doc) => {
+          console.log(doc.data())
           supplies.push(doc.data());
         });
         setSuppliesDate(supplies);
-        setProgress(false);
       })
       .catch(function (error) {
         console.log("Error getting documents: ", error);
       });
   };
 
-  const updatePage = () => {
-    setProgress(true);
-    loadData();
-  };
-
-  useEffect(() => {
-    setProgress(true);
-    loadData();
-  }, []);
+  // useEffect(() => {
+  //   loadData()
+  // }, []);
 
   useEffect(() => {
     return () => {
@@ -116,124 +242,220 @@ export default function ListHomeWork(props) {
                 margin: 10,
               }}
             >
-              <h1>Lição de Casa</h1>
-
-              <FormControl
-                component="fieldset"
-                style={{
-                  border: 1,
-                  borderStyle: "solid",
-                  borderRadius: 4,
-                  padding: 5,
-                  marginBottom: 10,
-                  borderColor: "#BBB5BC",
-                }}
-              >
-                <FormLabel component="legend">Série</FormLabel>
-                <RadioGroup
-                  aria-label="grade"
-                  name="grade"
-                  value={valueGrade}
-                  onChange={handleChangeGrade}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: 10,
-                  }}
+              <h1>Atividades</h1>
+              <div>
+                <FormControl
+                  component="fieldset"
+                  className={classes.formControl}
                 >
-                  <FormControlLabel value="1" control={<Radio />} label="1º" />
-                  <FormControlLabel value="2" control={<Radio />} label="2º" />
-                  <FormControlLabel value="3" control={<Radio />} label="3º" />
-                  <FormControlLabel value="4" control={<Radio />} label="4º" />
-                  <FormControlLabel value="5" control={<Radio />} label="5º" />
-                  <FormControlLabel value="6" control={<Radio />} label="6º" />
-                  <FormControlLabel value="7" control={<Radio />} label="7º" />
-                  <FormControlLabel value="8" control={<Radio />} label="8º" />
-                  <FormControlLabel value="9" control={<Radio />} label="9º" />
-                </RadioGroup>
-              </FormControl>
+                  <FormLabel component="legend">Série</FormLabel>
+                  <FormGroup>
+                    <div>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_1}
+                            onChange={handleChangeGrade}
+                            name="year_1"
+                          />
+                        }
+                        label="1º Ano"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_2}
+                            onChange={handleChangeGrade}
+                            name="year_2"
+                          />
+                        }
+                        label="2º Ano"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_3}
+                            onChange={handleChangeGrade}
+                            name="year_3"
+                          />
+                        }
+                        label="3º Ano"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_4}
+                            onChange={handleChangeGrade}
+                            name="year_4"
+                          />
+                        }
+                        label="4º Ano"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_5}
+                            onChange={handleChangeGrade}
+                            name="year_5"
+                          />
+                        }
+                        label="5º Ano"
+                      />
+                    </div>
+                    <div>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_6}
+                            onChange={handleChangeGrade}
+                            name="year_6"
+                          />
+                        }
+                        label="6º Ano"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_7}
+                            onChange={handleChangeGrade}
+                            name="year_7"
+                          />
+                        }
+                        label="7º Ano"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_8}
+                            onChange={handleChangeGrade}
+                            name="year_8"
+                          />
+                        }
+                        label="8º Ano"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={year_9}
+                            onChange={handleChangeGrade}
+                            name="year_9"
+                          />
+                        }
+                        label="9º Ano"
+                      />
+                    </div>
+                  </FormGroup>
+                </FormControl>
 
-              <FormControl
-                component="fieldset"
-                style={{
-                  border: 1,
-                  borderStyle: "solid",
-                  borderRadius: 4,
-                  borderColor: "#BBB5BC",
-                  padding: 5,
-                  marginBottom: 10,
-                }}
-              >
-                <FormLabel component="legend">Disciplina</FormLabel>
-                <RadioGroup
-                  aria-label="supplie"
-                  name="supplie"
-                  value={valueSupplie}
-                  onChange={handleChangeSupplie}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: 10,
-                  }}
+                <FormControl
+                  component="fieldset"
+                  className={classes.formControl}
                 >
-                  <FormControlLabel
-                    value="6"
-                    control={<Radio />}
-                    label="Arte"
-                  />
-                  <FormControlLabel
-                    value="5"
-                    control={<Radio />}
-                    label="Ciências"
-                  />
-                  <FormControlLabel
-                    value="7"
-                    control={<Radio />}
-                    label="Educação Fís."
-                  />
-                  <FormControlLabel
-                    value="4"
-                    control={<Radio />}
-                    label="Geografia"
-                  />
-                  <FormControlLabel
-                    value="3"
-                    control={<Radio />}
-                    label="História"
-                  />
-                  <FormControlLabel
-                    value="8"
-                    control={<Radio />}
-                    label="Inglês"
-                  />
-                  <FormControlLabel
-                    value="1"
-                    control={<Radio />}
-                    label="Língua Portuguesa"
-                  />
-                  <FormControlLabel
-                    value="2"
-                    control={<Radio />}
-                    label="Matemática"
-                  />
-                </RadioGroup>
-              </FormControl>
+                  <FormLabel component="legend">Disciplina</FormLabel>
+                  <FormGroup>
+                    <div>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={arts}
+                            onChange={handleChangeDiscipline}
+                            name="arts"
+                          />
+                        }
+                        label="Artes"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={sciences}
+                            onChange={handleChangeDiscipline}
+                            name="sciences"
+                          />
+                        }
+                        label="Ciências"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={physical_education}
+                            onChange={handleChangeDiscipline}
+                            name="physical_education"
+                          />
+                        }
+                        label="Educação Física"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={geography}
+                            onChange={handleChangeDiscipline}
+                            name="geography"
+                          />
+                        }
+                        label="Geografia"
+                      />
+                    </div>
+                    <div>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={history}
+                            onChange={handleChangeDiscipline}
+                            name="history"
+                          />
+                        }
+                        label="História"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={english}
+                            onChange={handleChangeDiscipline}
+                            name="english"
+                          />
+                        }
+                        label="Inglês"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={language_portuguese}
+                            onChange={handleChangeDiscipline}
+                            name="language_portuguese"
+                          />
+                        }
+                        label="Língua Portuguesa"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={mathematics}
+                            onChange={handleChangeDiscipline}
+                            name="mathematics"
+                          />
+                        }
+                        label="Matemática"
+                      />
+                    </div>
+                  </FormGroup>
+                </FormControl>
+              </div>
 
-              {progress ? (
+              {/* {progress ? (
                 <CircularProgress />
-              ) : (
+              ) : ( */}
                 <>
                   <Button
                     variant="contained"
                     size="small"
                     color="default"
                     style={{ marginBottom: 20 }}
-                    onClick={() => updatePage()}
+                    onClick={loadData}
                   >
                     Consultar
                   </Button>
                 </>
-              )}
+              {/* )} */}
             </div>
             {!progress ? (
               <TableContainer component={Paper}>

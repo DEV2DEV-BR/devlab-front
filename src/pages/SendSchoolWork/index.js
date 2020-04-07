@@ -152,7 +152,7 @@ export default function SendSchoolWork(props) {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3} style={{ width: "80%" }}>
             <form className={classes.form} noValidate>
-              <h1 style={{ marginLeft: 10 }}>Envio de Tarefas</h1>
+              <h1 style={{ marginLeft: 10 }}>Envio de Atividades</h1>
               <Grid container spacing={2}>
                 <FormControl
                   variant="outlined"

@@ -3,6 +3,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import BackupIcon from "@material-ui/icons/Backup";
+import Functions from "@material-ui/icons/Functions";
+
 import ListSubheader from "@material-ui/core/ListSubheader";
 
 export default function secondaryListItems(props) {
@@ -25,9 +27,9 @@ export default function secondaryListItems(props) {
       </ListItem>
       <ListItem button onClick={() => redirectHomeWork()}>
         <ListItemIcon>
-          <BackupIcon />
+          <Functions />
         </ListItemIcon>
-        <ListItemText primary="Lição de casa" />
+        <ListItemText primary="Atividades" />
       </ListItem>
     </div>
   );

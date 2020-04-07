@@ -46,7 +46,7 @@ export default function AllNewActivitys(props) {
 
   const loadData = async () => {
     const db = firebase.firestore();
-    const suppliesRef = db.collection("supplies").orderBy("createdAt", "desc");
+    const suppliesRef = db.collection("all_supplies").orderBy("createdAt", "desc");
 
     await suppliesRef
       .where("grade", "==", `${localStorage.getItem("grade")}`)
@@ -103,7 +103,7 @@ export default function AllNewActivitys(props) {
                 margin: 10,
               }}
             >
-              <h1>Novas Tarefas</h1>
+              <h1>Novas Atividades</h1>
               {progress ? (
                 <CircularProgress />
               ) : (
