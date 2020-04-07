@@ -149,7 +149,14 @@ export default function NavBarDashboard(props) {
           </Link>
         </Typography>
 
-        <div style={{ display: "flex", flexDirection: "column", fontSize: 12 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            fontSize: 9,
+            margin: 0,
+          }}
+        >
           <p style={{ padding: 0, margin: 0 }}>
             <b>Bem vindo:</b> {userDate.name}
           </p>

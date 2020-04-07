@@ -63,7 +63,7 @@ export default function ListHomeWork(props) {
   const loadData = async () => {
     setProgress(true);
     const db = firebase.firestore();
-    const suppliesRef = db.collection("all_supplies");
+    const suppliesRef = db.collection("homework");
 
     await suppliesRef
       .where("discipline", "==", `${filterDiscipline}`)
@@ -111,7 +111,13 @@ export default function ListHomeWork(props) {
               }}
             >
               <h1>Atividades</h1>
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
                 <FormControl
                   component="fieldset"
                   style={{
@@ -258,12 +264,12 @@ export default function ListHomeWork(props) {
                         label="Inglês"
                       />
                       <FormControlLabel
-                        value="2"
+                        value="1"
                         control={<Radio />}
                         label="Língua Portuguesa"
                       />
                       <FormControlLabel
-                        value="1"
+                        value="2"
                         control={<Radio />}
                         label="Matemática"
                       />
@@ -286,12 +292,15 @@ export default function ListHomeWork(props) {
               {progress ? <CircularProgress /> : ""}
             </div>
             {!progress ? (
-              <TableContainer component={Paper}>
+              <TableContainer component={Paper} style={{ marginRight: 10 }}>
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell>
                         <b>Data</b>
+                      </TableCell>
+                      <TableCell align="left">
+                        <b>Aluno</b>
                       </TableCell>
                       <TableCell align="left">
                         <b>Descrição</b>
@@ -308,6 +317,12 @@ export default function ListHomeWork(props) {
                           style={{ minWidth: 100 }}
                         >
                           {supplie.date}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          style={{ textAlign: "justify" }}
+                        >
+                          {supplie.nameStudent}
                         </TableCell>
                         <TableCell
                           align="left"

@@ -80,6 +80,8 @@ export default function SendSchoolWork(props) {
   };
 
   const handleRegister = () => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
     let date = new Date();
     let day = date.getDate();
     let month = date.getMonth();
@@ -113,6 +115,7 @@ export default function SendSchoolWork(props) {
                 idStudent: localStorage.getItem("id"),
                 grade: localStorage.getItem("grade"),
                 url,
+                nameStudent: userData.name,
                 createdAt: date,
                 date: createdAt,
                 discipline,
