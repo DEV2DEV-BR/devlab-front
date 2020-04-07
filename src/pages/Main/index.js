@@ -48,8 +48,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3];
-
 export default function Album() {
   const classe = useStyles();
 
@@ -135,9 +133,12 @@ export default function Album() {
                 />
                 <CardContent className={classe.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Arquivos
+                    Cadastre-se
                   </Typography>
-                  <Typography>Baixe os arquivos das aulas.</Typography>
+                  <Typography>
+                    Para acessar a plataforma, faça o seu cadastro com{" "}
+                    <b>NOME COMPLETO</b> e série <b>CORRETA</b>!
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
@@ -150,10 +151,10 @@ export default function Album() {
                 />
                 <CardContent className={classe.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Vídeos
+                    Faça o Login
                   </Typography>
                   <Typography>
-                    Confira os vídeos deixados para downloads.
+                    Faça o login com seu e-mail e senha previamente cadastrado.
                   </Typography>
                 </CardContent>
               </Card>
@@ -167,10 +168,11 @@ export default function Album() {
                 />
                 <CardContent className={classe.cardContent}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Praticidade
+                    Veja seus materiais
                   </Typography>
                   <Typography>
-                    Você não precisa sair de casa para estudar.
+                    Após o login você terá acesso a todos os materiais
+                    disponiveis para você.
                   </Typography>
                 </CardContent>
               </Card>

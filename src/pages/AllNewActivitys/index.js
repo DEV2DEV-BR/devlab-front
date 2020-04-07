@@ -36,18 +36,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Activitys(props) {
+export default function AllNewActivitys(props) {
   const classes = useStyles();
 
   const [suppliesDate, setSuppliesDate] = useState([]);
   const [progress, setProgress] = useState(false);
+
+  const [userDate, setUserDate] = useState([]);
 
   const loadData = async () => {
     const db = firebase.firestore();
     const suppliesRef = db.collection("all_supplies").orderBy("createdAt", "desc");
 
     await suppliesRef
-      .where("discipline", "==", `${props.location.state.idSubject}`)
       .where("grade", "==", `${localStorage.getItem("grade")}`)
       .get()
       .then((querySnapshot) => {
@@ -56,6 +57,7 @@ export default function Activitys(props) {
           supplies.push(doc.data());
         });
         setSuppliesDate(supplies);
+        setUserDate([JSON.parse(localStorage.getItem("userData"))]);
         setProgress(false);
       })
       .catch(function (error) {
@@ -71,7 +73,7 @@ export default function Activitys(props) {
   useEffect(() => {
     setProgress(true);
     loadData();
-  }, [props.location.state.idSubject]);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -101,7 +103,7 @@ export default function Activitys(props) {
                 margin: 10,
               }}
             >
-              <h1>{props.location.state.subjects}</h1>
+              <h1>Novas Atividades</h1>
               {progress ? (
                 <CircularProgress />
               ) : (

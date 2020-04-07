@@ -68,6 +68,7 @@ export default function Album() {
               <img
                 src={Logo}
                 style={{ maxHeight: 90, padding: 0, margin: 0 }}
+                alt="Logo"
               />
             </Typography>
           </Link>

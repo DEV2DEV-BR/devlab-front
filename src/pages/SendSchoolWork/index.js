@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UploadFiles(props) {
+export default function SendSchoolWork(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
   const [grade, setGrade] = useState("");
@@ -60,10 +60,6 @@ export default function UploadFiles(props) {
 
   const handleChangeDiscipline = (event) => {
     setDiscipline(event.target.value);
-  };
-
-  const handleChangeGrade = (event) => {
-    setGrade(event.target.value);
   };
 
   const handleChangeDescription = (event) => {
@@ -77,7 +73,15 @@ export default function UploadFiles(props) {
     }
   };
 
+  const handleClear = () => {
+    setGrade("");
+    setDiscipline("");
+    setDescription("");
+  };
+
   const handleRegister = () => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+
     let date = new Date();
     let day = date.getDate();
     let month = date.getMonth();
@@ -88,7 +92,7 @@ export default function UploadFiles(props) {
 
     setProgress(true);
 
-    const uploadTask = storage.ref(`all_supplies/${image.name}`).put(image);
+    const uploadTask = storage.ref(`homework/${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -99,17 +103,19 @@ export default function UploadFiles(props) {
       () => {
         // complete function ...
         storage
-          .ref("all_supplies")
+          .ref("homework")
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
             const cloudFirestore = firebase.firestore();
 
             cloudFirestore
-              .collection("all_supplies")
+              .collection("homework")
               .add({
-                grade,
+                idStudent: localStorage.getItem("id"),
+                grade: localStorage.getItem("grade"),
                 url,
+                nameStudent: userData.name,
                 createdAt: date,
                 date: createdAt,
                 discipline,
@@ -117,7 +123,7 @@ export default function UploadFiles(props) {
                 id: "",
               })
               .then(function (doc) {
-                cloudFirestore.collection("all_supplies").doc(doc.id).update({
+                cloudFirestore.collection("homework").doc(doc.id).update({
                   id: doc.id,
                 });
                 setProgress(false);
@@ -131,10 +137,8 @@ export default function UploadFiles(props) {
     );
   };
 
-  const handleClear = () => {
-    setGrade("");
-    setDiscipline("");
-    setDescription("");
+  const goToHome = () => {
+    props.history.push("/dashboard");
   };
 
   return (
@@ -151,41 +155,8 @@ export default function UploadFiles(props) {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3} style={{ width: "80%" }}>
             <form className={classes.form} noValidate>
-              <h1 style={{ marginLeft: 10 }}>Cadastro de Materiais</h1>
+              <h1 style={{ marginLeft: 10 }}>Envio de Atividades</h1>
               <Grid container spacing={2}>
-                <FormControl
-                  variant="outlined"
-                  fullWidth
-                  className={classes.formControl}
-                  style={{ margin: 10 }}
-                >
-                  <Grid item xs={12}>
-                    <InputLabel htmlFor="serie">Série*</InputLabel>
-                    <Select
-                      native
-                      value={grade}
-                      onChange={handleChangeGrade}
-                      fullWidth
-                      required
-                      label="Série"
-                      inputProps={{
-                        name: "serie",
-                        id: "serie",
-                      }}
-                    >
-                      <option aria-label="None" value="" />
-                      <option value={1}>1º Ano</option>
-                      <option value={2}>2º Ano</option>
-                      <option value={3}>3º Ano</option>
-                      <option value={4}>4º Ano</option>
-                      <option value={5}>5º Ano</option>
-                      <option value={6}>6º Ano</option>
-                      <option value={7}>7º Ano</option>
-                      <option value={8}>8º Ano</option>
-                      <option value={9}>9º Ano</option>
-                    </Select>
-                  </Grid>
-                </FormControl>
                 <FormControl
                   variant="outlined"
                   fullWidth
@@ -232,9 +203,9 @@ export default function UploadFiles(props) {
                       value={description}
                       rowsMin={10}
                       onChange={handleChangeDescription}
+                      placeholder=" Descrição"
                       id="outlined-required"
                       label="Descrição"
-                      placeholder="Descrição"
                       variant="outlined"
                     />
                   </Grid>
@@ -257,7 +228,7 @@ export default function UploadFiles(props) {
                   onClick={handleRegister}
                   className={classes.submitLeft}
                 >
-                  CADASTRAR
+                  ENVIAR
                 </Button>
                 <Button
                   fullWidth
@@ -266,10 +237,10 @@ export default function UploadFiles(props) {
                     backgroundColor: "rgba(126,64,144,1)",
                     color: "#fff",
                   }}
-                  onClick={handleClear}
+                  onClick={goToHome}
                   className={classes.submitRight}
                 >
-                  LIMPAR
+                  Cancelar
                 </Button>
               </div>
             </form>
