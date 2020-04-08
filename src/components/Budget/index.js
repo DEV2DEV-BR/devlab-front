@@ -78,7 +78,7 @@ const Budget = (props) => {
                     width: "100%",
                   }}
                 >
-                  Ver Novos Materiais
+                  VER
                 </Button>
               </Link>
             </CardContent>
@@ -107,7 +107,7 @@ const Budget = (props) => {
                     width: "100%",
                   }}
                 >
-                  Enviar Atividades
+                  ENVIAR
                 </Button>
               </Link>
             </CardContent>
@@ -129,7 +129,7 @@ const Budget = (props) => {
                     gutterBottom
                     variant="body2"
                   >
-                    ENTREGAS DE ATIVIDADES
+                    ENTREGA DE ATIVIDADES
                   </Typography>
                 </Grid>
               </Grid>
@@ -143,7 +143,7 @@ const Budget = (props) => {
                     width: "100%",
                   }}
                 >
-                  Ver entregas
+                  VER
                 </Button>
               </Link>
             </CardContent>
