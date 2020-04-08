@@ -148,6 +148,64 @@ const Budget = (props) => {
               </Link>
             </CardContent>
           </Card>
+          <Card style={{ margin: "30px 0px 0px 10px" }}>
+            <CardContent>
+              <Grid container>
+                <Grid item>
+                  <Typography
+                    className={classes.title}
+                    color="textSecondary"
+                    gutterBottom
+                    variant="body2"
+                  >
+                    CADASTRO DE PROFESSORES
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Link to="/teachers" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{
+                    backgroundColor: "#318F6B",
+                    color: "#fff",
+                    width: "100%",
+                  }}
+                >
+                  ACESSAR
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+          <Card style={{ margin: "30px 0px 0px 10px" }}>
+            <CardContent>
+              <Grid container>
+                <Grid item>
+                  <Typography
+                    className={classes.title}
+                    color="textSecondary"
+                    gutterBottom
+                    variant="body2"
+                  >
+                    CADASTRO DE UNIDADES
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Link to="/schools" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{
+                    backgroundColor: "#318F6B",
+                    color: "#fff",
+                    width: "100%",
+                  }}
+                >
+                  ACESSAR
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </>
       ) : (
         ""
