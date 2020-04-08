@@ -126,6 +126,7 @@ export default function ListHomeWork(props) {
                     borderColor: "#CDD2DD",
                     borderRadius: "4px",
                     margin: "10px 0px 10px 0px",
+                    padding: 10,
                   }}
                 >
                   <FormLabel
@@ -208,6 +209,7 @@ export default function ListHomeWork(props) {
                     borderColor: "#CDD2DD",
                     borderRadius: "4px",
                     margin: "10px 0px 10px 0px",
+                    padding: 10,
                   }}
                 >
                   <FormLabel

@@ -4,6 +4,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import BackupIcon from "@material-ui/icons/Backup";
 import Functions from "@material-ui/icons/Functions";
+import School from "@material-ui/icons/School";
 
 import ListSubheader from "@material-ui/core/ListSubheader";
 
@@ -14,6 +15,9 @@ export default function secondaryListItems(props) {
 
   const redirectHomeWork = () => {
     props.props.props.push("/list-home-work");
+  };
+  const redirectTeachers = () => {
+    props.props.props.push("/teachers");
   };
 
   return (
@@ -30,6 +34,12 @@ export default function secondaryListItems(props) {
           <Functions />
         </ListItemIcon>
         <ListItemText primary="Atividades" />
+      </ListItem>
+      <ListItem button onClick={() => redirectTeachers()}>
+        <ListItemIcon>
+          <School />
+        </ListItemIcon>
+        <ListItemText primary="Professores" />
       </ListItem>
     </div>
   );

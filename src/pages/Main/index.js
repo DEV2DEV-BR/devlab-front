@@ -84,8 +84,9 @@ export default function Album() {
               paragraph
               style={{ color: "#fff", textShadow: "#000" }}
             >
-              Bem vindo ao School Docs, após fazer o login você terá acesso a
-              todos os materiais disponíveis para download.
+              <div>Bem vindo ao School Docs! </div>
+              Após fazer o login, você terá acesso a todos os materiais
+              disponíveis para download.
             </Typography>
             <div className={classe.heroButtons}>
               <Grid container spacing={2} justify="center">
@@ -137,7 +138,7 @@ export default function Album() {
                   </Typography>
                   <Typography>
                     Para acessar a plataforma, faça o seu cadastro com{" "}
-                    <b>NOME COMPLETO</b> e série <b>CORRETA</b>!
+                    <b>NOME COMPLETO</b> e série <b>CORRETA</b>.
                   </Typography>
                 </CardContent>
               </Card>
@@ -154,7 +155,7 @@ export default function Album() {
                     Faça o Login
                   </Typography>
                   <Typography>
-                    Faça o login com seu e-mail e senha previamente cadastrado.
+                    Faça o login com seu e-mail e senha previamente cadastrados.
                   </Typography>
                 </CardContent>
               </Card>
@@ -171,8 +172,8 @@ export default function Album() {
                     Veja seus materiais
                   </Typography>
                   <Typography>
-                    Após o login você terá acesso a todos os materiais
-                    disponiveis para você.
+                    Após o login, você terá acesso a todos os materiais
+                    disponiveis, organizados por disciplina.
                   </Typography>
                 </CardContent>
               </Card>

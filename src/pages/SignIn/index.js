@@ -114,6 +114,7 @@ export default function SignIn(props) {
               .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                   const { id, grade } = doc.data();
+                  localStorage.setItem("userData", JSON.stringify(doc.data()));
                   localStorage.setItem("grade", grade);
                   localStorage.setItem("id", id);
                 });

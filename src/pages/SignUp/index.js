@@ -116,7 +116,7 @@ export default function SignUp(props) {
           console.log(errorCode, errorMessage);
         });
 
-      notifySuccess("Congratulations!");
+      notifySuccess("Parabéns!");
       props.history.push("/signIn");
     } else {
       notifyError("Password does not match!");
@@ -241,7 +241,7 @@ export default function SignUp(props) {
               <Link to="/">Voltar para o início</Link>
             </Grid>
             <Grid item>
-              <Link to="/signIn">Já tenha cadastro? Faça o login!</Link>
+              <Link to="/signIn">Já tem cadastro? Faça login!</Link>
             </Grid>
           </Grid>
         </form>
