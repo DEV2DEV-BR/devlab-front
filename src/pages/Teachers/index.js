@@ -58,10 +58,23 @@ export default function Teachers(props) {
   const classes = useStyles();
   const [inputName, setInputName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
-  const [school, setSchool] = React.useState([]);
+  const [inputPassword, setInputPassword] = useState("");
+  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
+
+  // provisório
+  const [school, setSchool] = useState({
+    molina: false,
+    covas: false,
+    grupo: false,
+    fernandez: false,
+    franco_montoro: false,
+    vaccaro: false,
+    bela_vista: false,
+  });
+
   const [progress, setProgress] = useState(false);
 
-  const [discipline, setDiscipline] = React.useState({
+  const [discipline, setDiscipline] = useState({
     art: false,
     sciences: false,
     physical_education: false,
@@ -72,9 +85,6 @@ export default function Teachers(props) {
     mathematic: false,
   });
 
-  const [inputPassword, setInputPassword] = useState("");
-  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
-
 
   const handleChangeSchool = (event) => {
     setSchool({ ...school, [event.target.name]: event.target.checked });
@@ -84,7 +94,8 @@ export default function Teachers(props) {
     setDiscipline({ ...discipline, [event.target.name]: event.target.checked });
   };
 
-  const { gilad, jason, antoine } = school;
+  const { jose_molina, mario_covas, alvares_machado, marcia_helena, franco_montoro, marques_vaccaro, tereza_polidorio } = school;
+
 
   const { art, sciences, physical_education, geography, history, english, portuguese_language, mathematic } = discipline;
 
@@ -110,30 +121,32 @@ export default function Teachers(props) {
     });
   };
 
-  const loadAllSchools = async () => {
-    const db = firebase.firestore();
-    const schoolsRef = db.collection("schools").orderBy("name", "asc");
+  // future
+  // const loadAllSchools = async () => {
+  //   const db = firebase.firestore();
+  //   const schoolsRef = db.collection("schools").orderBy("name", "asc");
 
-    await schoolsRef
-      .get()
-      .then((querySnapshot) => {
-        const schools = [];
-        querySnapshot.forEach((doc) => {
-          schools.push(doc.data());
-        });
-        setSchool(schools);
-        setProgress(false);
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-  };
+  //   await schoolsRef
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       const schools = [];
+  //       querySnapshot.forEach((doc) => {
+  //         schools.push(doc.data());
+  //       });
+  //       setSchool(schools);
+  //       setProgress(false);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("Error getting documents: ", error);
+  //     });
+  // };
 
+  // future
 
-  useEffect(() => {
-    setProgress(true)
-    loadAllSchools();
-  }, [])
+  // useEffect(() => {
+  //   setProgress(true)
+  //   loadAllSchools();
+  // }, [])
 
   const addDiscipline = () => {
     const allDisciplines = []
@@ -161,8 +174,33 @@ export default function Teachers(props) {
     if (mathematic) {
       allDisciplines.push(2)
     }
-
     return allDisciplines;
+  }
+
+  const addSchoolToTeacher = () => {
+    const allSchools = []
+    if (alvares_machado) {
+      allSchools.push('0HgQobTQkPyMtB7BLIBI')
+    }
+    if (franco_montoro) {
+      allSchools.push('cnh92zAndBb3T6DAvGsy')
+    }
+    if (mario_covas) {
+      allSchools.push('eqdFnW5EQg4JiOdwCA0Q')
+    }
+    if (marcia_helena) {
+      allSchools.push('oVOEa86ZL8hA8e6nOyu6')
+    }
+    if (marques_vaccaro) {
+      allSchools.push('Tr8VHeCJofsyx5nP9zIa')
+    }
+    if (tereza_polidorio) {
+      allSchools.push('yxv6KHgmdzTGZINhBheq')
+    }
+    if (jose_molina) {
+      allSchools.push('vJG0RnawKCTIAYHjntj8')
+    }
+    return allSchools;
 
   }
 
@@ -170,6 +208,8 @@ export default function Teachers(props) {
     event.preventDefault();
 
     const teacherDisciplines = addDiscipline();
+
+    const teacherSchools = addSchoolToTeacher();
 
     const name = inputName;
 
@@ -188,6 +228,7 @@ export default function Teachers(props) {
               email: success.user.email,
               uid: success.user.uid,
               teacherDisciplines,
+              teacherSchools,
               userType: "teacher",
               id: "",
             })
@@ -320,22 +361,40 @@ export default function Teachers(props) {
                         padding: 10,
                       }}>
                         <FormLabel component="legend">Escola</FormLabel>
-                        {progress ? (
-                          <CircularProgress style={{ margin: 15 }} />
-                        ) :
-                          <FormGroup style={{ display: 'flex', flexDirection: 'row' }}>
-                            {
-                              school.map(s =>
-                                <FormControlLabel
-                                  key={s.id}
-                                  control={<Checkbox checked={!s.name} onChange={handleChangeSchool} name={s.name} />}
-                                  label={s.name}
-                                />
-                              )
-                            }
 
-                          </FormGroup>
-                        }
+                        <FormGroup style={{ display: 'flex', flexDirection: 'row' }}>
+
+                          <FormControlLabel
+                            control={<Checkbox checked={alvares_machado} onChange={handleChangeSchool} name={'alvares_machado'} />}
+                            label='EMEIF Álvares Machado'
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={franco_montoro} onChange={handleChangeSchool} name={'franco_montoro'} />}
+                            label='EMEIF Governador Franco Montoro'
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={mario_covas} onChange={handleChangeSchool} name={'mario_covas'} />}
+                            label='EMEIF Governador Mário Covas'
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={marcia_helena} onChange={handleChangeSchool} name={'marcia_helena'} />}
+                            label={'EMEIF Márcia Helena Fernandez de Araújo'}
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={marques_vaccaro} onChange={handleChangeSchool} name={'marque_vaccaro'} />}
+                            label='EMEIF Professora Aparecida Marques Vaccaro'
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={tereza_polidorio} onChange={handleChangeSchool} name={'tereza_polidorio'} />}
+                            label='EMEIF Professora Tereza Ito Polidório'
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={jose_molina} onChange={handleChangeSchool} name={'jose_molina'} />}
+                            label='EMEIF Vereador José Molina'
+                          />
+
+                        </FormGroup>
+
                       </FormControl>
 
                       <div style={{

@@ -38,7 +38,7 @@ export default function secondaryListItems(props) {
         <ListItemText primary="Atividades" />
       </ListItem>
 
-      {userData.userType === 'admin' ?
+      {userData.userType === 'admin' || userData.userType === 'management' ?
         <ListItem button onClick={() => redirectTeachers()}>
           <ListItemIcon>
             <School />

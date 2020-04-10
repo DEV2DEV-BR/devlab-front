@@ -117,7 +117,7 @@ const Budget = (props) => {
           ""
         )}
 
-      {userData.userType === "admin" || userData.userType === 'teacher' ? (
+      {userData.userType === "admin" || userData.userType === 'management' ? (
         <>
           <Card style={{ margin: "30px 0px 0px 10px" }}>
             <CardContent>
@@ -177,39 +177,68 @@ const Budget = (props) => {
               </Link>
             </CardContent>
           </Card>
-          <Card style={{ margin: "30px 0px 0px 10px" }}>
-            <CardContent>
-              <Grid container>
-                <Grid item>
-                  <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
-                    CADASTRO DE UNIDADES
+          {userData.userType === 'admin' ?
+            <Card style={{ margin: "30px 0px 0px 10px" }}>
+              <CardContent>
+                <Grid container>
+                  <Grid item>
+                    <Typography
+                      className={classes.title}
+                      color="textSecondary"
+                      gutterBottom
+                      variant="body2"
+                    >
+                      CADASTRO DE UNIDADES
                   </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Link to="/schools" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  size="small"
-                  style={{
-                    backgroundColor: "#318F6B",
-                    color: "#fff",
-                    width: "100%",
-                  }}
-                >
-                  CADASTRAR
+                <Link to="/schools" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    style={{
+                      backgroundColor: "#318F6B",
+                      color: "#fff",
+                      width: "100%",
+                    }}
+                  >
+                    CADASTRAR
                 </Button>
-              </Link>
-            </CardContent>
-          </Card>
+                </Link>
+              </CardContent>
+            </Card> : ""}
         </>
-      ) : (
-          ""
-        )}
+      ) : (userData.userType === 'teacher') ? (
+        <Card style={{ margin: "30px 0px 0px 10px" }}>
+          <CardContent>
+            <Grid container>
+              <Grid item>
+                <Typography
+                  className={classes.title}
+                  color="textSecondary"
+                  gutterBottom
+                  variant="body2"
+                >
+                  ENTREGA DE ATIVIDADES
+              </Typography>
+              </Grid>
+            </Grid>
+            <Link to="/list-home-work" style={{ textDecoration: "none" }}>
+              <Button
+                variant="contained"
+                size="small"
+                style={{
+                  backgroundColor: "#318F6B",
+                  color: "#fff",
+                  width: "100%",
+                }}
+              >
+                VER
+            </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ) : ""}
     </>
   );
 };

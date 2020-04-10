@@ -176,7 +176,7 @@ export default function MenuLeft(props) {
           ""
         )}
 
-      {userData.userType === "admin" || userData.userType === 'teacher' ? (
+      {userData.userType === "admin" || userData.userType === 'teacher' || userData.userType === 'management' ? (
         <>
           <Divider />
           <Admin props={props} />

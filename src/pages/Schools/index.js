@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Schools(props) {
   const classes = useStyles();
   const [inputName, setInputName] = useState("");
+  const [inputPhone, setInputPhone] = useState("");
   const [inputAddress, setInputAddress] = useState("");
   const [progress, setProgress] = useState(false);
   const [period, setPeriod] = React.useState({
@@ -201,6 +202,20 @@ export default function Schools(props) {
                         value={inputAddress}
                         onChange={(event) => setInputAddress(event.target.value)}
                         label="Endereço"
+                        autoFocus
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        autoComplete="fname"
+                        name="fullName"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="fullName"
+                        value={inputPhone}
+                        onChange={(event) => setInputPhone(event.target.value)}
+                        label="Telefone:"
                         autoFocus
                       />
                     </Grid>
