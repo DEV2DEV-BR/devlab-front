@@ -48,16 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props) {
   const classes = useStyles();
-  const [grade, setGrade] = useState('');
   const [inputName, setInputName] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
-
-  const handleChange = (event) => {
-    setGrade(event.target.value);
-  };
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -88,14 +83,11 @@ export default function SignUp(props) {
 
     const name = inputName;
 
-    console.log(grade);
-
     if (
       inputName !== '' &&
       inputEmail !== '' &&
       inputPassword !== '' &&
-      inputConfirmPassword !== '' &&
-      grade !== ''
+      inputConfirmPassword !== ''
     ) {
       if (inputPassword === inputConfirmPassword) {
         await firebase
@@ -108,19 +100,19 @@ export default function SignUp(props) {
               .collection('users')
               .add({
                 name,
-                grade,
                 email: success.user.email,
                 uid: success.user.uid,
-                userType: 'student',
+                userType: 'teacher',
+                confirmed: false,
                 id: '',
               })
               .then(function (doc) {
                 cloudFirestore.collection('users').doc(doc.id).update({
                   id: doc.id,
                 });
+                setProgress(false);
                 notifySuccess('Parabéns!');
                 props.history.push('/signIn');
-                setProgress(false);
               })
               .catch(function (error) {
                 console.error('Error adding domcument', error);
@@ -133,7 +125,6 @@ export default function SignUp(props) {
           });
       } else {
         notifyError('Password does not match!');
-        setProgress(false);
       }
     } else {
       notifyError('Preencha todos os campos');
@@ -180,39 +171,6 @@ export default function SignUp(props) {
                 autoComplete="email"
               />
             </Grid>
-
-            <FormControl
-              variant="outlined"
-              fullWidth
-              className={classes.formControl}
-            >
-              <Grid item xs={12}>
-                <InputLabel htmlFor="serie">Série*</InputLabel>
-                <Select
-                  native
-                  value={grade}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  label="Série"
-                  inputProps={{
-                    name: 'serie',
-                    id: 'serie',
-                  }}
-                >
-                  <option aria-label="None" value="" />
-                  <option value={1}>1º Ano</option>
-                  <option value={2}>2º Ano</option>
-                  <option value={3}>3º Ano</option>
-                  <option value={4}>4º Ano</option>
-                  <option value={5}>5º Ano</option>
-                  <option value={6}>6º Ano</option>
-                  <option value={7}>7º Ano</option>
-                  <option value={8}>8º Ano</option>
-                  <option value={9}>9º Ano</option>
-                </Select>
-              </Grid>
-            </FormControl>
 
             <Grid item xs={12}>
               <TextField

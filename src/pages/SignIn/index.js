@@ -1,62 +1,63 @@
-import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
-import Links from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import firebase from "firebase";
-import { toast } from "react-toastify";
-import { login, email } from "../../services/auth";
-import Image from "../../assets/pencil.jpg";
+import React, { useState } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { Link } from 'react-router-dom';
+import Links from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import firebase from 'firebase';
+import { toast } from 'react-toastify';
+import { login, email } from '../../services/auth';
+import Image from '../../assets/pencil.jpg';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
+      {'Copyright © '}
       <Links color="inherit" href="https://jacode.com.br">
         by JA CODE softwares
-      </Links>{" "}
+      </Links>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: '100vh',
   },
   image: {
     backgroundImage: `url(${Image})`,
-    backgroundRepeat: "no-repeat",
+    backgroundRepeat: 'no-repeat',
     backgroundColor:
-      theme.palette.type === "light"
+      theme.palette.type === 'light'
         ? theme.palette.grey[50]
         : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   },
   paper: {
     margin: theme.spacing(8, 4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -67,12 +68,13 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn(props) {
   const classes = useStyles();
 
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPassword, setInputPassword] = useState("");
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
+  const [progress, setProgress] = useState(false);
 
   const notifySuccess = (message) => {
     toast.success(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -83,7 +85,7 @@ export default function SignIn(props) {
 
   const notifyError = (message) => {
     toast.error(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -93,6 +95,7 @@ export default function SignIn(props) {
   };
 
   const handleLogin = async (event) => {
+    setProgress(true);
     event.preventDefault();
 
     await firebase
@@ -104,33 +107,35 @@ export default function SignIn(props) {
 
         const db = firebase.firestore();
 
-        const usersRef = db.collection("users");
+        const usersRef = db.collection('users');
 
         firebase.auth().onAuthStateChanged(function (user) {
           if (user) {
             usersRef
-              .where("uid", "==", user.uid)
+              .where('uid', '==', user.uid)
               .get()
               .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                   const { id, grade } = doc.data();
-                  localStorage.setItem("userData", JSON.stringify(doc.data()));
-                  localStorage.setItem("grade", grade);
-                  localStorage.setItem("id", id);
+                  localStorage.setItem('userData', JSON.stringify(doc.data()));
+                  localStorage.setItem('grade', grade);
+                  localStorage.setItem('id', id);
+                  setProgress(false);
+
+                  notifySuccess('Seja bem-vindo!');
+
+                  props.history.push('/dashboard');
                 });
               });
           }
         });
-        notifySuccess("Seja bem-vindo!");
-
-        props.history.push("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
+        setProgress(false);
         console.log(errorCode, errorMessage);
-        notifyError("Login Failed!");
+        notifyError('E-mail ou senha incorretos!');
       });
   };
 
@@ -177,21 +182,37 @@ export default function SignIn(props) {
               control={<Checkbox value="remember" color="primary" />}
               label="Lembrar minha senha"
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              style={{ backgroundColor: "rgba(126,64,144,1)", color: "#fff" }}
-              className={classes.submit}
-            >
-              LOGIN
-            </Button>
+
+            {progress ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'center',
+                  padding: 20,
+                }}
+              >
+                <CircularProgress />
+                <p style={{ margin: 10 }}>Aguarde...</p>
+              </div>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
+                className={classes.submit}
+              >
+                LOGIN
+              </Button>
+            )}
             <Grid container>
               <Grid item xs>
                 <Link to="/">Voltar para o início</Link>
               </Grid>
               <Grid item>
-                <Link to="/signUp">{"Não tem acesso ainda? Cadastre-se!"}</Link>
+                <Link to="/signUp">{'Não tem acesso ainda? Cadastre-se!'}</Link>
               </Grid>
             </Grid>
             <Box mt={5}>

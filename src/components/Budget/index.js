@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
-import { Card, CardContent, Grid, Typography } from "@material-ui/core";
-import firebase from "firebase";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/styles';
+import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import firebase from 'firebase';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100%",
+    height: '100%',
   },
   content: {
-    alignItems: "center",
-    display: "flex",
+    alignItems: 'center',
+    display: 'flex',
   },
   title: {
     fontWeight: 700,
@@ -20,24 +22,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Budget = (props) => {
-  //   const { className, ...rest } = props;
-
   const classes = useStyles();
   const [userData, setUserData] = useState([]);
+  const [progress, setProgress] = useState(false);
 
   useEffect(() => {
+    setProgress(true);
     const db = firebase.firestore();
 
-    const usersRef = db.collection("users");
+    const usersRef = db.collection('users');
 
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         usersRef
-          .where("uid", "==", user.uid)
+          .where('uid', '==', user.uid)
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               setUserData(doc.data());
+              setProgress(false);
             });
           });
       }
@@ -46,15 +49,22 @@ const Budget = (props) => {
 
   useEffect(() => {
     return () => {
-      setUserData("");
+      setUserData('');
     };
   }, []);
 
   return (
-    <>
-      {userData.userType === "student" ? (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+      }}
+    >
+      {userData.userType === 'student' ? (
         <>
-          <Card style={{ margin: "30px 0px 0px 10px" }}>
+          <Card style={{ margin: '30px 0px 0px 10px' }}>
             <CardContent>
               <Grid container>
                 <Grid item>
@@ -68,14 +78,14 @@ const Budget = (props) => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Link to="/all-new-activitys" style={{ textDecoration: "none" }}>
+              <Link to="/all-new-activitys" style={{ textDecoration: 'none' }}>
                 <Button
                   variant="contained"
                   size="small"
                   style={{
-                    backgroundColor: "#318F6B",
-                    color: "#fff",
-                    width: "100%",
+                    backgroundColor: '#318F6B',
+                    color: '#fff',
+                    width: '100%',
                   }}
                 >
                   VER
@@ -83,7 +93,7 @@ const Budget = (props) => {
               </Link>
             </CardContent>
           </Card>
-          <Card style={{ margin: "30px 0px 0px 10px" }}>
+          <Card style={{ margin: '30px 0px 0px 10px' }}>
             <CardContent>
               <Grid container>
                 <Grid item>
@@ -97,14 +107,14 @@ const Budget = (props) => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Link to="/send-school-work" style={{ textDecoration: "none" }}>
+              <Link to="/send-school-work" style={{ textDecoration: 'none' }}>
                 <Button
                   variant="contained"
                   size="small"
                   style={{
-                    backgroundColor: "#318F6B",
-                    color: "#fff",
-                    width: "100%",
+                    backgroundColor: '#318F6B',
+                    color: '#fff',
+                    width: '100%',
                   }}
                 >
                   ENVIAR
@@ -114,12 +124,25 @@ const Budget = (props) => {
           </Card>
         </>
       ) : (
-          ""
-        )}
-
-      {userData.userType === "admin" || userData.userType === 'management' ? (
+        ''
+      )}
+      {progress ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'center',
+            padding: 20,
+          }}
+        >
+          <CircularProgress />
+          <p style={{ margin: 10 }}>Carregando...</p>
+        </div>
+      ) : userData.userType === 'admin' ||
+        userData.userType === 'management' ? (
         <>
-          <Card style={{ margin: "30px 0px 0px 10px" }}>
+          <Card style={{ margin: '30px 0px 0px 10px' }}>
             <CardContent>
               <Grid container>
                 <Grid item>
@@ -133,14 +156,14 @@ const Budget = (props) => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Link to="/list-home-work" style={{ textDecoration: "none" }}>
+              <Link to="/list-home-work" style={{ textDecoration: 'none' }}>
                 <Button
                   variant="contained"
                   size="small"
                   style={{
-                    backgroundColor: "#318F6B",
-                    color: "#fff",
-                    width: "100%",
+                    backgroundColor: '#318F6B',
+                    color: '#fff',
+                    width: '100%',
                   }}
                 >
                   VER
@@ -148,7 +171,7 @@ const Budget = (props) => {
               </Link>
             </CardContent>
           </Card>
-          <Card style={{ margin: "30px 0px 0px 10px" }}>
+          <Card style={{ margin: '30px 0px 0px 10px' }}>
             <CardContent>
               <Grid container>
                 <Grid item>
@@ -158,27 +181,27 @@ const Budget = (props) => {
                     gutterBottom
                     variant="body2"
                   >
-                    CADASTRO DE PROFESSORES
+                    LIBERAÇÃO DE PROFESSORES
                   </Typography>
                 </Grid>
               </Grid>
-              <Link to="/teachers" style={{ textDecoration: "none" }}>
+              <Link to="/teachers" style={{ textDecoration: 'none' }}>
                 <Button
                   variant="contained"
                   size="small"
                   style={{
-                    backgroundColor: "#318F6B",
-                    color: "#fff",
-                    width: "100%",
+                    backgroundColor: '#318F6B',
+                    color: '#fff',
+                    width: '100%',
                   }}
                 >
-                  CADASTRAR
+                  LIBERAR
                 </Button>
               </Link>
             </CardContent>
           </Card>
-          {userData.userType === 'admin' ?
-            <Card style={{ margin: "30px 0px 0px 10px" }}>
+          {userData.userType === 'admin' ? (
+            <Card style={{ margin: '30px 0px 0px 10px' }}>
               <CardContent>
                 <Grid container>
                   <Grid item>
@@ -189,27 +212,30 @@ const Budget = (props) => {
                       variant="body2"
                     >
                       CADASTRO DE UNIDADES
-                  </Typography>
+                    </Typography>
                   </Grid>
                 </Grid>
-                <Link to="/schools" style={{ textDecoration: "none" }}>
+                <Link to="/schools" style={{ textDecoration: 'none' }}>
                   <Button
                     variant="contained"
                     size="small"
                     style={{
-                      backgroundColor: "#318F6B",
-                      color: "#fff",
-                      width: "100%",
+                      backgroundColor: '#318F6B',
+                      color: '#fff',
+                      width: '100%',
                     }}
                   >
                     CADASTRAR
-                </Button>
+                  </Button>
                 </Link>
               </CardContent>
-            </Card> : ""}
+            </Card>
+          ) : (
+            ''
+          )}
         </>
-      ) : (userData.userType === 'teacher') ? (
-        <Card style={{ margin: "30px 0px 0px 10px" }}>
+      ) : userData.userType === 'teacher' && userData.confirmed ? (
+        <Card style={{ margin: '30px 0px 0px 10px' }}>
           <CardContent>
             <Grid container>
               <Grid item>
@@ -220,26 +246,46 @@ const Budget = (props) => {
                   variant="body2"
                 >
                   ENTREGA DE ATIVIDADES
-              </Typography>
+                </Typography>
               </Grid>
             </Grid>
-            <Link to="/list-home-work" style={{ textDecoration: "none" }}>
+            <Link to="/list-home-work" style={{ textDecoration: 'none' }}>
               <Button
                 variant="contained"
                 size="small"
                 style={{
-                  backgroundColor: "#318F6B",
-                  color: "#fff",
-                  width: "100%",
+                  backgroundColor: '#318F6B',
+                  color: '#fff',
+                  width: '100%',
                 }}
               >
                 VER
-            </Button>
+              </Button>
             </Link>
           </CardContent>
         </Card>
-      ) : ""}
-    </>
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#318F6B',
+            color: '#fff',
+            padding: 10,
+            fontSize: '15px',
+            borderRadius: 4,
+          }}
+        >
+          <p>
+            Seu Cadastro está em processo de liberação! Assim que a Gestão
+            aprová-lo, as respectivas funções estarão disponíveis.
+          </p>
+        </div>
+      )}
+    </div>
   );
 };
 

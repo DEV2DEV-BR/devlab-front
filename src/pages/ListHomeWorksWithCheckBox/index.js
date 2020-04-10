@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Copyright from "../../components/Copyright";
-import MenuLeft from "../../components/MenuLeft";
-import { Button } from "@material-ui/core";
-import firebase from "firebase";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Copyright from '../../components/Copyright';
+import MenuLeft from '../../components/MenuLeft';
+import { Button } from '@material-ui/core';
+import firebase from 'firebase';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: "100vh",
-    overflow: "auto",
+    height: '100vh',
+    overflow: 'auto',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -51,7 +51,7 @@ export default function ListHomeWork(props) {
   const [progress, setProgress] = useState(false);
   const [filterGrade, setFilterGrade] = useState([]);
   const [filterDiscipline, setFilterDiscipline] = useState([]);
-  const [grade, setGrade] = React.useState({
+  const [grade, setGrade] = useState({
     year_1: false,
     year_2: false,
     year_3: false,
@@ -63,7 +63,7 @@ export default function ListHomeWork(props) {
     year_9: false,
   });
 
-  const [discipline, setDiscipline] = React.useState({
+  const [discipline, setDiscipline] = useState({
     arts: false,
     sciences: false,
     physical_education: false,
@@ -83,41 +83,40 @@ export default function ListHomeWork(props) {
   };
 
   const toogleFilterGrade = () => {
-    const query = []
+    const query = [];
     if (year_1) {
-      query.push("1");
+      query.push('1');
     }
 
     if (year_2) {
-      query.push("2");
+      query.push('2');
     }
 
     if (year_3) {
-      query.push("3");
+      query.push('3');
     }
 
     if (year_4) {
-      query.push("4");
+      query.push('4');
     }
     if (year_5) {
-      query.push("5");
+      query.push('5');
     }
     if (year_6) {
-      query.push("6");
+      query.push('6');
     }
     if (year_7) {
-      query.push("7");
+      query.push('7');
     }
     if (year_8) {
-      query.push("8");
+      query.push('8');
     }
     if (year_9) {
-      query.push("9");
+      query.push('9');
     }
 
-    setFilterGrade(query)
-
-  }
+    setFilterGrade(query);
+  };
 
   // const ver = () => {
   //   console.log("year_1 " + year_1);
@@ -188,11 +187,10 @@ export default function ListHomeWork(props) {
   //     history,
   //   ].filter((v) => v).length !== 2;
 
-
   const loadData = async () => {
-    toogleFilterGrade()
+    toogleFilterGrade();
     const db = firebase.firestore();
-    const suppliesRef = db.collection("all_supplies")
+    const suppliesRef = db.collection('all_supplies');
 
     await suppliesRef
       .where('discipline', '==', (`1`, `2`))
@@ -205,7 +203,7 @@ export default function ListHomeWork(props) {
         setSuppliesDate(supplies);
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        console.log('Error getting documents: ', error);
       });
   };
 
@@ -234,10 +232,10 @@ export default function ListHomeWork(props) {
           <Grid container spacing={3}>
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "100%",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
                 margin: 10,
               }}
             >
@@ -452,7 +450,7 @@ export default function ListHomeWork(props) {
                   onClick={loadData}
                 >
                   Consultar
-                  </Button>
+                </Button>
               </>
               {/* )} */}
             </div>
@@ -482,22 +480,22 @@ export default function ListHomeWork(props) {
                         </TableCell>
                         <TableCell
                           align="left"
-                          style={{ textAlign: "justify" }}
+                          style={{ textAlign: 'justify' }}
                         >
                           {supplie.description}
                         </TableCell>
                         <TableCell align="right">
                           <a
                             href={supplie.url}
-                            style={{ textDecoration: "none" }}
+                            style={{ textDecoration: 'none' }}
                             target="_blank"
                           >
                             <Button
                               variant="contained"
                               size="small"
                               style={{
-                                backgroundColor: "rgba(126,64,144,1)",
-                                color: "#fff",
+                                backgroundColor: 'rgba(126,64,144,1)',
+                                color: '#fff',
                               }}
                             >
                               Download
@@ -510,10 +508,9 @@ export default function ListHomeWork(props) {
                 </Table>
               </TableContainer>
             ) : (
-                ""
-              )}
+              ''
+            )}
           </Grid>
-
         </Container>
         <Box pt={4}>
           <Copyright />
