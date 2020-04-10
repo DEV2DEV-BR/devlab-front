@@ -41,10 +41,11 @@ export default function Dashboard(props) {
           <Grid container spacing={3}>
             <Budget />
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+
         </Container>
+        <Box pt={4}>
+          <Copyright />
+        </Box>
       </main>
     </div>
   );

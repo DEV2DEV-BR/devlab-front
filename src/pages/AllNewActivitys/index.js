@@ -42,7 +42,7 @@ export default function AllNewActivitys(props) {
   const [suppliesDate, setSuppliesDate] = useState([]);
   const [progress, setProgress] = useState(false);
 
-  const [userDate, setUserDate] = useState([]);
+  const [userData, setuserData] = useState([]);
 
   const loadData = async () => {
     const db = firebase.firestore();
@@ -57,7 +57,7 @@ export default function AllNewActivitys(props) {
           supplies.push(doc.data());
         });
         setSuppliesDate(supplies);
-        setUserDate([JSON.parse(localStorage.getItem("userData"))]);
+        setuserData([JSON.parse(localStorage.getItem("userData"))]);
         setProgress(false);
       })
       .catch(function (error) {
@@ -107,18 +107,18 @@ export default function AllNewActivitys(props) {
               {progress ? (
                 <CircularProgress />
               ) : (
-                <>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    color="default"
-                    style={{ marginBottom: 20 }}
-                    onClick={() => updatePage()}
-                  >
-                    Atualizar página
+                  <>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="default"
+                      style={{ marginBottom: 20 }}
+                      onClick={() => updatePage()}
+                    >
+                      Atualizar página
                   </Button>
-                </>
-              )}
+                  </>
+                )}
             </div>
             {!progress ? (
               <TableContainer component={Paper}>
@@ -174,13 +174,14 @@ export default function AllNewActivitys(props) {
                 </Table>
               </TableContainer>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+
         </Container>
+        <Box pt={4}>
+          <Copyright />
+        </Box>
       </main>
     </div>
   );

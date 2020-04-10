@@ -236,7 +236,7 @@ export default function ListHomeWork(props) {
                       <FormControlLabel
                         value="6"
                         control={<Radio />}
-                        label="Artes"
+                        label="Arte"
                       />
                       <FormControlLabel
                         value="5"
@@ -356,13 +356,14 @@ export default function ListHomeWork(props) {
                 </Table>
               </TableContainer>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+
         </Container>
+        <Box pt={4}>
+          <Copyright />
+        </Box>
       </main>
     </div>
   );
