@@ -15,6 +15,7 @@ import Background from "../../assets/background.jpg";
 import IMG1 from "../../assets/img1.jpg";
 import IMG2 from "../../assets/img2.jpg";
 import IMG3 from "../../assets/img3.jpg";
+import { istAuthenticated } from "../../services/auth";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -88,38 +89,42 @@ export default function Album() {
               Após fazer o login, você terá acesso a todos os materiais
               disponíveis para download.
             </Typography>
-            <div className={classe.heroButtons}>
-              <Grid container spacing={2} justify="center">
-                <Grid item>
-                  <Link to="/signIn" style={{ textDecoration: "none" }}>
-                    <Button
-                      size="large"
-                      variant="contained"
-                      style={{
-                        backgroundColor: "rgba(126,64,144,1)",
-                        color: "#fff",
-                      }}
-                    >
-                      Fazer Login
+
+            {!istAuthenticated() ?
+              <div className={classe.heroButtons}>
+                <Grid container spacing={2} justify="center">
+                  <Grid item>
+                    <Link to="/signIn" style={{ textDecoration: "none" }}>
+                      <Button
+                        size="large"
+                        variant="contained"
+                        style={{
+                          backgroundColor: "rgba(126,64,144,1)",
+                          color: "#fff",
+                        }}
+                      >
+                        Fazer Login
                     </Button>
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link to="/signUp" style={{ textDecoration: "none" }}>
-                    <Button
-                      size="large"
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#318F6B",
-                        color: "#fff",
-                      }}
-                    >
-                      Cadastre-se
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link to="/signUp" style={{ textDecoration: "none" }}>
+                      <Button
+                        size="large"
+                        variant="contained"
+                        style={{
+                          backgroundColor: "#318F6B",
+                          color: "#fff",
+                        }}
+                      >
+                        Cadastre-se
                     </Button>
-                  </Link>
+                    </Link>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </div>
+              </div>
+              : ''
+            }
           </Container>
         </div>
         <Container className={classe.cardGrid} maxWidth="md">

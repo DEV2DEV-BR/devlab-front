@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuLeft(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [userDate, setUserDate] = useState([]);
+  const [userData, setuserData] = useState([]);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -111,7 +111,7 @@ export default function MenuLeft(props) {
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-              setUserDate(doc.data());
+              setuserData(doc.data());
             });
           });
       }
@@ -120,7 +120,7 @@ export default function MenuLeft(props) {
 
   useEffect(() => {
     return () => {
-      setUserDate("");
+      setuserData("");
     };
   }, []);
 
@@ -148,42 +148,42 @@ export default function MenuLeft(props) {
               <ChevronLeftIcon />
             </>
           ) : (
-            <ChevronRightIcon />
-          )}
+              <ChevronRightIcon />
+            )}
         </IconButton>
       </div>
 
-      {userDate.userType === "student" && userDate.grade === 0 ? (
+      {userData.userType === "student" && userData.grade === 0 ? (
         <ChildishOne props={props} />
       ) : (
-        ""
-      )}
-      {userDate.userType === "student" && userDate.grade === 10 ? (
+          ""
+        )}
+      {userData.userType === "student" && userData.grade === 10 ? (
         <ChildishTwo props={props} />
       ) : (
-        ""
-      )}
-      {userDate.userType === "student" &&
-      userDate.grade > 0 &&
-      userDate.grade <= 5 ? (
-        <FundamentalOne props={props} />
-      ) : (
-        ""
-      )}
-      {userDate.userType === "student" && userDate.grade > 5 ? (
+          ""
+        )}
+      {userData.userType === "student" &&
+        userData.grade > 0 &&
+        userData.grade <= 5 ? (
+          <FundamentalOne props={props} />
+        ) : (
+          ""
+        )}
+      {userData.userType === "student" && userData.grade > 5 ? (
         <FundamentalTwo props={props} />
       ) : (
-        ""
-      )}
+          ""
+        )}
 
-      {userDate.userType === "admin" ? (
+      {userData.userType === "admin" || userData.userType === 'teacher' ? (
         <>
           <Divider />
           <Admin props={props} />
         </>
       ) : (
-        ""
-      )}
+          ""
+        )}
       <Divider />
     </Drawer>
   );

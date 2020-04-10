@@ -91,7 +91,7 @@ export default function UploadFiles(props) {
     const uploadTask = storage.ref(`all_supplies/${image.name}`).put(image);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (error) => {
         // Error function ...
         console.log(error);
@@ -274,10 +274,11 @@ export default function UploadFiles(props) {
               </div>
             </form>
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+
         </Container>
+        <Box pt={4}>
+          <Copyright />
+        </Box>
       </main>
     </div>
   );

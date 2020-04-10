@@ -87,7 +87,7 @@ export default function ListHomeWork(props) {
     if (year_1) {
       query.push("1");
     }
-    
+
     if (year_2) {
       query.push("2");
     }
@@ -199,7 +199,7 @@ export default function ListHomeWork(props) {
       .get()
       .then((querySnapshot) => {
         const supplies = [];
-        querySnapshot.forEach((doc) => {          
+        querySnapshot.forEach((doc) => {
           supplies.push(doc.data());
         });
         setSuppliesDate(supplies);
@@ -361,7 +361,7 @@ export default function ListHomeWork(props) {
                             name="arts"
                           />
                         }
-                        label="Artes"
+                        label="Arte"
                       />
                       <FormControlLabel
                         control={
@@ -443,17 +443,17 @@ export default function ListHomeWork(props) {
               {/* {progress ? (
                 <CircularProgress />
               ) : ( */}
-                <>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    color="default"
-                    style={{ marginBottom: 20 }}
-                    onClick={loadData}
-                  >
-                    Consultar
+              <>
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="default"
+                  style={{ marginBottom: 20 }}
+                  onClick={loadData}
+                >
+                  Consultar
                   </Button>
-                </>
+              </>
               {/* )} */}
             </div>
             {!progress ? (
@@ -510,13 +510,14 @@ export default function ListHomeWork(props) {
                 </Table>
               </TableContainer>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+
         </Container>
+        <Box pt={4}>
+          <Copyright />
+        </Box>
       </main>
     </div>
   );

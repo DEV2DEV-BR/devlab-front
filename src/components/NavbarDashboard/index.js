@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBarDashboard(props) {
   const classes = useStyles();
 
-  const [userDate, setUserDate] = useState([]);
+  const [userData, setuserData] = useState([]);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -92,7 +92,7 @@ export default function NavBarDashboard(props) {
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-              setUserDate(doc.data());
+              setuserData(doc.data());
             });
           });
       }
@@ -101,7 +101,7 @@ export default function NavBarDashboard(props) {
 
   useEffect(() => {
     return () => {
-      setUserDate(false);
+      setuserData(false);
     };
   }, []);
 
@@ -158,10 +158,10 @@ export default function NavBarDashboard(props) {
           }}
         >
           <p style={{ padding: 0, margin: 0 }}>
-            <b>Bem vindo:</b> {userDate.name}
+            <b>Bem vindo:</b> {userData.name}
           </p>
           <p style={{ padding: 0, margin: 0 }}>
-            <b>Perfil atual:</b> {userDate.userType}
+            <b>Perfil atual:</b> {userData.userType}
           </p>
         </div>
 

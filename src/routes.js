@@ -11,6 +11,7 @@ import ListHomeWork from "./pages/ListHomeWorks";
 import UploadFiles from "./pages/UploadFiles";
 import NavbarDashBoard from "./components/NavbarDashboard";
 import Teachers from "./pages/Teachers";
+import Schools from "./pages/Schools";
 import { istAuthenticated } from "./services/auth";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -23,8 +24,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           <Component {...props} />
         </>
       ) : (
-        <Redirect to={{ pathname: "/", state: { from: props.location } }} />
-      )
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+        )
     }
   />
 );
@@ -43,6 +44,7 @@ const Routes = () => (
       <PrivateRoute path="/upload-files" component={UploadFiles} />
       <PrivateRoute path="/list-home-work" component={ListHomeWork} />
       <PrivateRoute path="/teachers" component={Teachers} />
+      <PrivateRoute path="/schools" component={Schools} />
     </Switch>
   </BrowserRouter>
 );

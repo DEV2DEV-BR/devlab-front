@@ -105,18 +105,18 @@ export default function Activitys(props) {
               {progress ? (
                 <CircularProgress />
               ) : (
-                <>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    color="default"
-                    style={{ marginBottom: 20 }}
-                    onClick={() => updatePage()}
-                  >
-                    Atualizar página
+                  <>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="default"
+                      style={{ marginBottom: 20 }}
+                      onClick={() => updatePage()}
+                    >
+                      Atualizar página
                   </Button>
-                </>
-              )}
+                  </>
+                )}
             </div>
             {!progress ? (
               <TableContainer component={Paper}>
@@ -172,13 +172,14 @@ export default function Activitys(props) {
                 </Table>
               </TableContainer>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+
         </Container>
+        <Box pt={4}>
+          <Copyright />
+        </Box>
       </main>
     </div>
   );

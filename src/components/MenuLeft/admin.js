@@ -20,9 +20,11 @@ export default function secondaryListItems(props) {
     props.props.props.push("/teachers");
   };
 
+  const userData = JSON.parse(localStorage.getItem('userData'))
+
   return (
     <div>
-      <ListSubheader inset>Upload de arquivos</ListSubheader>
+      <ListSubheader inset>Gestão</ListSubheader>
       <ListItem button onClick={() => redirectUploadFiles()}>
         <ListItemIcon>
           <BackupIcon />
@@ -35,12 +37,15 @@ export default function secondaryListItems(props) {
         </ListItemIcon>
         <ListItemText primary="Atividades" />
       </ListItem>
-      <ListItem button onClick={() => redirectTeachers()}>
-        <ListItemIcon>
-          <School />
-        </ListItemIcon>
-        <ListItemText primary="Professores" />
-      </ListItem>
+
+      {userData.userType === 'admin' ?
+        <ListItem button onClick={() => redirectTeachers()}>
+          <ListItemIcon>
+            <School />
+          </ListItemIcon>
+          <ListItemText primary="Professores" />
+        </ListItem>
+        : ''}
     </div>
   );
 }

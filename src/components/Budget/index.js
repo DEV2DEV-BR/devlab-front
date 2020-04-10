@@ -23,7 +23,7 @@ const Budget = (props) => {
   //   const { className, ...rest } = props;
 
   const classes = useStyles();
-  const [userDate, setUserDate] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -37,7 +37,7 @@ const Budget = (props) => {
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-              setUserDate(doc.data());
+              setUserData(doc.data());
             });
           });
       }
@@ -46,13 +46,13 @@ const Budget = (props) => {
 
   useEffect(() => {
     return () => {
-      setUserDate("");
+      setUserData("");
     };
   }, []);
 
   return (
     <>
-      {userDate.userType === "student" ? (
+      {userData.userType === "student" ? (
         <>
           <Card style={{ margin: "30px 0px 0px 10px" }}>
             <CardContent>
@@ -114,10 +114,10 @@ const Budget = (props) => {
           </Card>
         </>
       ) : (
-        ""
-      )}
+          ""
+        )}
 
-      {userDate.userType === "admin" ? (
+      {userData.userType === "admin" || userData.userType === 'teacher' ? (
         <>
           <Card style={{ margin: "30px 0px 0px 10px" }}>
             <CardContent>
@@ -172,7 +172,7 @@ const Budget = (props) => {
                     width: "100%",
                   }}
                 >
-                  ACESSAR
+                  CADASTRAR
                 </Button>
               </Link>
             </CardContent>
@@ -201,15 +201,15 @@ const Budget = (props) => {
                     width: "100%",
                   }}
                 >
-                  ACESSAR
+                  CADASTRAR
                 </Button>
               </Link>
             </CardContent>
           </Card>
         </>
       ) : (
-        ""
-      )}
+          ""
+        )}
     </>
   );
 };
