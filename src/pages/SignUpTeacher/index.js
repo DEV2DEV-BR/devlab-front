@@ -48,25 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props) {
   const classes = useStyles();
-  const [grade, setGrade] = useState('');
-  const [school, setSchool] = useState('');
-  const [period, setPeriod] = useState('');
   const [inputName, setInputName] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
-
-  const handleChangeGrade = (event) => {
-    setGrade(event.target.value);
-  };
-
-  const handleChangeSchool = (event) => {
-    setSchool(event.target.value);
-  };
-  const handleChangePeriod = (event) => {
-    setPeriod(event.target.value);
-  };
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -101,10 +87,7 @@ export default function SignUp(props) {
       inputName !== '' &&
       inputEmail !== '' &&
       inputPassword !== '' &&
-      inputConfirmPassword !== '' &&
-      grade !== '' &&
-      school !== '' &&
-      period !== ''
+      inputConfirmPassword !== ''
     ) {
       if (inputPassword === inputConfirmPassword) {
         await firebase
@@ -118,20 +101,18 @@ export default function SignUp(props) {
               .add({
                 name,
                 email: success.user.email,
-                school,
-                period,
-                grade,
                 uid: success.user.uid,
-                userType: 'student',
+                userType: 'teacher',
+                confirmed: false,
                 id: '',
               })
               .then(function (doc) {
                 cloudFirestore.collection('users').doc(doc.id).update({
                   id: doc.id,
                 });
+                setProgress(false);
                 notifySuccess('Parabéns!');
                 props.history.push('/signIn');
-                setProgress(false);
               })
               .catch(function (error) {
                 console.error('Error adding domcument', error);
@@ -144,7 +125,6 @@ export default function SignUp(props) {
           });
       } else {
         notifyError('Password does not match!');
-        setProgress(false);
       }
     } else {
       notifyError('Preencha todos os campos');
@@ -191,110 +171,6 @@ export default function SignUp(props) {
                 autoComplete="email"
               />
             </Grid>
-
-            <FormControl
-              variant="outlined"
-              fullWidth
-              className={classes.formControl}
-            >
-              <Grid item xs={12}>
-                <InputLabel htmlFor="serie">Escola*</InputLabel>
-                <Select
-                  native
-                  value={school}
-                  onChange={handleChangeSchool}
-                  fullWidth
-                  required
-                  label="Escola"
-                  inputProps={{
-                    name: 'school',
-                    id: 'school',
-                  }}
-                >
-                  <option aria-label="None" value="" />
-                  <option value={'0HgQobTQkPyMtB7BLIBI'}>
-                    EMEIF Álvares Machado
-                  </option>
-                  <option value={'Tr8VHeCJofsyx5nP9zIa'}>
-                    EMEIF Professora Aparecida Marques Vaccaro
-                  </option>
-                  <option value={'cnh92zAndBb3T6DAvGsy'}>
-                    EMEIF Governador Franco Montoro
-                  </option>
-                  <option value={'eqdFnW5EQg4JiOdwCA0Q'}>
-                    EMEIF Governador Mário Covas
-                  </option>
-                  <option value={'oVOEa86ZL8hA8e6nOyu6'}>
-                    EMEIF Márcia Helena Fernandez de Araújo
-                  </option>
-                  <option value={'vJG0RnawKCTIAYHjntj8'}>
-                    EMEIF Vereador José Molina
-                  </option>
-                  <option value={'yxv6KHgmdzTGZINhBheq'}>
-                    EMEIF Professora Tereza Ito Polidório
-                  </option>
-                </Select>
-              </Grid>
-            </FormControl>
-            <FormControl
-              variant="outlined"
-              fullWidth
-              className={classes.formControl}
-            >
-              <Grid item xs={12}>
-                <InputLabel htmlFor="serie">Período*</InputLabel>
-                <Select
-                  native
-                  value={period}
-                  onChange={handleChangePeriod}
-                  fullWidth
-                  required
-                  label="Período"
-                  inputProps={{
-                    name: 'period',
-                    id: 'period',
-                  }}
-                >
-                  <option aria-label="None" value="" />
-                  <option value={'Matutino'}>Manhã</option>
-                  <option value={'Vespertino'}>Tarde</option>
-                  <option value={'Noturno'}>Noite</option>
-                </Select>
-              </Grid>
-            </FormControl>
-
-            <FormControl
-              variant="outlined"
-              fullWidth
-              className={classes.formControl}
-            >
-              <Grid item xs={12}>
-                <InputLabel htmlFor="serie">Série*</InputLabel>
-                <Select
-                  native
-                  value={grade}
-                  onChange={handleChangeGrade}
-                  fullWidth
-                  required
-                  label="Série"
-                  inputProps={{
-                    name: 'serie',
-                    id: 'serie',
-                  }}
-                >
-                  <option aria-label="None" value="" />
-                  <option value={1}>1º Ano</option>
-                  <option value={2}>2º Ano</option>
-                  <option value={3}>3º Ano</option>
-                  <option value={4}>4º Ano</option>
-                  <option value={5}>5º Ano</option>
-                  <option value={6}>6º Ano</option>
-                  <option value={7}>7º Ano</option>
-                  <option value={8}>8º Ano</option>
-                  <option value={9}>9º Ano</option>
-                </Select>
-              </Grid>
-            </FormControl>
 
             <Grid item xs={12}>
               <TextField

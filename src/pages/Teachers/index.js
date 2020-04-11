@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import InputLabel from '@material-ui/core/InputLabel';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import firebase from "firebase";
-import { toast } from "react-toastify";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import firebase from 'firebase';
+import { toast } from 'react-toastify';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Select from '@material-ui/core/Select';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   button: {
-    display: "block",
+    display: 'block',
     marginTop: theme.spacing(2),
   },
   formControl: {
@@ -41,12 +43,12 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
   paper: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -56,12 +58,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Teachers(props) {
   const classes = useStyles();
-  const [inputName, setInputName] = useState("");
-  const [inputEmail, setInputEmail] = useState("");
-  const [school, setSchool] = React.useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [teachersSelect, setTeachersSelect] = useState([]);
   const [progress, setProgress] = useState(false);
+  const [progressButton, setProgressButton] = useState(false);
+  const handleChangeTeacherName = (event) => {
+    setTeachersSelect(event.target.value);
+  };
+  // provisório
+  const [school, setSchool] = useState({
+    jose_molina: false,
+    mario_covas: false,
+    alvares_machado: false,
+    marcia_helena: false,
+    franco_montoro: false,
+    marques_vaccaro: false,
+    tereza_polidorio: false,
+  });
 
-  const [discipline, setDiscipline] = React.useState({
+  const [discipline, setDiscipline] = useState({
     art: false,
     sciences: false,
     physical_education: false,
@@ -72,9 +87,27 @@ export default function Teachers(props) {
     mathematic: false,
   });
 
-  const [inputPassword, setInputPassword] = useState("");
-  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
+  const [grade, setGrade] = useState({
+    year_1: false,
+    year_2: false,
+    year_3: false,
+    year_4: false,
+    year_5: false,
+    year_6: false,
+    year_7: false,
+    year_8: false,
+    year_9: false,
+  });
 
+  const [period, setPeriod] = useState({
+    Matutino: false,
+    Vespertino: false,
+    Noturno: false,
+  });
+
+  const handleChangeGrade = (event) => {
+    setGrade({ ...grade, [event.target.name]: event.target.checked });
+  };
 
   const handleChangeSchool = (event) => {
     setSchool({ ...school, [event.target.name]: event.target.checked });
@@ -84,13 +117,48 @@ export default function Teachers(props) {
     setDiscipline({ ...discipline, [event.target.name]: event.target.checked });
   };
 
-  const { gilad, jason, antoine } = school;
+  const handleChangePeriod = (event) => {
+    setPeriod({ ...period, [event.target.name]: event.target.checked });
+  };
 
-  const { art, sciences, physical_education, geography, history, english, portuguese_language, mathematic } = discipline;
+  const {
+    jose_molina,
+    mario_covas,
+    alvares_machado,
+    marcia_helena,
+    franco_montoro,
+    marques_vaccaro,
+    tereza_polidorio,
+  } = school;
+
+  const {
+    art,
+    sciences,
+    physical_education,
+    geography,
+    history,
+    english,
+    portuguese_language,
+    mathematic,
+  } = discipline;
+
+  const {
+    year_1,
+    year_2,
+    year_3,
+    year_4,
+    year_5,
+    year_6,
+    year_7,
+    year_8,
+    year_9,
+  } = grade;
+
+  const { Matutino, Vespertino, Noturno } = period;
 
   const notifySuccess = (message) => {
     toast.success(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -101,7 +169,7 @@ export default function Teachers(props) {
 
   const notifyError = (message) => {
     toast.error(message, {
-      position: "top-right",
+      position: 'top-right',
       autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -110,114 +178,216 @@ export default function Teachers(props) {
     });
   };
 
-  const loadAllSchools = async () => {
+  const loadTeachers = () => {
+    setProgress(true);
     const db = firebase.firestore();
-    const schoolsRef = db.collection("schools").orderBy("name", "asc");
 
-    await schoolsRef
+    const usersRef = db.collection('users').orderBy('name', 'asc');
+
+    usersRef
+      .where('userType', '==', 'teacher')
+      .where('confirmed', '==', false)
       .get()
       .then((querySnapshot) => {
-        const schools = [];
+        const users = [];
         querySnapshot.forEach((doc) => {
-          schools.push(doc.data());
+          users.push(doc.data());
         });
-        setSchool(schools);
+        setTeachers(users);
         setProgress(false);
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        console.log('Error getting documents: ', error);
       });
   };
 
-
   useEffect(() => {
-    setProgress(true)
-    loadAllSchools();
-  }, [])
+    loadTeachers();
+  }, []);
+
+  // future
+  // const loadAllSchools = async () => {
+  //   const db = firebase.firestore();
+  //   const schoolsRef = db.collection("schools").orderBy("name", "asc");
+
+  //   await schoolsRef
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       const schools = [];
+  //       querySnapshot.forEach((doc) => {
+  //         schools.push(doc.data());
+  //       });
+  //       setSchool(schools);
+  //       setProgress(false);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("Error getting documents: ", error);
+  //     });
+  // };
+
+  // future
+
+  // useEffect(() => {
+  //   setProgress(true)
+  //   loadAllSchools();
+  // }, [])
 
   const addDiscipline = () => {
-    const allDisciplines = []
+    const allDisciplines = [];
     if (art) {
-      allDisciplines.push(6)
+      allDisciplines.push(6);
     }
     if (sciences) {
-      allDisciplines.push(5)
+      allDisciplines.push(5);
     }
     if (physical_education) {
-      allDisciplines.push(7)
+      allDisciplines.push(7);
     }
     if (geography) {
-      allDisciplines.push(4)
+      allDisciplines.push(4);
     }
     if (history) {
-      allDisciplines.push(3)
+      allDisciplines.push(3);
     }
     if (english) {
-      allDisciplines.push(8)
+      allDisciplines.push(8);
     }
     if (portuguese_language) {
-      allDisciplines.push(1)
+      allDisciplines.push(1);
     }
     if (mathematic) {
-      allDisciplines.push(2)
+      allDisciplines.push(2);
+    }
+    return allDisciplines;
+  };
+
+  const addSchoolToTeacher = () => {
+    const allSchools = [];
+    if (alvares_machado) {
+      allSchools.push('0HgQobTQkPyMtB7BLIBI');
+    }
+    if (franco_montoro) {
+      allSchools.push('cnh92zAndBb3T6DAvGsy');
+    }
+    if (mario_covas) {
+      allSchools.push('eqdFnW5EQg4JiOdwCA0Q');
+    }
+    if (marcia_helena) {
+      allSchools.push('oVOEa86ZL8hA8e6nOyu6');
+    }
+    if (marques_vaccaro) {
+      allSchools.push('Tr8VHeCJofsyx5nP9zIa');
+    }
+    if (tereza_polidorio) {
+      allSchools.push('yxv6KHgmdzTGZINhBheq');
+    }
+    if (jose_molina) {
+      allSchools.push('vJG0RnawKCTIAYHjntj8');
+    }
+    return allSchools;
+  };
+
+  const toogleFilterGrade = () => {
+    const query = [];
+    if (year_1) {
+      query.push('1');
     }
 
-    return allDisciplines;
+    if (year_2) {
+      query.push('2');
+    }
 
-  }
+    if (year_3) {
+      query.push('3');
+    }
+
+    if (year_4) {
+      query.push('4');
+    }
+    if (year_5) {
+      query.push('5');
+    }
+    if (year_6) {
+      query.push('6');
+    }
+    if (year_7) {
+      query.push('7');
+    }
+    if (year_8) {
+      query.push('8');
+    }
+    if (year_9) {
+      query.push('9');
+    }
+
+    return query;
+  };
+
+  const addPeriodTeacher = () => {
+    const allPeriods = [];
+    if (Matutino) {
+      allPeriods.push('Matutino');
+    }
+    if (Vespertino) {
+      allPeriods.push('Vespertino');
+    }
+    if (Noturno) {
+      allPeriods.push('Noturno');
+    }
+    return allPeriods;
+  };
 
   const handleRegister = async (event) => {
+    setProgressButton(true);
     event.preventDefault();
 
     const teacherDisciplines = addDiscipline();
+    const teacherGrades = toogleFilterGrade();
+    const teacherSchools = addSchoolToTeacher();
+    const teacherPeriods = addPeriodTeacher();
 
-    const name = inputName;
+    if (
+      teacherDisciplines.length > 0 &&
+      teacherSchools.length > 0 &&
+      teachersSelect.length > 0
+    ) {
+      const db = firebase.firestore();
+      var teacherRef = db.collection('users').doc(teachersSelect);
 
-    if (inputPassword === inputConfirmPassword) {
-
-      await firebase
-        .auth()
-        .createUserWithEmailAndPassword(inputEmail, inputPassword)
-        .then(function (success) {
-          const cloudFirestore = firebase.firestore();
-
-          cloudFirestore
-            .collection("users")
-            .add({
-              name,
-              email: success.user.email,
-              uid: success.user.uid,
-              teacherDisciplines,
-              userType: "teacher",
-              id: "",
-            })
-            .then(function (doc) {
-              cloudFirestore.collection("users").doc(doc.id).update({
-                id: doc.id,
-              });
-            })
-            .catch(function (error) {
-              console.error("Error adding domcument", error);
-            });
+      return teacherRef
+        .update({
+          confirmed: true,
+          teacherGrades,
+          teacherDisciplines,
+          teacherSchools,
+          teacherPeriods,
+        })
+        .then(function () {
+          handleClear();
+          setProgressButton(false);
+          notifySuccess('Liberação efetuada com sucesso!');
         })
         .catch(function (error) {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
+          // The document probably doesn't exist.
+          notifyError('Falha ao liberar, verifique o procedimento!');
+          console.error('Error updating document: ', error);
         });
-
-      notifySuccess("Cadastrado com sucesso!");
-      handleClear();
     } else {
-      notifyError("Password does not match!");
+      notifyError('Preencha todos os campos!');
     }
   };
 
   const handleClear = () => {
-    setInputName("");
-    setInputEmail("");
-    setInputConfirmPassword("");
-    setInputPassword("");
+    setSchool({
+      jose_molina: false,
+      mario_covas: false,
+      alvares_machado: false,
+      marcia_helena: false,
+      franco_montoro: false,
+      marques_vaccaro: false,
+      tereza_polidorio: false,
+    });
+
     setDiscipline({
       art: false,
       sciences: false,
@@ -227,8 +397,29 @@ export default function Teachers(props) {
       english: false,
       portuguese_language: false,
       mathematic: false,
-    })
-  }
+    });
+
+    setGrade({
+      year_1: false,
+      year_2: false,
+      year_3: false,
+      year_4: false,
+      year_5: false,
+      year_6: false,
+      year_7: false,
+      year_8: false,
+      year_9: false,
+    });
+
+    setPeriod({
+      Matutino: false,
+      Vespertino: false,
+      Noturno: false,
+    });
+
+    setTeachersSelect([]);
+    loadTeachers();
+  };
 
   return (
     <div className={classes.root}>
@@ -245,174 +436,488 @@ export default function Teachers(props) {
             <Container component="main" maxWidth="sm">
               <CssBaseline />
               <div className={classes.paper}>
-
                 <Typography component="h1" variant="h5">
-                  CADASTRO DE PROFESSOR
-        </Typography>
-                <form className={classes.form} noValidate onSubmit={handleRegister}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <TextField
-                        autoComplete="fname"
-                        name="fullName"
+                  LIBERAÇÃO DE PROFESSORES
+                </Typography>
+                <form
+                  className={classes.form}
+                  noValidate
+                  onSubmit={handleRegister}
+                >
+                  <Grid
+                    container
+                    spacing={2}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="default"
+                      style={{ marginBottom: 20 }}
+                      onClick={() => loadTeachers()}
+                    >
+                      Atualizar página
+                    </Button>
+                    {progress ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          width: '100%',
+                          justifyContent: 'center',
+                          padding: 20,
+                        }}
+                      >
+                        <CircularProgress />
+                        <p style={{ margin: 10 }}>Carregando...</p>
+                      </div>
+                    ) : (
+                      <FormControl
                         variant="outlined"
-                        required
                         fullWidth
-                        id="fullName"
-                        value={inputName}
-                        onChange={(event) => setInputName(event.target.value)}
-                        label="Nome Completo"
-                        autoFocus
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        value={inputEmail}
-                        onChange={(event) => setInputEmail(event.target.value)}
-                        label="E-mail"
-                        name="email"
-                        autoComplete="email"
-                      />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Senha"
-                        value={inputPassword}
-                        onChange={(event) => setInputPassword(event.target.value)}
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="confirm-password"
-                        label="Confirmação de senha"
-                        type="password"
-                        value={inputConfirmPassword}
-                        onChange={(event) =>
-                          setInputConfirmPassword(event.target.value)
-                        }
-                        id="confirm-password"
-                        autoComplete="current-password"
-                      />
-                    </Grid>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 10 }}>
-
-                      <FormControl component="fieldset" style={{
-                        borderWidth: "1px",
-                        borderStyle: "solid",
-                        borderColor: "#CDD2DD",
-                        borderRadius: "4px",
-                        margin: "10px 0px 10px 0px",
+                        className={classes.formControl}
+                      >
+                        <Grid
+                          item
+                          xs={12}
+                          style={{ margin: '0px 10px 0px 10px' }}
+                        >
+                          <InputLabel htmlFor="teacher"> Professor*</InputLabel>
+                          <Select
+                            native
+                            value={teachersSelect}
+                            onChange={handleChangeTeacherName}
+                            fullWidth
+                            required
+                            label="Teachers"
+                            inputProps={{
+                              name: 'teacher',
+                              id: 'teacher',
+                            }}
+                          >
+                            <option aria-label="None" value="" />
+                            {teachers.map((m) => (
+                              <option key={m.id} value={m.id}>
+                                {m.name}
+                              </option>
+                            ))}
+                          </Select>
+                        </Grid>
+                      </FormControl>
+                    )}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                         padding: 10,
-                      }}>
+                      }}
+                    >
+                      <FormControl
+                        component="fieldset"
+                        style={{
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                          borderColor: '#CDD2DD',
+                          borderRadius: '4px',
+                          margin: '10px 0px 10px 0px',
+                          padding: 10,
+                        }}
+                      >
                         <FormLabel component="legend">Escola</FormLabel>
-                        {progress ? (
-                          <CircularProgress style={{ margin: 15 }} />
-                        ) :
-                          <FormGroup style={{ display: 'flex', flexDirection: 'row' }}>
-                            {
-                              school.map(s =>
-                                <FormControlLabel
-                                  key={s.id}
-                                  control={<Checkbox checked={!s.name} onChange={handleChangeSchool} name={s.name} />}
-                                  label={s.name}
-                                />
-                              )
-                            }
 
-                          </FormGroup>
-                        }
+                        <FormGroup
+                          style={{ display: 'flex', flexDirection: 'row' }}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={alvares_machado}
+                                onChange={handleChangeSchool}
+                                name={'alvares_machado'}
+                              />
+                            }
+                            label="EMEIF Álvares Machado"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={franco_montoro}
+                                onChange={handleChangeSchool}
+                                name={'franco_montoro'}
+                              />
+                            }
+                            label="EMEIF Governador Franco Montoro"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={mario_covas}
+                                onChange={handleChangeSchool}
+                                name={'mario_covas'}
+                              />
+                            }
+                            label="EMEIF Governador Mário Covas"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={marcia_helena}
+                                onChange={handleChangeSchool}
+                                name={'marcia_helena'}
+                              />
+                            }
+                            label={'EMEIF Márcia Helena Fernandez de Araújo'}
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={marques_vaccaro}
+                                onChange={handleChangeSchool}
+                                name={'marques_vaccaro'}
+                              />
+                            }
+                            label="EMEIF Professora Aparecida Marques Vaccaro"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={tereza_polidorio}
+                                onChange={handleChangeSchool}
+                                name={'tereza_polidorio'}
+                              />
+                            }
+                            label="EMEIF Professora Tereza Ito Polidório"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={jose_molina}
+                                onChange={handleChangeSchool}
+                                name={'jose_molina'}
+                              />
+                            }
+                            label="EMEIF Vereador José Molina"
+                          />
+                        </FormGroup>
                       </FormControl>
 
-                      <div style={{
-                        borderWidth: "1px",
-                        borderStyle: "solid",
-                        borderColor: "#CDD2DD",
-                        borderRadius: "4px",
-                        margin: '10px 0px 10px 0px',
-                      }} />
-                      <FormControl component="fieldset" style={{
-                        borderWidth: "1px",
-                        borderStyle: "solid",
-                        borderColor: "#CDD2DD",
-                        borderRadius: "4px",
-                        margin: "10px 0px 10px 0px",
-                        padding: 10,
-                      }}>
+                      <div
+                        style={{
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                          borderColor: '#CDD2DD',
+                          borderRadius: '4px',
+                          margin: '10px 0px 10px 0px',
+                        }}
+                      />
+                      <FormControl
+                        component="fieldset"
+                        style={{
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                          borderColor: '#CDD2DD',
+                          borderRadius: '4px',
+                          margin: '10px 0px 10px 0px',
+                          padding: 10,
+                        }}
+                      >
                         <FormLabel component="legend">Disciplina</FormLabel>
-                        <FormGroup style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-
+                        <FormGroup
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}
+                        >
                           <FormControlLabel
-                            control={<Checkbox checked={art} onChange={handleChangeDiscipline} name="art" />}
+                            control={
+                              <Checkbox
+                                checked={art}
+                                onChange={handleChangeDiscipline}
+                                name="art"
+                              />
+                            }
                             label="Arte"
                           />
                           <FormControlLabel
-                            control={<Checkbox checked={sciences} onChange={handleChangeDiscipline} name="sciences" />}
+                            control={
+                              <Checkbox
+                                checked={sciences}
+                                onChange={handleChangeDiscipline}
+                                name="sciences"
+                              />
+                            }
                             label="Ciências"
                           />
                           <FormControlLabel
-                            control={<Checkbox checked={physical_education} onChange={handleChangeDiscipline} name="physical_education" />}
+                            control={
+                              <Checkbox
+                                checked={physical_education}
+                                onChange={handleChangeDiscipline}
+                                name="physical_education"
+                              />
+                            }
                             label="Educação Física"
                           />
                           <FormControlLabel
-                            control={<Checkbox checked={geography} onChange={handleChangeDiscipline} name="geography" />}
+                            control={
+                              <Checkbox
+                                checked={geography}
+                                onChange={handleChangeDiscipline}
+                                name="geography"
+                              />
+                            }
                             label="Geografia"
                           />
                           <FormControlLabel
-                            control={<Checkbox checked={history} onChange={handleChangeDiscipline} name="history" />}
+                            control={
+                              <Checkbox
+                                checked={history}
+                                onChange={handleChangeDiscipline}
+                                name="history"
+                              />
+                            }
                             label="História"
                           />
                           <FormControlLabel
-                            control={<Checkbox checked={english} onChange={handleChangeDiscipline} name="english" />}
+                            control={
+                              <Checkbox
+                                checked={english}
+                                onChange={handleChangeDiscipline}
+                                name="english"
+                              />
+                            }
                             label="Inglês"
                           />
                           <FormControlLabel
-                            control={<Checkbox checked={portuguese_language} onChange={handleChangeDiscipline} name="portuguese_language" />}
+                            control={
+                              <Checkbox
+                                checked={portuguese_language}
+                                onChange={handleChangeDiscipline}
+                                name="portuguese_language"
+                              />
+                            }
                             label="Língua Portuguesa"
                           />
                           <FormControlLabel
-                            control={<Checkbox checked={mathematic} onChange={handleChangeDiscipline} name="mathematic" />}
+                            control={
+                              <Checkbox
+                                checked={mathematic}
+                                onChange={handleChangeDiscipline}
+                                name="mathematic"
+                              />
+                            }
                             label="Matemática"
+                          />
+                        </FormGroup>
+                      </FormControl>
+
+                      <FormControl
+                        component="fieldset"
+                        style={{
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                          borderColor: '#CDD2DD',
+                          borderRadius: '4px',
+                          margin: '10px 0px 10px 0px',
+                          padding: 10,
+                        }}
+                      >
+                        <FormLabel component="legend">Séries</FormLabel>
+                        <FormGroup
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                          }}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_1}
+                                onChange={handleChangeGrade}
+                                name="year_1"
+                              />
+                            }
+                            label="1º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_2}
+                                onChange={handleChangeGrade}
+                                name="year_2"
+                              />
+                            }
+                            label="2º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_3}
+                                onChange={handleChangeGrade}
+                                name="year_3"
+                              />
+                            }
+                            label="3º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_4}
+                                onChange={handleChangeGrade}
+                                name="year_4"
+                              />
+                            }
+                            label="4º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_5}
+                                onChange={handleChangeGrade}
+                                name="year_5"
+                              />
+                            }
+                            label="5º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_6}
+                                onChange={handleChangeGrade}
+                                name="year_6"
+                              />
+                            }
+                            label="6º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_7}
+                                onChange={handleChangeGrade}
+                                name="year_7"
+                              />
+                            }
+                            label="7º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_8}
+                                onChange={handleChangeGrade}
+                                name="year_8"
+                              />
+                            }
+                            label="8º Ano"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={year_9}
+                                onChange={handleChangeGrade}
+                                name="year_9"
+                              />
+                            }
+                            label="9º Ano"
+                          />
+                        </FormGroup>
+                      </FormControl>
+
+                      <FormControl
+                        component="fieldset"
+                        style={{
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                          borderColor: '#CDD2DD',
+                          borderRadius: '4px',
+                          margin: '10px 0px 10px 0px',
+                          padding: 10,
+                        }}
+                      >
+                        <FormLabel component="legend">Período</FormLabel>
+                        <FormGroup
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                          }}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Matutino}
+                                onChange={handleChangePeriod}
+                                name="Matutino"
+                              />
+                            }
+                            label="Matutino"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Vespertino}
+                                onChange={handleChangePeriod}
+                                name="Vespertino"
+                              />
+                            }
+                            label="Vespertino"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Noturno}
+                                onChange={handleChangePeriod}
+                                name="Noturno"
+                              />
+                            }
+                            label="Noturno"
                           />
                         </FormGroup>
                       </FormControl>
                     </div>
                   </Grid>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    style={{ backgroundColor: "rgba(126,64,144,1)", color: "#fff" }}
-                    className={classes.submit}
-                  >
-                    Cadastrar
-          </Button>
-
+                  {progressButton ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        width: '100%',
+                        justifyContent: 'center',
+                        padding: 20,
+                      }}
+                    >
+                      <CircularProgress />
+                      <p style={{ margin: 10 }}>Cadastrando...</p>
+                    </div>
+                  ) : (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: 'rgba(126,64,144,1)',
+                        color: '#fff',
+                      }}
+                      className={classes.submit}
+                    >
+                      Cadastrar
+                    </Button>
+                  )}
                 </form>
               </div>
-
             </Container>
-
           </Box>
         </Container>
         <Box mt={5} style={{ marginBottom: 20 }}>
           <Copyright />
         </Box>
       </main>
-    </div >
+    </div>
   );
 }

@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Copyright from "../../components/Copyright";
-import MenuLeft from "../../components/MenuLeft";
-import { Button } from "@material-ui/core";
-import firebase from "firebase";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Copyright from '../../components/Copyright';
+import MenuLeft from '../../components/MenuLeft';
+import { Button } from '@material-ui/core';
+import firebase from 'firebase';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: "100vh",
-    overflow: "auto",
+    height: '100vh',
+    overflow: 'auto',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -46,10 +46,14 @@ export default function AllNewActivitys(props) {
 
   const loadData = async () => {
     const db = firebase.firestore();
-    const suppliesRef = db.collection("all_supplies").orderBy("createdAt", "desc");
+    const suppliesRef = db
+      .collection('all_supplies')
+      .orderBy('createdAt', 'desc');
 
     await suppliesRef
-      .where("grade", "==", `${localStorage.getItem("grade")}`)
+      .where('school', '==', `${localStorage.getItem('school')}`)
+      .where('period', '==', `${localStorage.getItem('period')}`)
+      .where('grade', '==', `${localStorage.getItem('grade')}`)
       .get()
       .then((querySnapshot) => {
         const supplies = [];
@@ -57,11 +61,11 @@ export default function AllNewActivitys(props) {
           supplies.push(doc.data());
         });
         setSuppliesDate(supplies);
-        setuserData([JSON.parse(localStorage.getItem("userData"))]);
+        setuserData([JSON.parse(localStorage.getItem('userData'))]);
         setProgress(false);
       })
       .catch(function (error) {
-        console.log("Error getting documents: ", error);
+        console.log('Error getting documents: ', error);
       });
   };
 
@@ -96,10 +100,10 @@ export default function AllNewActivitys(props) {
           <Grid container spacing={3}>
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "100%",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
                 margin: 10,
               }}
             >
@@ -107,18 +111,18 @@ export default function AllNewActivitys(props) {
               {progress ? (
                 <CircularProgress />
               ) : (
-                  <>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="default"
-                      style={{ marginBottom: 20 }}
-                      onClick={() => updatePage()}
-                    >
-                      Atualizar página
+                <>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="default"
+                    style={{ marginBottom: 20 }}
+                    onClick={() => updatePage()}
+                  >
+                    Atualizar página
                   </Button>
-                  </>
-                )}
+                </>
+              )}
             </div>
             {!progress ? (
               <TableContainer component={Paper}>
@@ -146,22 +150,22 @@ export default function AllNewActivitys(props) {
                         </TableCell>
                         <TableCell
                           align="left"
-                          style={{ textAlign: "justify" }}
+                          style={{ textAlign: 'justify' }}
                         >
                           {supplie.description}
                         </TableCell>
                         <TableCell align="right">
                           <a
                             href={supplie.url}
-                            style={{ textDecoration: "none" }}
+                            style={{ textDecoration: 'none' }}
                             target="_blank"
                           >
                             <Button
                               variant="contained"
                               size="small"
                               style={{
-                                backgroundColor: "rgba(126,64,144,1)",
-                                color: "#fff",
+                                backgroundColor: 'rgba(126,64,144,1)',
+                                color: '#fff',
                               }}
                             >
                               Download
@@ -174,10 +178,9 @@ export default function AllNewActivitys(props) {
                 </Table>
               </TableContainer>
             ) : (
-                ""
-              )}
+              ''
+            )}
           </Grid>
-
         </Container>
         <Box pt={4}>
           <Copyright />
