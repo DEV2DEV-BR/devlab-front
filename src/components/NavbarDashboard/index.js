@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Badge from '@material-ui/core/Badge';
-import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { toast } from 'react-toastify';
-import { logout } from '../../services/auth';
-import firebase from 'firebase';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import clsx from 'clsx';
+import firebase from 'firebase';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Logo from '../../assets/logo.png';
+import { logout } from '../../services/auth';
 
 const drawerWidth = 240;
 

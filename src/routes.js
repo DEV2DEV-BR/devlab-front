@@ -1,19 +1,19 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import NavbarDashBoard from './components/NavbarDashboard';
+import Activitys from './pages/Activitys';
+import AllNewActivitys from './pages/AllNewActivitys';
+import Dashboard from './pages/Dashboard';
+import ListHomeWork from './pages/ListHomeWorks';
 import Main from './pages/Main';
+import Profile from './pages/Profile';
+import Schools from './pages/Schools';
+import SendSchoolWork from './pages/SendSchoolWork';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import SignUpTeacher from './pages/SignUpTeacher';
-import Dashboard from './pages/Dashboard';
-import Activitys from './pages/Activitys';
-import AllNewActivitys from './pages/AllNewActivitys';
-import SendSchoolWork from './pages/SendSchoolWork';
-import ListHomeWork from './pages/ListHomeWorks';
-import UploadFiles from './pages/UploadFiles';
-import NavbarDashBoard from './components/NavbarDashboard';
 import Teachers from './pages/Teachers';
-import Schools from './pages/Schools';
-import Profile from './pages/Profile';
+import UploadFiles from './pages/UploadFiles';
 import { istAuthenticated } from './services/auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (

@@ -1,12 +1,12 @@
-import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import { istAuthenticated } from "../../services/auth";
-import Logo from "../../assets/logo.png";
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Logo from '../../assets/logo.png';
+import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,12 +34,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(8),
   },
   card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   cardMedia: {
-    paddingTop: "56.25%", // 16:9
+    paddingTop: '56.25%', // 16:9
   },
   cardContent: {
     flexGrow: 1,
@@ -54,7 +54,7 @@ export default function Album() {
   const classes = useStyles();
 
   return (
-    <AppBar position="static" style={{ backgroundColor: "rgba(126,64,144,1)" }}>
+    <AppBar position="static" style={{ backgroundColor: 'rgba(126,64,144,1)' }}>
       <Toolbar>
         <Typography
           component="h1"
@@ -63,7 +63,7 @@ export default function Album() {
           noWrap
           className={classes.title}
         >
-          <Link style={{ textDecoration: "none", color: "#fff" }} to="/">
+          <Link style={{ textDecoration: 'none', color: '#fff' }} to="/">
             <Typography variant="h6" color="inherit" noWrap>
               <img
                 src={Logo}
@@ -81,12 +81,12 @@ export default function Album() {
               style={{
                 marginLeft: 10,
                 marginRight: 10,
-                textDecoration: "none",
+                textDecoration: 'none',
               }}
             >
               <Button
                 variant="contained"
-                style={{ backgroundColor: "#318F6B", color: "#fff" }}
+                style={{ backgroundColor: '#318F6B', color: '#fff' }}
               >
                 Login
               </Button>
@@ -99,13 +99,13 @@ export default function Album() {
               style={{
                 marginLeft: 10,
                 marginRight: 10,
-                textDecoration: "none",
+                textDecoration: 'none',
               }}
             >
               <Button
                 variant="contained"
                 size="small"
-                style={{ backgroundColor: "#318F6B", color: "#fff" }}
+                style={{ backgroundColor: '#318F6B', color: '#fff' }}
               >
                 Voltar para dashboard
               </Button>

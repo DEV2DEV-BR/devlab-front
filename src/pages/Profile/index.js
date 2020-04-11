@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Copyright from '../../components/Copyright';
-import MenuLeft from '../../components/MenuLeft';
 import { Button } from '@material-ui/core';
-import firebase from 'firebase';
+import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import Avatar from '@material-ui/core/Avatar';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import firebase from 'firebase';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import ProfilePicture from '../../assets/profile.png';
+import Copyright from '../../components/Copyright';
+import MenuLeft from '../../components/MenuLeft';
 
 const useStyles = makeStyles((theme) => ({
   root: {
