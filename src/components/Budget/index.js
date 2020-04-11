@@ -264,7 +264,7 @@ const Budget = (props) => {
             </Link>
           </CardContent>
         </Card>
-      ) : (
+      ) : userData.userType === 'teacher' ? (
         <div
           style={{
             display: 'flex',
@@ -284,6 +284,8 @@ const Budget = (props) => {
             aprová-lo, as respectivas funções estarão disponíveis.
           </p>
         </div>
+      ) : (
+        ''
       )}
     </div>
   );

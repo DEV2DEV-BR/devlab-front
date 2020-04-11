@@ -61,8 +61,7 @@ export default function Teachers(props) {
   const [teachers, setTeachers] = useState([]);
   const [teachersSelect, setTeachersSelect] = useState([]);
   const [progress, setProgress] = useState(false);
-  const [filterGrade, setFilterGrade] = useState([]);
-
+  const [progressButton, setProgressButton] = useState(false);
   const handleChangeTeacherName = (event) => {
     setTeachersSelect(event.target.value);
   };
@@ -100,6 +99,12 @@ export default function Teachers(props) {
     year_9: false,
   });
 
+  const [period, setPeriod] = useState({
+    Matutino: false,
+    Vespertino: false,
+    Noturno: false,
+  });
+
   const handleChangeGrade = (event) => {
     setGrade({ ...grade, [event.target.name]: event.target.checked });
   };
@@ -110,6 +115,10 @@ export default function Teachers(props) {
 
   const handleChangeDiscipline = (event) => {
     setDiscipline({ ...discipline, [event.target.name]: event.target.checked });
+  };
+
+  const handleChangePeriod = (event) => {
+    setPeriod({ ...period, [event.target.name]: event.target.checked });
   };
 
   const {
@@ -144,6 +153,8 @@ export default function Teachers(props) {
     year_8,
     year_9,
   } = grade;
+
+  const { Matutino, Vespertino, Noturno } = period;
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -276,42 +287,6 @@ export default function Teachers(props) {
     return allSchools;
   };
 
-  const handleRegister = async (event) => {
-    toogleFilterGrade();
-    event.preventDefault();
-
-    const teacherDisciplines = addDiscipline();
-
-    const teacherSchools = addSchoolToTeacher();
-
-    if (
-      teacherDisciplines.length > 0 &&
-      teacherSchools.length > 0 &&
-      teachersSelect.length > 0
-    ) {
-      const db = firebase.firestore();
-      var teacherRef = db.collection('users').doc(teachersSelect);
-
-      return teacherRef
-        .update({
-          confirmed: true,
-          teacherDisciplines,
-          teacherSchools,
-        })
-        .then(function () {
-          handleClear();
-          notifySuccess('Liberação efetuada com sucesso!');
-        })
-        .catch(function (error) {
-          // The document probably doesn't exist.
-          notifyError('Falha ao liberar, verifique o procedimento!');
-          console.error('Error updating document: ', error);
-        });
-    } else {
-      notifyError('Preencha todos os campos!');
-    }
-  };
-
   const toogleFilterGrade = () => {
     const query = [];
     if (year_1) {
@@ -345,7 +320,61 @@ export default function Teachers(props) {
       query.push('9');
     }
 
-    setFilterGrade(query);
+    return query;
+  };
+
+  const addPeriodTeacher = () => {
+    const allPeriods = [];
+    if (Matutino) {
+      allPeriods.push('Matutino');
+    }
+    if (Vespertino) {
+      allPeriods.push('Vespertino');
+    }
+    if (Noturno) {
+      allPeriods.push('Noturno');
+    }
+    return allPeriods;
+  };
+
+  const handleRegister = async (event) => {
+    setProgressButton(true);
+    event.preventDefault();
+
+    const teacherDisciplines = addDiscipline();
+    const teacherGrades = toogleFilterGrade();
+    const teacherSchools = addSchoolToTeacher();
+    const teacherPeriods = addPeriodTeacher();
+
+    if (
+      teacherDisciplines.length > 0 &&
+      teacherSchools.length > 0 &&
+      teachersSelect.length > 0
+    ) {
+      const db = firebase.firestore();
+      var teacherRef = db.collection('users').doc(teachersSelect);
+
+      return teacherRef
+        .update({
+          confirmed: true,
+          teacherGrades,
+          teacherDisciplines,
+          teacherSchools,
+          teacherPeriods,
+        })
+        .then(function () {
+          handleClear();
+          setProgressButton(false);
+          notifySuccess('Liberação efetuada com sucesso!');
+        })
+        .catch(function (error) {
+          // The document probably doesn't exist.
+          notifyError('Falha ao liberar, verifique o procedimento!');
+          console.error('Error updating document: ', error);
+        });
+    } else {
+      notifyError('Preencha todos os campos!');
+    }
   };
 
   const handleClear = () => {
@@ -380,6 +409,12 @@ export default function Teachers(props) {
       year_7: false,
       year_8: false,
       year_9: false,
+    });
+
+    setPeriod({
+      Matutino: false,
+      Vespertino: false,
+      Noturno: false,
     });
 
     setTeachersSelect([]);
@@ -779,7 +814,7 @@ export default function Teachers(props) {
                                 name="year_8"
                               />
                             }
-                            label="º Ano"
+                            label="8º Ano"
                           />
                           <FormControlLabel
                             control={
@@ -793,20 +828,87 @@ export default function Teachers(props) {
                           />
                         </FormGroup>
                       </FormControl>
+
+                      <FormControl
+                        component="fieldset"
+                        style={{
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                          borderColor: '#CDD2DD',
+                          borderRadius: '4px',
+                          margin: '10px 0px 10px 0px',
+                          padding: 10,
+                        }}
+                      >
+                        <FormLabel component="legend">Período</FormLabel>
+                        <FormGroup
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                          }}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Matutino}
+                                onChange={handleChangePeriod}
+                                name="Matutino"
+                              />
+                            }
+                            label="Matutino"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Vespertino}
+                                onChange={handleChangePeriod}
+                                name="Vespertino"
+                              />
+                            }
+                            label="Vespertino"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={Noturno}
+                                onChange={handleChangePeriod}
+                                name="Noturno"
+                              />
+                            }
+                            label="Noturno"
+                          />
+                        </FormGroup>
+                      </FormControl>
                     </div>
                   </Grid>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
-                      color: '#fff',
-                    }}
-                    className={classes.submit}
-                  >
-                    Cadastrar
-                  </Button>
+                  {progressButton ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        width: '100%',
+                        justifyContent: 'center',
+                        padding: 20,
+                      }}
+                    >
+                      <CircularProgress />
+                      <p style={{ margin: 10 }}>Cadastrando...</p>
+                    </div>
+                  ) : (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: 'rgba(126,64,144,1)',
+                        color: '#fff',
+                      }}
+                      className={classes.submit}
+                    >
+                      Cadastrar
+                    </Button>
+                  )}
                 </form>
               </div>
             </Container>

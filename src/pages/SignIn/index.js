@@ -116,19 +116,28 @@ export default function SignIn(props) {
               .get()
               .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                  const { id, grade } = doc.data();
-                  localStorage.setItem('userData', JSON.stringify(doc.data()));
-                  localStorage.setItem('grade', grade);
-                  localStorage.setItem('id', id);
+                  const { id, grade, userType, school, period } = doc.data();
+                  localStorage.setItem('userType', userType);
+
+                  if (period) {
+                    localStorage.setItem('period', period);
+                  }
+                  if (school) {
+                    localStorage.setItem('school', school);
+                  }
+                  if (grade) {
+                    localStorage.setItem('grade', grade);
+                  }
+
+                  localStorage.setItem('user', id);
+
                   setProgress(false);
-
-                  notifySuccess('Seja bem-vindo!');
-
                   props.history.push('/dashboard');
                 });
               });
           }
         });
+        notifySuccess('Seja bem-vindo!');
       })
       .catch((error) => {
         const errorCode = error.code;

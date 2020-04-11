@@ -49,14 +49,23 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp(props) {
   const classes = useStyles();
   const [grade, setGrade] = useState('');
+  const [school, setSchool] = useState('');
+  const [period, setPeriod] = useState('');
   const [inputName, setInputName] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
 
-  const handleChange = (event) => {
+  const handleChangeGrade = (event) => {
     setGrade(event.target.value);
+  };
+
+  const handleChangeSchool = (event) => {
+    setSchool(event.target.value);
+  };
+  const handleChangePeriod = (event) => {
+    setPeriod(event.target.value);
   };
 
   const notifySuccess = (message) => {
@@ -88,14 +97,14 @@ export default function SignUp(props) {
 
     const name = inputName;
 
-    console.log(grade);
-
     if (
       inputName !== '' &&
       inputEmail !== '' &&
       inputPassword !== '' &&
       inputConfirmPassword !== '' &&
-      grade !== ''
+      grade !== '' &&
+      school !== '' &&
+      period !== ''
     ) {
       if (inputPassword === inputConfirmPassword) {
         await firebase
@@ -108,8 +117,10 @@ export default function SignUp(props) {
               .collection('users')
               .add({
                 name,
-                grade,
                 email: success.user.email,
+                school,
+                period,
+                grade,
                 uid: success.user.uid,
                 userType: 'student',
                 id: '',
@@ -187,11 +198,82 @@ export default function SignUp(props) {
               className={classes.formControl}
             >
               <Grid item xs={12}>
+                <InputLabel htmlFor="serie">Escola*</InputLabel>
+                <Select
+                  native
+                  value={school}
+                  onChange={handleChangeSchool}
+                  fullWidth
+                  required
+                  label="Escola"
+                  inputProps={{
+                    name: 'school',
+                    id: 'school',
+                  }}
+                >
+                  <option aria-label="None" value="" />
+                  <option value={'0HgQobTQkPyMtB7BLIBI'}>
+                    EMEIF Álvares Machado
+                  </option>
+                  <option value={'Tr8VHeCJofsyx5nP9zIa'}>
+                    EMEIF Professora Aparecida Marques Vaccaro
+                  </option>
+                  <option value={'cnh92zAndBb3T6DAvGsy'}>
+                    EMEIF Governador Franco Montoro
+                  </option>
+                  <option value={'eqdFnW5EQg4JiOdwCA0Q'}>
+                    EMEIF Governador Mário Covas
+                  </option>
+                  <option value={'oVOEa86ZL8hA8e6nOyu6'}>
+                    EMEIF Márcia Helena Fernandez de Araújo
+                  </option>
+                  <option value={'vJG0RnawKCTIAYHjntj8'}>
+                    EMEIF Vereador José Molina
+                  </option>
+                  <option value={'yxv6KHgmdzTGZINhBheq'}>
+                    EMEIF Professora Tereza Ito Polidório
+                  </option>
+                </Select>
+              </Grid>
+            </FormControl>
+            <FormControl
+              variant="outlined"
+              fullWidth
+              className={classes.formControl}
+            >
+              <Grid item xs={12}>
+                <InputLabel htmlFor="serie">Período*</InputLabel>
+                <Select
+                  native
+                  value={period}
+                  onChange={handleChangePeriod}
+                  fullWidth
+                  required
+                  label="Período"
+                  inputProps={{
+                    name: 'period',
+                    id: 'period',
+                  }}
+                >
+                  <option aria-label="None" value="" />
+                  <option value={'Matutino'}>Manhã</option>
+                  <option value={'Vespertino'}>Tarde</option>
+                  <option value={'Noturno'}>Noite</option>
+                </Select>
+              </Grid>
+            </FormControl>
+
+            <FormControl
+              variant="outlined"
+              fullWidth
+              className={classes.formControl}
+            >
+              <Grid item xs={12}>
                 <InputLabel htmlFor="serie">Série*</InputLabel>
                 <Select
                   native
                   value={grade}
-                  onChange={handleChange}
+                  onChange={handleChangeGrade}
                   fullWidth
                   required
                   label="Série"

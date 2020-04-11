@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuLeft(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [userData, setuserData] = useState([]);
 
   useEffect(() => {
