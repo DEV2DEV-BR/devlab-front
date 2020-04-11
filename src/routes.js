@@ -13,6 +13,7 @@ import UploadFiles from './pages/UploadFiles';
 import NavbarDashBoard from './components/NavbarDashboard';
 import Teachers from './pages/Teachers';
 import Schools from './pages/Schools';
+import Profile from './pages/Profile';
 import { istAuthenticated } from './services/auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -50,6 +51,7 @@ const Routes = () => (
       <PrivateRoute path="/list-home-work" component={ListHomeWork} />
       <PrivateRoute path="/teachers" component={Teachers} />
       <PrivateRoute path="/schools" component={Schools} />
+      <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   </BrowserRouter>
 );

@@ -169,11 +169,7 @@ export default function Schools(props) {
                 <Typography component="h1" variant="h5">
                   CADASTRO DE UNIDADE
                 </Typography>
-                <form
-                  className={classes.form}
-                  noValidate
-                  onSubmit={handleRegister}
-                >
+                <form className={classes.form} onSubmit={handleRegister}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
