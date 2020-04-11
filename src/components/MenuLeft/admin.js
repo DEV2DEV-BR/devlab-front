@@ -27,13 +27,13 @@ export default function secondaryListItems(props) {
 
   return (
     <div>
-      <ListSubheader inset>Usuário</ListSubheader>
+      {/* <ListSubheader inset>Usuário</ListSubheader>
       <ListItem button onClick={() => redirectProfile()}>
         <ListItemIcon>
           <AccountBox />
         </ListItemIcon>
         <ListItemText primary="Minha Conta" />
-      </ListItem>
+      </ListItem> */}
       <ListSubheader inset>Gestão</ListSubheader>
       <ListItem button onClick={() => redirectUploadFiles()}>
         <ListItemIcon>
