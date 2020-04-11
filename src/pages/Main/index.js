@@ -1,21 +1,21 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Copyright from "../../components/Copyright";
-import Background from "../../assets/background.jpg";
-import IMG1 from "../../assets/img1.jpg";
-import IMG2 from "../../assets/img2.jpg";
-import IMG3 from "../../assets/img3.jpg";
-import { istAuthenticated } from "../../services/auth";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Background from '../../assets/background.jpg';
+import IMG1 from '../../assets/img1.jpg';
+import IMG2 from '../../assets/img2.jpg';
+import IMG3 from '../../assets/img3.jpg';
+import Copyright from '../../components/Copyright';
+import Navbar from '../../components/Navbar';
+import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -33,12 +33,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(8),
   },
   card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   cardMedia: {
-    paddingTop: "56.25%", // 16:9
+    paddingTop: '56.25%', // 16:9
   },
   cardContent: {
     flexGrow: 1,
@@ -74,7 +74,7 @@ export default function Album() {
               align="center"
               color="textPrimary"
               gutterBottom
-              style={{ color: "#fff", textShadow: "#000" }}
+              style={{ color: '#fff', textShadow: '#000' }}
             >
               School Docs
             </Typography>
@@ -83,48 +83,49 @@ export default function Album() {
               align="center"
               color="textSecondary"
               paragraph
-              style={{ color: "#fff", textShadow: "#000" }}
+              style={{ color: '#fff', textShadow: '#000' }}
             >
               <div>Bem vindo ao School Docs! </div>
               Após fazer o login, você terá acesso a todos os materiais
               disponíveis para download.
             </Typography>
 
-            {!istAuthenticated() ?
+            {!istAuthenticated() ? (
               <div className={classe.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Link to="/signIn" style={{ textDecoration: "none" }}>
+                    <Link to="/signIn" style={{ textDecoration: 'none' }}>
                       <Button
                         size="large"
                         variant="contained"
                         style={{
-                          backgroundColor: "rgba(126,64,144,1)",
-                          color: "#fff",
+                          backgroundColor: 'rgba(126,64,144,1)',
+                          color: '#fff',
                         }}
                       >
                         Fazer Login
-                    </Button>
+                      </Button>
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link to="/signUp" style={{ textDecoration: "none" }}>
+                    <Link to="/signUp" style={{ textDecoration: 'none' }}>
                       <Button
                         size="large"
                         variant="contained"
                         style={{
-                          backgroundColor: "#318F6B",
-                          color: "#fff",
+                          backgroundColor: '#318F6B',
+                          color: '#fff',
                         }}
                       >
                         Cadastre-se
-                    </Button>
+                      </Button>
                     </Link>
                   </Grid>
                 </Grid>
               </div>
-              : ''
-            }
+            ) : (
+              ''
+            )}
           </Container>
         </div>
         <Container className={classe.cardGrid} maxWidth="md">
@@ -142,7 +143,7 @@ export default function Album() {
                     Cadastre-se
                   </Typography>
                   <Typography>
-                    Para acessar a plataforma, faça o seu cadastro com{" "}
+                    Para acessar a plataforma, faça o seu cadastro com{' '}
                     <b>NOME COMPLETO</b> e série <b>CORRETA</b>.
                   </Typography>
                 </CardContent>

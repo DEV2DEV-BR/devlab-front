@@ -1,12 +1,12 @@
-import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import AccountBox from '@material-ui/icons/AccountBox';
 import BackupIcon from '@material-ui/icons/Backup';
 import Functions from '@material-ui/icons/Functions';
-import AccountBox from '@material-ui/icons/AccountBox';
 import School from '@material-ui/icons/School';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import React from 'react';
 
 export default function secondaryListItems(props) {
   const redirectUploadFiles = () => {
@@ -27,13 +27,13 @@ export default function secondaryListItems(props) {
 
   return (
     <div>
-      <ListSubheader inset>Usuário</ListSubheader>
+      {/* <ListSubheader inset>Usuário</ListSubheader>
       <ListItem button onClick={() => redirectProfile()}>
         <ListItemIcon>
           <AccountBox />
         </ListItemIcon>
         <ListItemText primary="Minha Conta" />
-      </ListItem>
+      </ListItem> */}
       <ListSubheader inset>Gestão</ListSubheader>
       <ListItem button onClick={() => redirectUploadFiles()}>
         <ListItemIcon>

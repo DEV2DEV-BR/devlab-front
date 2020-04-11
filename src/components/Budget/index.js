@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import firebase from 'firebase';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/styles';
+import firebase from 'firebase';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {

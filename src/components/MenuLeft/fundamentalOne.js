@@ -1,17 +1,17 @@
-import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import FontDownloadIcon from '@material-ui/icons/FontDownload';
-import FunctionsIcon from '@material-ui/icons/Functions';
-import PublicIcon from '@material-ui/icons/Public';
-import PanoramaIcon from '@material-ui/icons/Panorama';
-import SportsIcon from '@material-ui/icons/Sports';
-import LanguageIcon from '@material-ui/icons/Language';
-import PetsIcon from '@material-ui/icons/Pets';
-import HistoryIcon from '@material-ui/icons/ClearAll';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import AccountBox from '@material-ui/icons/AccountBox';
+import HistoryIcon from '@material-ui/icons/ClearAll';
+import FontDownloadIcon from '@material-ui/icons/FontDownload';
+import FunctionsIcon from '@material-ui/icons/Functions';
+import LanguageIcon from '@material-ui/icons/Language';
+import PanoramaIcon from '@material-ui/icons/Panorama';
+import PetsIcon from '@material-ui/icons/Pets';
+import PublicIcon from '@material-ui/icons/Public';
+import SportsIcon from '@material-ui/icons/Sports';
+import React from 'react';
 
 export default function mainListItems(props) {
   const handleToActivitys = (idSubject, subjects) => {
