@@ -439,11 +439,7 @@ export default function Teachers(props) {
                 <Typography component="h1" variant="h5">
                   LIBERAÇÃO DE PROFESSORES
                 </Typography>
-                <form
-                  className={classes.form}
-                  noValidate
-                  onSubmit={handleRegister}
-                >
+                <form className={classes.form} onSubmit={handleRegister}>
                   <Grid
                     container
                     spacing={2}

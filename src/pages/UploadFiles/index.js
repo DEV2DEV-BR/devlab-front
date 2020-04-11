@@ -275,7 +275,7 @@ export default function UploadFiles(props) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3} style={{ width: '80%' }}>
-            <form className={classes.form} noValidate>
+            <form className={classes.form}>
               <h1 style={{ marginLeft: 10 }}>Cadastro de Materiais</h1>
 
               <Grid container spacing={2}>
