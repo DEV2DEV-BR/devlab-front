@@ -49,8 +49,10 @@ export default function Activitys(props) {
       .orderBy('createdAt', 'desc');
 
     await suppliesRef
-      .where('discipline', '==', `${props.location.state.idSubject}`)
+      .where('school', '==', `${localStorage.getItem('school')}`)
+      .where('period', '==', `${localStorage.getItem('period')}`)
       .where('grade', '==', `${localStorage.getItem('grade')}`)
+      .where('discipline', '==', `${props.location.state.idSubject}`)
       .get()
       .then((querySnapshot) => {
         const supplies = [];
