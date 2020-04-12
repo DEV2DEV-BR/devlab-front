@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Profile(props) {
+export default function AllNewActivitys(props) {
   const classes = useStyles();
 
   const [suppliesDate, setSuppliesDate] = useState([]);

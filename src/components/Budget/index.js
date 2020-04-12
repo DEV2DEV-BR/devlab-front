@@ -199,6 +199,35 @@ const Budget = (props) => {
               </Link>
             </CardContent>
           </Card>
+          <Card style={{ margin: '30px 0px 0px 10px' }}>
+            <CardContent>
+              <Grid container>
+                <Grid item>
+                  <Typography
+                    className={classes.title}
+                    color="textSecondary"
+                    gutterBottom
+                    variant="body2"
+                  >
+                    LISTA DE PROFESSORES
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Link to="/teachers-list" style={{ textDecoration: 'none' }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{
+                    backgroundColor: '#318F6B',
+                    color: '#fff',
+                    width: '100%',
+                  }}
+                >
+                  CONSULTAR
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
           {userData.userType === 'admin' ? (
             <Card style={{ margin: '30px 0px 0px 10px' }}>
               <CardContent>
