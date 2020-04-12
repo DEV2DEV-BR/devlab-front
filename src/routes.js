@@ -13,6 +13,8 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import SignUpTeacher from './pages/SignUpTeacher';
 import Teachers from './pages/Teachers';
+import TeachersList from './pages/TeachersList';
+import TeachersEdit from './pages/TeachersEdit';
 import UploadFiles from './pages/UploadFiles';
 import { istAuthenticated } from './services/auth';
 
@@ -50,6 +52,8 @@ const Routes = () => (
       <PrivateRoute path="/upload-files" component={UploadFiles} />
       <PrivateRoute path="/list-home-work" component={ListHomeWork} />
       <PrivateRoute path="/teachers" component={Teachers} />
+      <PrivateRoute path="/teachers-list" component={TeachersList} />
+      <PrivateRoute path="/teacher-edit" component={TeachersEdit} />
       <PrivateRoute path="/schools" component={Schools} />
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>

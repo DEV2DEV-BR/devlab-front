@@ -13,6 +13,7 @@ import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +50,28 @@ const useStyles = makeStyles((theme) => ({
     width: '30%',
   },
 }));
+
+const notifySuccess = (message) => {
+  toast.success(message, {
+    position: 'top-right',
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  });
+};
+
+const notifyError = (message) => {
+  toast.error(message, {
+    position: 'top-right',
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  });
+};
 
 export default function UploadFiles(props) {
   const classes = useStyles();
@@ -198,60 +221,102 @@ export default function UploadFiles(props) {
     },
   ];
 
+  const extensionsPermitted = [
+    'txt',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'odt',
+    'pdf',
+    'png',
+    'jpg',
+    'jpeg',
+    'ppt',
+    'pptx',
+    'pps',
+  ];
+
   const handleRegister = () => {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth();
-    let fullYear = date.getFullYear();
-    let createdAt = `${day}-${month}-${fullYear}`;
+    if (image !== null) {
+      const extension = image.name.split('.').pop();
 
-    const storage = firebase.storage();
+      if (extensionsPermitted.includes(extension)) {
+        if (
+          grade !== '' &&
+          school !== '' &&
+          period !== '' &&
+          discipline !== '' &&
+          description !== ''
+        ) {
+          let date = new Date();
+          let day = date.getDate();
+          let month = date.getMonth();
+          let fullYear = date.getFullYear();
+          let createdAt = `${day}-${month}-${fullYear}`;
 
-    setProgress(true);
+          const storage = firebase.storage();
 
-    const uploadTask = storage.ref(`all_supplies/${image.name}`).put(image);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {},
-      (error) => {
-        // Error function ...
-        console.log(error);
-      },
-      () => {
-        // complete function ...
-        storage
-          .ref('all_supplies')
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            const cloudFirestore = firebase.firestore();
+          setProgress(true);
 
-            cloudFirestore
-              .collection('all_supplies')
-              .add({
-                school,
-                grade,
-                period,
-                discipline,
-                url,
-                createdAt: date,
-                date: createdAt,
-                description,
-                id: '',
-              })
-              .then(function (doc) {
-                cloudFirestore.collection('all_supplies').doc(doc.id).update({
-                  id: doc.id,
+          const uploadTask = storage
+            .ref(`all_supplies/${image.name}`)
+            .put(image);
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {},
+            (error) => {
+              // Error function ...
+              console.log(error);
+            },
+            () => {
+              // complete function ...
+              storage
+                .ref('all_supplies')
+                .child(image.name)
+                .getDownloadURL()
+                .then((url) => {
+                  const cloudFirestore = firebase.firestore();
+
+                  cloudFirestore
+                    .collection('all_supplies')
+                    .add({
+                      school,
+                      grade,
+                      period,
+                      discipline,
+                      url,
+                      createdAt: date,
+                      date: createdAt,
+                      description,
+                      id: '',
+                    })
+                    .then(function (doc) {
+                      cloudFirestore
+                        .collection('all_supplies')
+                        .doc(doc.id)
+                        .update({
+                          id: doc.id,
+                        });
+                      setProgress(false);
+                      handleClear();
+                      notifySuccess('Atividade enviada');
+                    })
+                    .catch(function (error) {
+                      console.error('Error adding domcument', error);
+                    });
                 });
-                setProgress(false);
-                handleClear();
-              })
-              .catch(function (error) {
-                console.error('Error adding domcument', error);
-              });
-          });
+            }
+          );
+        } else {
+          notifyError('Preencha todos os campos');
+        }
+      } else {
+        notifyError('Esse tipo de arquivo não é permitido!');
       }
-    );
+    } else {
+      notifyError('Selecione um arquivo para enviar!');
+    }
   };
 
   const handleClear = () => {

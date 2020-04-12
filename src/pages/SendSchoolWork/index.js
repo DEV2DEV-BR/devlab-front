@@ -13,6 +13,7 @@ import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +75,27 @@ export default function SendSchoolWork(props) {
       setImage(image);
     }
   };
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
 
   useEffect(() => {
     setProgressUserData(true);
@@ -102,62 +124,93 @@ export default function SendSchoolWork(props) {
     setDescription('');
   };
 
+  const extensionsPermitted = [
+    'txt',
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'odt',
+    'pdf',
+    'png',
+    'jpg',
+    'jpeg',
+    'ppt',
+    'pptx',
+    'pps',
+  ];
+
   const handleRegister = () => {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth();
-    let fullYear = date.getFullYear();
-    let createdAt = `${day}-${month}-${fullYear}`;
+    if (image !== null) {
+      const extension = image.name.split('.').pop();
 
-    const storage = firebase.storage();
+      if (extensionsPermitted.includes(extension)) {
+        if (discipline !== '' && description !== '') {
+          let date = new Date();
+          let day = date.getDate();
+          let month = date.getMonth();
+          let fullYear = date.getFullYear();
+          let createdAt = `${day}-${month}-${fullYear}`;
 
-    setProgress(true);
+          const storage = firebase.storage();
 
-    const uploadTask = storage.ref(`homework/${image.name}`).put(image);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {},
-      (error) => {
-        // Error function ...
-        console.log(error);
-      },
-      () => {
-        // complete function ...
-        storage
-          .ref('homework')
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            const cloudFirestore = firebase.firestore();
+          setProgress(true);
 
-            cloudFirestore
-              .collection('homework')
-              .add({
-                idStudent: localStorage.getItem('user'),
-                grade: localStorage.getItem('grade'),
-                school: localStorage.getItem('school'),
-                period: localStorage.getItem('period'),
-                url,
-                nameStudent: userData.name,
-                createdAt: date,
-                date: createdAt,
-                discipline,
-                description,
-                id: '',
-              })
-              .then(function (doc) {
-                cloudFirestore.collection('homework').doc(doc.id).update({
-                  id: doc.id,
+          const uploadTask = storage.ref(`homework/${image.name}`).put(image);
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {},
+            (error) => {
+              // Error function ...
+              console.log(error);
+            },
+            () => {
+              // complete function ...
+              storage
+                .ref('homework')
+                .child(image.name)
+                .getDownloadURL()
+                .then((url) => {
+                  const cloudFirestore = firebase.firestore();
+
+                  cloudFirestore
+                    .collection('homework')
+                    .add({
+                      idStudent: localStorage.getItem('user'),
+                      grade: localStorage.getItem('grade'),
+                      school: localStorage.getItem('school'),
+                      period: localStorage.getItem('period'),
+                      url,
+                      nameStudent: userData.name,
+                      createdAt: date,
+                      date: createdAt,
+                      discipline,
+                      description,
+                      id: '',
+                    })
+                    .then(function (doc) {
+                      cloudFirestore.collection('homework').doc(doc.id).update({
+                        id: doc.id,
+                      });
+                      setProgress(false);
+                      handleClear();
+                      notifySuccess('Atividade enviada');
+                    })
+                    .catch(function (error) {
+                      console.error('Error adding domcument', error);
+                    });
                 });
-                setProgress(false);
-                handleClear();
-              })
-              .catch(function (error) {
-                console.error('Error adding domcument', error);
-              });
-          });
+            }
+          );
+        } else {
+          notifyError('Preencha todos os campos');
+        }
+      } else {
+        notifyError('Esse tipo de arquivo não é permitido!');
       }
-    );
+    } else {
+      notifyError('Selecione um arquivo para enviar!');
+    }
   };
 
   const goToHome = () => {
