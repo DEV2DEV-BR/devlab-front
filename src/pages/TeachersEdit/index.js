@@ -9,9 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase';
@@ -63,6 +61,20 @@ export default function TeacherEdit(props) {
   const [teachersSelect, setTeachersSelect] = useState([]);
   const [progress, setProgress] = useState(false);
   const [progressButton, setProgressButton] = useState(false);
+
+  const [teacherDisciplines, setTeacherDisciplines] = useState(
+    props.location.state.teacher.teacherDisciplines
+  );
+  const [teacherSchools, setTeacherSchools] = useState(
+    props.location.state.teacher.teacherSchools
+  );
+  const [teacherPeriods, setTeacherPeriods] = useState(
+    props.location.state.teacher.teacherPeriods
+  );
+  const [teacherGrades, setTeacherGrades] = useState(
+    props.location.state.teacher.teacherGrades
+  );
+
   const handleChangeTeacherName = (event) => {
     setTeachersSelect(event.target.value);
   };
@@ -176,6 +188,14 @@ export default function TeacherEdit(props) {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
+    });
+  };
+
+  const setDisciplinesTeacher = () => {
+    teacherDisciplines.map((d) => {
+      if (d == 1) {
+        portuguese_language = true;
+      }
     });
   };
 

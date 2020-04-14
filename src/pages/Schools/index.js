@@ -64,7 +64,6 @@ export default function Schools(props) {
   });
 
   const handleChangePeriod = (event) => {
-    console.log('clicou');
     setPeriod({ ...period, [event.target.name]: event.target.checked });
   };
 

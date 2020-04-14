@@ -196,8 +196,6 @@ export default function Activitys(props) {
       notifyError('Preencha todos os campos!');
       setProgress(false);
     }
-
-    // console.log('register');
   };
 
   return (
