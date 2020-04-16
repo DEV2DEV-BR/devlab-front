@@ -116,7 +116,7 @@ export default function SignIn(props) {
               .get()
               .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                  const { id, grade, userType, school, period } = doc.data();
+                  const { id, grade, myClass, userType, school, period } = doc.data();
                   localStorage.setItem('userType', userType);
 
                   if (period) {
@@ -127,6 +127,10 @@ export default function SignIn(props) {
                   }
                   if (grade) {
                     localStorage.setItem('grade', grade);
+                  }
+
+                  if (myClass) {
+                    localStorage.setItem('myClass', myClass);
                   }
 
                   localStorage.setItem('user', id);

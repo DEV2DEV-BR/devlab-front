@@ -180,6 +180,7 @@ export default function SendSchoolWork(props) {
                       grade: localStorage.getItem('grade'),
                       school: localStorage.getItem('school'),
                       period: localStorage.getItem('period'),
+                      myClass: localStorage.getItem('myClass'),
                       url,
                       nameStudent: userData.name,
                       createdAt: date,

@@ -263,35 +263,69 @@ const Budget = (props) => {
           )}
         </>
       ) : userData.userType === 'teacher' && userData.confirmed ? (
-        <Card style={{ margin: '30px 0px 0px 10px' }}>
-          <CardContent>
-            <Grid container>
-              <Grid item>
-                <Typography
-                  className={classes.title}
-                  color="textSecondary"
-                  gutterBottom
-                  variant="body2"
-                >
-                  ENTREGA DE ATIVIDADES
-                </Typography>
+        <>
+          <Card style={{ margin: '30px 0px 0px 10px' }}>
+            <CardContent>
+              <Grid container>
+                <Grid item>
+                  <Typography
+                    className={classes.title}
+                    color="textSecondary"
+                    gutterBottom
+                    variant="body2"
+                  >
+                    MINHAS ATIVIDADES ENVIADAS
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
-            <Link to="/list-home-work" style={{ textDecoration: 'none' }}>
-              <Button
-                variant="contained"
-                size="small"
-                style={{
-                  backgroundColor: '#318F6B',
-                  color: '#fff',
-                  width: '100%',
-                }}
+              <Link
+                to="/all-activitys-by-teacher"
+                style={{ textDecoration: 'none' }}
               >
-                VER
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{
+                    backgroundColor: '#318F6B',
+                    color: '#fff',
+                    width: '100%',
+                  }}
+                >
+                  VER
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+          <Card style={{ margin: '30px 0px 0px 10px' }}>
+            <CardContent>
+              <Grid container>
+                <Grid item>
+                  <Typography
+                    className={classes.title}
+                    color="textSecondary"
+                    gutterBottom
+                    variant="body2"
+                  >
+                    ENTREGA DE ATIVIDADES
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Link to="/list-home-work" style={{ textDecoration: 'none' }}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{
+                    backgroundColor: '#318F6B',
+                    color: '#fff',
+                    width: '100%',
+                  }}
+                >
+                  VER
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </>
       ) : userData.userType === 'teacher' ? (
         <div
           style={{

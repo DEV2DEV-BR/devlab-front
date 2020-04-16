@@ -65,6 +65,15 @@ export default function Teachers(props) {
     setTeachersSelect(event.target.value);
   };
   // provisório
+  const [teacherClass, setTeacherClass] = useState({
+    A:false,
+    B:false,
+    C:false,
+    D:false,
+    E:false
+  });
+
+  // provisório
   const [school, setSchool] = useState({
     jose_molina: false,
     mario_covas: false,
@@ -119,6 +128,17 @@ export default function Teachers(props) {
   const handleChangePeriod = (event) => {
     setPeriod({ ...period, [event.target.name]: event.target.checked });
   };
+  const handleChangeTeacherClass = (event) => {
+    setTeacherClass({ ...teacherClass, [event.target.name]: event.target.checked });
+  };
+
+  const {
+    A,
+    B,
+    C,
+    D,
+    E
+  } = teacherClass;
 
   const {
     jose_molina,
@@ -231,6 +251,26 @@ export default function Teachers(props) {
   //   loadAllSchools();
   // }, [])
 
+  const addClass = () => {
+    const allClass = [];
+    if (A) {
+      allClass.push('A');
+    }
+    if (B) {
+      allClass.push('B');
+    }
+    if (C) {
+      allClass.push('C');
+    }
+    if (D) {
+      allClass.push('D');
+    }
+    if (E) {
+      allClass.push('E');
+    }
+
+    return allClass;
+  };
   const addDiscipline = () => {
     const allDisciplines = [];
     if (art) {
@@ -344,6 +384,7 @@ export default function Teachers(props) {
     const teacherGrades = toogleFilterGrade();
     const teacherSchools = addSchoolToTeacher();
     const teacherPeriods = addPeriodTeacher();
+    const teacherClass = addClass();
 
     if (
       teacherDisciplines.length > 0 &&
@@ -360,6 +401,7 @@ export default function Teachers(props) {
           teacherDisciplines,
           teacherSchools,
           teacherPeriods,
+          teacherClass
         })
         .then(function () {
           handleClear();
@@ -872,6 +914,78 @@ export default function Teachers(props) {
                               />
                             }
                             label="Noturno"
+                          />
+                        </FormGroup>
+                      </FormControl>
+
+                      <FormControl
+                        component="fieldset"
+                        style={{
+                          borderWidth: '1px',
+                          borderStyle: 'solid',
+                          borderColor: '#CDD2DD',
+                          borderRadius: '4px',
+                          margin: '10px 0px 10px 0px',
+                          padding: 10,
+                        }}
+                      >
+                        <FormLabel component="legend">Turma</FormLabel>
+                        <FormGroup
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                          }}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={A}
+                                onChange={handleChangeTeacherClass}
+                                name="A"
+                              />
+                            }
+                            label="A"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={B}
+                                onChange={handleChangeTeacherClass}
+                                name="B"
+                              />
+                            }
+                            label="B"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={C}
+                                onChange={handleChangeTeacherClass}
+                                name="C"
+                              />
+                            }
+                            label="C"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={D}
+                                onChange={handleChangeTeacherClass}
+                                name="D"
+                              />
+                            }
+                            label="D"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={E}
+                                onChange={handleChangeTeacherClass}
+                                name="E"
+                              />
+                            }
+                            label="E"
                           />
                         </FormGroup>
                       </FormControl>

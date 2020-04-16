@@ -52,6 +52,7 @@ export default function Activitys(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
   const [inputName, setInputName] = useState('');
+  const [myClass, setMyClass] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
@@ -101,6 +102,7 @@ export default function Activitys(props) {
               setSchool(doc.data().school);
               setPeriod(doc.data().period);
               setGrade(doc.data().grade);
+              setMyClass(doc.data().myClass);
               setProgressLoad(false);
             });
           });
@@ -121,6 +123,10 @@ export default function Activitys(props) {
   };
   const handleChangePeriod = (event) => {
     setPeriod(event.target.value);
+  };
+
+  const handleChangeMyClass = (event) => {
+    setMyClass(event.target.value);
   };
 
   const handleRegister = () => {
@@ -149,11 +155,13 @@ export default function Activitys(props) {
                   school,
                   period,
                   grade,
+                  myClass,
                 })
                 .then(function () {
                   localStorage.setItem('period', period);
                   localStorage.setItem('school', school);
                   localStorage.setItem('grade', grade);
+                  localStorage.setItem('myClass', myClass);
                   notifySuccess('Dados atualizados com sucesso!');
                   setProgress(false);
                 })
@@ -178,12 +186,14 @@ export default function Activitys(props) {
             school,
             period,
             grade,
+            myClass,
           })
           .then(function () {
             setProgress(false);
             localStorage.setItem('period', period);
             localStorage.setItem('school', school);
             localStorage.setItem('grade', grade);
+            localStorage.setItem('myClass', myClass);
             notifySuccess('Dados atualizados com sucesso!');
           })
           .catch(function (error) {
@@ -391,6 +401,35 @@ export default function Activitys(props) {
                         <option value={7}>7º Ano</option>
                         <option value={8}>8º Ano</option>
                         <option value={9}>9º Ano</option>
+                      </Select>
+                    </Grid>
+                  </FormControl>
+
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <Grid item xs={12}>
+                      <InputLabel htmlFor="myClass">Turma*</InputLabel>
+                      <Select
+                        native
+                        value={myClass}
+                        onChange={handleChangeMyClass}
+                        fullWidth
+                        required
+                        label="Turma"
+                        inputProps={{
+                          name: 'myClass',
+                          id: 'myClass',
+                        }}
+                      >
+                        <option aria-label="None" value="" />
+                        <option value={'A'}>A</option>
+                        <option value={'B'}>B</option>
+                        <option value={'C'}>C</option>
+                        <option value={'D'}>D</option>
+                        <option value={'E'}>E</option>
                       </Select>
                     </Grid>
                   </FormControl>
