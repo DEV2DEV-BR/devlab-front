@@ -3,6 +3,11 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -48,10 +53,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ListHomeWork(props) {
+export default function AllActivitysByTeacher(props) {
   const classes = useStyles();
 
-  const [homeWorkDate, sethomeWorkDate] = useState([]);
+  const [suppliesDate, setSuppliesDate] = useState([]);
   const [progress, setProgress] = useState(false);
 
   const [gradesTeacher, setGradesTeacher] = useState([]);
@@ -76,6 +81,36 @@ export default function ListHomeWork(props) {
   const [description, setDescription] = useState('');
 
   const [progressLoadData, setProgressLoadData] = useState(true);
+
+  const [open, setOpen] = useState(false);
+  const [supplieDelete, setSupplieDelete] = useState('');
+
+  const handleClickOpen = (supplie) => {
+    setSupplieDelete(supplie);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = (supplie) => {
+    const db = firebase.firestore();
+
+    db.collection('all_supplies')
+      .doc(`${supplie.id}`)
+      .delete()
+      .then(function () {
+        console.log('Document successfully deleted!');
+        handleClose();
+        loadData();
+        notifySuccess(`Atividade excluida!`);
+      })
+      .catch(function (error) {
+        console.error('Error removing document: ', error);
+        notifyError('Falha ao excluir!');
+      });
+  };
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -221,7 +256,7 @@ export default function ListHomeWork(props) {
 
   const loadData = async () => {
     const db = firebase.firestore();
-    const homeWorkRef = db.collection('homework');
+    const suppliesRef = db.collection('all_supplies');
 
     if (
       grade !== '' &&
@@ -231,7 +266,7 @@ export default function ListHomeWork(props) {
       myClass !== ''
     ) {
       setProgress(true);
-      await homeWorkRef
+      await suppliesRef
         .where('discipline', '==', `${discipline}`)
         .where('grade', '==', `${grade}`)
         .where('school', '==', `${school}`)
@@ -239,11 +274,11 @@ export default function ListHomeWork(props) {
         .where('myClass', '==', `${myClass}`)
         .get()
         .then((querySnapshot) => {
-          const homeWork = [];
+          const supplies = [];
           querySnapshot.forEach((doc) => {
-            homeWork.push(doc.data());
+            supplies.push(doc.data());
           });
-          sethomeWorkDate(homeWork);
+          setSuppliesDate(supplies);
           setProgress(false);
         })
         .catch(function (error) {
@@ -258,7 +293,7 @@ export default function ListHomeWork(props) {
 
   useEffect(() => {
     return () => {
-      sethomeWorkDate([]);
+      setSuppliesDate([]);
     };
   }, []);
 
@@ -284,7 +319,7 @@ export default function ListHomeWork(props) {
                 margin: 10,
               }}
             >
-              <h1>Atividades</h1>
+              <h1>Atividades Enviadas</h1>
 
               {progressLoadData ? (
                 <div
@@ -497,16 +532,13 @@ export default function ListHomeWork(props) {
                         <b>Data</b>
                       </TableCell>
                       <TableCell align="left">
-                        <b>Aluno</b>
-                      </TableCell>
-                      <TableCell align="left">
                         <b>Descrição</b>
                       </TableCell>
                       <TableCell align="right"></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {homeWorkDate.map((supplie) => (
+                    {suppliesDate.map((supplie) => (
                       <TableRow key={supplie.id}>
                         <TableCell
                           component="th"
@@ -515,12 +547,7 @@ export default function ListHomeWork(props) {
                         >
                           {supplie.date}
                         </TableCell>
-                        <TableCell
-                          align="left"
-                          style={{ textAlign: 'justify' }}
-                        >
-                          {supplie.nameStudent}
-                        </TableCell>
+
                         <TableCell
                           align="left"
                           style={{ textAlign: 'justify' }}
@@ -528,22 +555,17 @@ export default function ListHomeWork(props) {
                           {supplie.description}
                         </TableCell>
                         <TableCell align="right">
-                          <a
-                            href={supplie.url}
-                            style={{ textDecoration: 'none' }}
-                            target="_blank"
+                          <Button
+                            variant="contained"
+                            size="small"
+                            style={{
+                              backgroundColor: '#E63D58',
+                              color: '#fff',
+                            }}
+                            onClick={() => handleClickOpen(supplie)}
                           >
-                            <Button
-                              variant="contained"
-                              size="small"
-                              style={{
-                                backgroundColor: 'rgba(126,64,144,1)',
-                                color: '#fff',
-                              }}
-                            >
-                              Download
-                            </Button>
-                          </a>
+                            Excluir
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -559,6 +581,34 @@ export default function ListHomeWork(props) {
           <Copyright />
         </Box>
       </main>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Você deseja excluir {supplieDelete.description} ?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Essa exclusão é irreversível
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => handleDelete(supplieDelete)}
+            color="secondary"
+            autoFocus
+          >
+            Excluir
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

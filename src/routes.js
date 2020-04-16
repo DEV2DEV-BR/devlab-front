@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import NavbarDashBoard from './components/NavbarDashboard';
 import Activitys from './pages/Activitys';
+import AllActivitysByTeacher from './pages/AllActivitysByTeacher';
 import AllNewActivitys from './pages/AllNewActivitys';
 import Dashboard from './pages/Dashboard';
 import ListHomeWork from './pages/ListHomeWorks';
@@ -13,8 +14,8 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import SignUpTeacher from './pages/SignUpTeacher';
 import Teachers from './pages/Teachers';
-import TeachersList from './pages/TeachersList';
 import TeachersEdit from './pages/TeachersEdit';
+import TeachersList from './pages/TeachersList';
 import UploadFiles from './pages/UploadFiles';
 import { istAuthenticated } from './services/auth';
 
@@ -53,6 +54,10 @@ const Routes = () => (
       <PrivateRoute path="/list-home-work" component={ListHomeWork} />
       <PrivateRoute path="/teachers" component={Teachers} />
       <PrivateRoute path="/teachers-list" component={TeachersList} />
+      <PrivateRoute
+        path="/all-activitys-by-teacher"
+        component={AllActivitysByTeacher}
+      />
       <PrivateRoute path="/teacher-edit" component={TeachersEdit} />
       <PrivateRoute path="/schools" component={Schools} />
       <PrivateRoute path="/profile" component={Profile} />

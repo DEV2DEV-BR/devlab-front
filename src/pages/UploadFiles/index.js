@@ -89,6 +89,9 @@ export default function UploadFiles(props) {
   const [periodsTeacher, setPeriodsTeacher] = useState([]);
   const [period, setPeriod] = useState('');
 
+  const [classTeacher, setClassTeacher] = useState([]);
+  const [myClass, setMyClass] = useState('');
+
   const [teachers, setTeachers] = useState([]);
   const [description, setDescription] = useState('');
   const [progress, setProgress] = useState(false);
@@ -112,6 +115,10 @@ export default function UploadFiles(props) {
 
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
+  };
+
+  const handleChangeMyClass = (event) => {
+    setMyClass(event.target.value);
   };
 
   const handleChange = (e) => {
@@ -142,6 +149,7 @@ export default function UploadFiles(props) {
           setSchoolsTeacher(...schoolsTeacher, doc.data().teacherSchools);
           setPeriodsTeacher(...periodsTeacher, doc.data().teacherPeriods);
           setGradesTeacher(...gradesTeacher, doc.data().teacherGrades);
+          setClassTeacher(...myClass, doc.data().teacherClass);
         });
         setTeachers(users);
         setProgressLoadData(false);
@@ -247,6 +255,7 @@ export default function UploadFiles(props) {
           school !== '' &&
           period !== '' &&
           discipline !== '' &&
+          myClass !== '' &&
           description !== ''
         ) {
           let date = new Date();
@@ -284,11 +293,13 @@ export default function UploadFiles(props) {
                       school,
                       grade,
                       period,
+                      myClass,
                       discipline,
                       url,
                       createdAt: date,
                       date: createdAt,
                       description,
+                      teacher: localStorage.getItem('user'),
                       id: '',
                     })
                     .then(function (doc) {
@@ -325,6 +336,7 @@ export default function UploadFiles(props) {
     setDescription('');
     setSchool('');
     setPeriod('');
+    setMyClass('');
   };
 
   return (
@@ -478,6 +490,34 @@ export default function UploadFiles(props) {
                         >
                           <option aria-label="None" value="" />
                           {periodsTeacher.map((p) => (
+                            <option value={p}>{p}</option>
+                          ))}
+                        </Select>
+                      </Grid>
+                    </FormControl>
+
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                      style={{ margin: 10 }}
+                    >
+                      <Grid item xs={12}>
+                        <InputLabel htmlFor="myClass">Turma*</InputLabel>
+                        <Select
+                          native
+                          value={myClass}
+                          onChange={handleChangeMyClass}
+                          fullWidth
+                          required
+                          label="Turma"
+                          inputProps={{
+                            name: 'myClass',
+                            id: 'myClass',
+                          }}
+                        >
+                          <option aria-label="None" value="" />
+                          {classTeacher.map((p) => (
                             <option value={p}>{p}</option>
                           ))}
                         </Select>

@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp(props) {
   const classes = useStyles();
   const [grade, setGrade] = useState('');
+  const [myClass, setMyClass] = useState('');
   const [school, setSchool] = useState('');
   const [period, setPeriod] = useState('');
   const [inputName, setInputName] = useState('');
@@ -66,6 +67,9 @@ export default function SignUp(props) {
   };
   const handleChangePeriod = (event) => {
     setPeriod(event.target.value);
+  };
+  const handleChangeMyClass = (event) => {
+    setMyClass(event.target.value);
   };
 
   const notifySuccess = (message) => {
@@ -104,7 +108,8 @@ export default function SignUp(props) {
       inputConfirmPassword !== '' &&
       grade !== '' &&
       school !== '' &&
-      period !== ''
+      period !== '' &&
+      myClass !== ''
     ) {
       if (inputPassword === inputConfirmPassword) {
         await firebase
@@ -120,6 +125,7 @@ export default function SignUp(props) {
                 email: success.user.email,
                 school,
                 period,
+                myClass,
                 grade,
                 uid: success.user.uid,
                 userType: 'student',
@@ -198,7 +204,7 @@ export default function SignUp(props) {
               className={classes.formControl}
             >
               <Grid item xs={12}>
-                <InputLabel htmlFor="serie">Escola*</InputLabel>
+                <InputLabel htmlFor="school">Escola*</InputLabel>
                 <Select
                   native
                   value={school}
@@ -292,6 +298,35 @@ export default function SignUp(props) {
                   <option value={7}>7º Ano</option>
                   <option value={8}>8º Ano</option>
                   <option value={9}>9º Ano</option>
+                </Select>
+              </Grid>
+            </FormControl>
+
+            <FormControl
+              variant="outlined"
+              fullWidth
+              className={classes.formControl}
+            >
+              <Grid item xs={12}>
+                <InputLabel htmlFor="myClass">Turma*</InputLabel>
+                <Select
+                  native
+                  value={myClass}
+                  onChange={handleChangeMyClass}
+                  fullWidth
+                  required
+                  label="Turma"
+                  inputProps={{
+                    name: 'myClass',
+                    id: 'myClass',
+                  }}
+                >
+                  <option aria-label="None" value="" />
+                  <option value={'A'}>A</option>
+                  <option value={'B'}>B</option>
+                  <option value={'C'}>C</option>
+                  <option value={'D'}>D</option>
+                  <option value={'E'}>E</option>
                 </Select>
               </Grid>
             </FormControl>

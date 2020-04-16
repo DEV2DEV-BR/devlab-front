@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AllNewActivitys(props) {
+export default function AllActivitysByTeacher(props) {
   const classes = useStyles();
 
   const [suppliesDate, setSuppliesDate] = useState([]);
@@ -54,6 +54,7 @@ export default function AllNewActivitys(props) {
       .where('school', '==', `${localStorage.getItem('school')}`)
       .where('period', '==', `${localStorage.getItem('period')}`)
       .where('grade', '==', `${localStorage.getItem('grade')}`)
+      .where('myClass', '==', `${localStorage.getItem('myClass')}`)
       .get()
       .then((querySnapshot) => {
         const supplies = [];
