@@ -89,18 +89,39 @@ export default function TeacherList(props) {
 
     db.collection('users')
       .doc(`${user.id}`)
-      .delete()
+      .update({
+        confirmed: false,
+      })
       .then(function () {
-        notifySuccess(`${user.name} foi excluido!`);
+        console.log('Document successfully updated!');
         handleClose();
         loadData();
-        console.log('Document successfully deleted!');
+        notifySuccess(`${user.name} foi desativado!`);
       })
       .catch(function (error) {
-        notifyError('Falha ao excluir!');
-        console.error('Error removing document: ', error);
+        // The document probably doesn't exist.
+        console.error('Error updating document: ', error);
+        notifyError('Falha ao desativar!');
       });
   };
+
+  // const handleDelete = (user) => {
+  //   const db = firebase.firestore();
+
+  //   db.collection('users')
+  //     .doc(`${user.id}`)
+  //     .delete()
+  //     .then(function () {
+  //       notifySuccess(`${user.name} foi excluido!`);
+  //       handleClose();
+  //       loadData();
+  //       console.log('Document successfully deleted!');
+  //     })
+  //     .catch(function (error) {
+  //       notifyError('Falha ao excluir!');
+  //       console.error('Error removing document: ', error);
+  //     });
+  // };
 
   const loadData = async () => {
     setProgress(true);
@@ -109,6 +130,7 @@ export default function TeacherList(props) {
 
     await usersRef
       .where('userType', '==', 'teacher')
+      .where('confirmed', '==', true)
       .get()
       .then((querySnapshot) => {
         const teachers = [];
@@ -224,7 +246,7 @@ export default function TeacherList(props) {
                             }}
                             onClick={() => handleClickOpen(teacher)}
                           >
-                            Excluir
+                            desativar
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -249,11 +271,11 @@ export default function TeacherList(props) {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            Você deseja excluir {userDelete.name} ?
+            Você deseja desativar {userDelete.name} ?
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Lembre-se, essa é uma operação irreversível!
+              Você poderá reativá-lo no futuro.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -265,7 +287,7 @@ export default function TeacherList(props) {
               color="secondary"
               autoFocus
             >
-              Excluir
+              Desativar
             </Button>
           </DialogActions>
         </Dialog>

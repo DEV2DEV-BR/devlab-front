@@ -214,11 +214,6 @@ export default function ListHomeWork(props) {
     const db = firebase.firestore();
     const suppliesRef = db.collection('homework');
 
-    console.log(grade);
-    console.log(discipline);
-    console.log(school);
-    console.log(period);
-
     if (grade !== '' && discipline !== '' && school !== '' && period !== '') {
       setProgress(true);
       await suppliesRef

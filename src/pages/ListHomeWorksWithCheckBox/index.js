@@ -117,27 +117,6 @@ export default function ListHomeWork(props) {
     setFilterGrade(query);
   };
 
-  // const ver = () => {
-  //   console.log("year_1 " + year_1);
-  //   console.log("year_2 " + year_2);
-  //   console.log("year_3 " + year_3);
-  //   console.log("year_4 " + year_4);
-  //   console.log("year_5 " + year_5);
-  //   console.log("year_6 " + year_6);
-  //   console.log("year_7 " + year_7);
-  //   console.log("year_8 " + year_8);
-  //   console.log("year_9 " + year_9);
-
-  //   console.log("arts " + arts);
-  //   console.log("sciences " + sciences);
-  //   console.log("physical_education " + physical_education);
-  //   console.log("geography " + geography);
-  //   console.log("history " + history);
-  //   console.log("english " + english);
-  //   console.log("mathematics " + mathematics);
-  //   console.log("language_portuguese " + language_portuguese);
-  // };
-
   const {
     year_1,
     year_2,
