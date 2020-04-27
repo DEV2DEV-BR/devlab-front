@@ -77,48 +77,18 @@ export default function UploadFiles(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
 
-  const [gradesTeacher, setGradesTeacher] = useState([]);
-  const [grade, setGrade] = useState('');
+  const [position, setPosition] = useState('');
 
-  const [disciplinesTeacher, setDisciplinesTeacher] = useState([]);
-  const [discipline, setDiscipline] = useState('');
-
-  const [schoolsTeacher, setSchoolsTeacher] = useState([]);
-  const [school, setSchool] = useState('');
-
-  const [periodsTeacher, setPeriodsTeacher] = useState([]);
-  const [period, setPeriod] = useState('');
-
-  const [classTeacher, setClassTeacher] = useState([]);
-  const [myClass, setMyClass] = useState('');
-
-  const [teachers, setTeachers] = useState([]);
   const [description, setDescription] = useState('');
   const [progress, setProgress] = useState(false);
   const [progressLoadData, setProgressLoadData] = useState(false);
-
-  const handleChangeDiscipline = (event) => {
-    setDiscipline(event.target.value);
-  };
-
-  const handleChangeSchool = (event) => {
-    setSchool(event.target.value);
-  };
-
-  const handleChangeGrade = (event) => {
-    setGrade(event.target.value);
-  };
-
-  const handleChangePeriod = (event) => {
-    setPeriod(event.target.value);
-  };
 
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
   };
 
-  const handleChangeMyClass = (event) => {
-    setMyClass(event.target.value);
+  const handleChangeposition = (event) => {
+    setPosition(event.target.value);
   };
 
   const handleChange = (e) => {
@@ -128,121 +98,45 @@ export default function UploadFiles(props) {
     }
   };
 
-  const loadTeacher = async () => {
-    setProgressLoadData(true);
-    const db = firebase.firestore();
+  // const loadTeacher = async () => {
+  //   setProgressLoadData(true);
+  //   const db = firebase.firestore();
 
-    const usersRef = db.collection('users');
+  //   const usersRef = db.collection('users');
 
-    await usersRef
-      .where('userType', '==', 'teacher')
-      .where('id', '==', localStorage.getItem('user'))
-      .get()
-      .then((querySnapshot) => {
-        const users = [];
-        querySnapshot.forEach((doc) => {
-          users.push(doc.data());
-          setDisciplinesTeacher(
-            ...disciplinesTeacher,
-            doc.data().teacherDisciplines
-          );
-          setSchoolsTeacher(...schoolsTeacher, doc.data().teacherSchools);
-          setPeriodsTeacher(...periodsTeacher, doc.data().teacherPeriods);
-          setGradesTeacher(...gradesTeacher, doc.data().teacherGrades);
-          setClassTeacher(...myClass, doc.data().teacherClass);
-        });
-        setTeachers(users);
-        setProgressLoadData(false);
-      })
-      .catch(function (error) {
-        console.log('Error getting documents: ', error);
-      });
-  };
+  //   await usersRef
+  //     .where('userType', '==', 'teacher')
+  //     .where('id', '==', localStorage.getItem('user'))
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       const users = [];
+  //       querySnapshot.forEach((doc) => {
+  //         users.push(doc.data());
+  //         setDisciplinesTeacher(
+  //           ...disciplinesTeacher,
+  //           doc.data().teacherDisciplines
+  //         );
+  //         setSchoolsTeacher(...schoolsTeacher, doc.data().teacherSchools);
+  //         setPeriodsTeacher(...periodsTeacher, doc.data().teacherPeriods);
+  //         setGradesTeacher(...gradesTeacher, doc.data().teacherGrades);
+  //         setClassTeacher(...myClass, doc.data().teacherClass);
+  //       });
+  //       setTeachers(users);
+  //       setProgressLoadData(false);
+  //     })
+  //     .catch(function (error) {
+  //       console.log('Error getting documents: ', error);
+  //     });
+  // };
 
-  useEffect(() => {
-    loadTeacher();
-  }, []);
+  // useEffect(() => {
+  //   loadTeacher();
+  // }, []);
 
-  const disciplinesSystem = [
-    {
-      id: 1,
-      name: 'Língua Portuguesa',
-    },
-    {
-      id: 2,
-      name: 'Matemática',
-    },
-    {
-      id: 3,
-      name: 'História',
-    },
-    {
-      id: 4,
-      name: 'Geografia',
-    },
-    {
-      id: 5,
-      name: 'Ciências',
-    },
-    {
-      id: 6,
-      name: 'Arte',
-    },
-    {
-      id: 7,
-      name: 'Educação Física',
-    },
-    {
-      id: 8,
-      name: 'Inglês',
-    },
-  ];
-
-  const schoolsSystem = [
-    {
-      id: '0HgQobTQkPyMtB7BLIBI',
-      name: 'EMEIF Álvares Machado',
-    },
-    {
-      id: 'Tr8VHeCJofsyx5nP9zIa',
-      name: 'EMEIF Professora Aparecida Marques Vaccaro',
-    },
-    {
-      id: 'cnh92zAndBb3T6DAvGsy',
-      name: 'EMEIF Governador Franco Montoro',
-    },
-    {
-      id: 'eqdFnW5EQg4JiOdwCA0Q',
-      name: 'EMEIF Governador Mário Covas',
-    },
-    {
-      id: 'oVOEa86ZL8hA8e6nOyu6',
-      name: 'EMEIF Márcia Helena Fernandez de Araújo',
-    },
-    {
-      id: 'vJG0RnawKCTIAYHjntj8',
-      name: 'EMEIF Vereador José Molina',
-    },
-    {
-      id: 'yxv6KHgmdzTGZINhBheq',
-      name: 'EMEIF Professora Tereza Ito Polidório',
-    },
-  ];
 
   const extensionsPermitted = [
-    'txt',
-    'doc',
-    'docx',
-    'xls',
-    'xlsx',
-    'odt',
-    'pdf',
-    'png',
-    'jpg',
-    'jpeg',
-    'ppt',
-    'pptx',
-    'pps',
+    'mp4',
+    'avi'
   ];
 
   const handleRegister = () => {
@@ -251,11 +145,7 @@ export default function UploadFiles(props) {
 
       if (extensionsPermitted.includes(extension)) {
         if (
-          grade !== '' &&
-          school !== '' &&
-          period !== '' &&
-          discipline !== '' &&
-          myClass !== '' &&
+          position !== '' &&
           description !== ''
         ) {
           let date = new Date();
@@ -290,16 +180,11 @@ export default function UploadFiles(props) {
                   cloudFirestore
                     .collection('all_supplies')
                     .add({
-                      school,
-                      grade,
-                      period,
-                      myClass,
-                      discipline,
+                      position,
                       url,
                       createdAt: date,
                       date: createdAt,
                       description,
-                      teacher: localStorage.getItem('user'),
                       id: '',
                     })
                     .then(function (doc) {
@@ -331,12 +216,8 @@ export default function UploadFiles(props) {
   };
 
   const handleClear = () => {
-    setGrade('');
-    setDiscipline('');
     setDescription('');
-    setSchool('');
-    setPeriod('');
-    setMyClass('');
+    setPosition('');
   };
 
   return (
@@ -351,9 +232,24 @@ export default function UploadFiles(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3} style={{ width: '80%' }}>
+          <Grid container spacing={3} style={{ width: '70%' }}>
             <form className={classes.form}>
-              <h1 style={{ marginLeft: 10 }}>Cadastrar Aulas</h1>
+              <FormControl
+                variant="outlined"
+                fullWidth
+                className={classes.formControl}
+                style={{ display: 'flex', borderWidth: '1px', borderColor: '#c6b3b3', borderStyle: 'solid', borderRadius: 4, margin: 10, padding: 10 }}
+              >
+                <Grid container spacing={2} >
+                  <Grid item xs={12} style={{ display: 'flex' }} >
+                    <img src="https://cdn.pixabay.com/photo/2015/01/20/13/13/ipad-605439_960_720.jpg" alt="course" style={{ width: '150px', borderRadius: 5 }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 10 }}>
+                      <h2 style={{ color: '#7a7171', margin: 0, padding: 0 }}>Nome do Curso</h2>
+                      <p style={{ color: '#918787', margin: 0, padding: 0 }}>Nº Aulas</p>
+                    </div>
+                  </Grid>
+                </Grid>
+              </FormControl>
 
               <Grid container spacing={2}>
                 {progressLoadData ? (
@@ -371,102 +267,6 @@ export default function UploadFiles(props) {
                   </div>
                 ) : (
                     <>
-                      <FormControl
-                        variant="outlined"
-                        fullWidth
-                        className={classes.formControl}
-                        style={{ margin: 10 }}
-                      >
-                        <Grid item xs={12}>
-                          <InputLabel htmlFor="serie">Escola*</InputLabel>
-                          <Select
-                            native
-                            value={school}
-                            onChange={handleChangeSchool}
-                            fullWidth
-                            required
-                            label="Escolas"
-                            inputProps={{
-                              name: 'school',
-                              id: 'school',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            {schoolsSystem.map((d) =>
-                              schoolsTeacher.map((td) =>
-                                td == d.id ? (
-                                  <option value={td}>{d.name}</option>
-                                ) : (
-                                    ''
-                                  )
-                              )
-                            )}
-                          </Select>
-                        </Grid>
-                      </FormControl>
-                      <FormControl
-                        variant="outlined"
-                        fullWidth
-                        className={classes.formControl}
-                        style={{ margin: 10 }}
-                      >
-                        <Grid item xs={12}>
-                          <InputLabel htmlFor="serie">Série*</InputLabel>
-                          <Select
-                            native
-                            value={grade}
-                            onChange={handleChangeGrade}
-                            fullWidth
-                            required
-                            label="Série"
-                            inputProps={{
-                              name: 'grade',
-                              id: 'grade',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            {gradesTeacher.map((t) => (
-                              <option value={t}>{t}º Ano</option>
-                            ))}
-                          </Select>
-                        </Grid>
-                      </FormControl>
-                      <FormControl
-                        variant="outlined"
-                        fullWidth
-                        className={classes.formControl}
-                        style={{ margin: 10 }}
-                      >
-                        <Grid item xs={12}>
-                          <InputLabel htmlFor="discipline">
-                            Disciplina*
-                        </InputLabel>
-                          <Select
-                            native
-                            value={discipline}
-                            onChange={handleChangeDiscipline}
-                            fullWidth
-                            required
-                            label="Disciplina"
-                            inputProps={{
-                              name: 'discipline',
-                              id: 'discipline',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-
-                            {disciplinesSystem.map((d) =>
-                              disciplinesTeacher.map((td) =>
-                                td == d.id ? (
-                                  <option value={td}>{d.name}</option>
-                                ) : (
-                                    ''
-                                  )
-                              )
-                            )}
-                          </Select>
-                        </Grid>
-                      </FormControl>
 
                       <FormControl
                         variant="outlined"
@@ -475,49 +275,21 @@ export default function UploadFiles(props) {
                         style={{ margin: 10 }}
                       >
                         <Grid item xs={12}>
-                          <InputLabel htmlFor="period">Período*</InputLabel>
+                          <InputLabel htmlFor="position">Position*</InputLabel>
                           <Select
                             native
-                            value={period}
-                            onChange={handleChangePeriod}
+                            value={position}
+                            onChange={handleChangeposition}
                             fullWidth
                             required
-                            label="Período"
+                            label="Position"
                             inputProps={{
-                              name: 'period',
-                              id: 'period',
+                              name: 'position',
+                              id: 'position',
                             }}
                           >
                             <option aria-label="None" value="" />
-                            {periodsTeacher.map((p) => (
-                              <option value={p}>{p}</option>
-                            ))}
-                          </Select>
-                        </Grid>
-                      </FormControl>
-
-                      <FormControl
-                        variant="outlined"
-                        fullWidth
-                        className={classes.formControl}
-                        style={{ margin: 10 }}
-                      >
-                        <Grid item xs={12}>
-                          <InputLabel htmlFor="myClass">Turma*</InputLabel>
-                          <Select
-                            native
-                            value={myClass}
-                            onChange={handleChangeMyClass}
-                            fullWidth
-                            required
-                            label="Turma"
-                            inputProps={{
-                              name: 'myClass',
-                              id: 'myClass',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            {classTeacher.map((p) => (
+                            {[1, 2, 3].map((p) => (
                               <option value={p}>{p}</option>
                             ))}
                           </Select>

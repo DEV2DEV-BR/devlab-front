@@ -2,25 +2,21 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import AccountBox from '@material-ui/icons/AccountBox';
+import AddToQueue from '@material-ui/icons/AddToQueue';
 import BackupIcon from '@material-ui/icons/Backup';
-import Functions from '@material-ui/icons/Functions';
+import FormatListNumbered from '@material-ui/icons/FormatListNumbered';
 import School from '@material-ui/icons/School';
 import React from 'react';
 
 export default function secondaryListItems(props) {
-  const redirectUploadFiles = () => {
-    props.props.props.push('/upload-files');
+  const redirectCreateCourse = () => {
+    props.props.props.push('/create-course');
   };
-
-  const redirectHomeWork = () => {
-    props.props.props.push('/list-home-work');
+  const redirectAddClasses = () => {
+    props.props.props.push('/add-classes');
   };
-  const redirectTeachers = () => {
-    props.props.props.push('/teachers');
-  };
-  const redirectProfile = () => {
-    props.props.props.push('/profile');
+  const redirectListCourses = () => {
+    props.props.props.push('/list-my-courses');
   };
 
   const type = localStorage.getItem('userData');
@@ -34,30 +30,28 @@ export default function secondaryListItems(props) {
         </ListItemIcon>
         <ListItemText primary="Minha Conta" />
       </ListItem> */}
-      <ListSubheader inset>Gestão</ListSubheader>
-      <ListItem button onClick={() => redirectUploadFiles()}>
+      <ListSubheader inset>Gerenciar Cursos</ListSubheader>
+      <ListItem button onClick={() => redirectCreateCourse()}>
+        <ListItemIcon>
+          <AddToQueue />
+        </ListItemIcon>
+        <ListItemText primary="Criar Curso" />
+      </ListItem>
+      <ListItem button onClick={() => redirectAddClasses()}>
         <ListItemIcon>
           <BackupIcon />
         </ListItemIcon>
-        <ListItemText primary="Enviar materiais" />
+        <ListItemText primary="Adicionar Aulas" />
       </ListItem>
-      <ListItem button onClick={() => redirectHomeWork()}>
+      <ListSubheader inset>Meus Cursos</ListSubheader>
+      <ListItem button onClick={() => redirectListCourses()}>
         <ListItemIcon>
-          <Functions />
+          <FormatListNumbered />
         </ListItemIcon>
-        <ListItemText primary="Atividades" />
+        <ListItemText primary="Meus Cursos" />
       </ListItem>
 
-      {type === 'admin' || type === 'management' ? (
-        <ListItem button onClick={() => redirectTeachers()}>
-          <ListItemIcon>
-            <School />
-          </ListItemIcon>
-          <ListItemText primary="Professores" />
-        </ListItem>
-      ) : (
-        ''
-      )}
+
     </div>
   );
 }

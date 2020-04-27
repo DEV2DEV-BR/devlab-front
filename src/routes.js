@@ -6,7 +6,7 @@ import Main from './pages/Main';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import UploadFiles from './pages/UploadFiles';
+import UploadClasses from './pages/UploadClasses';
 import { istAuthenticated } from './services/auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -33,7 +33,7 @@ const Routes = () => (
       <Route path="/signUp" component={SignUp} />
 
       <PrivateRoute path="/dashboard" component={Dashboard} />
-      <PrivateRoute path="/upload-files" component={UploadFiles} />
+      <PrivateRoute path="/add-classes" component={UploadClasses} />
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   </BrowserRouter>
