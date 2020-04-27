@@ -8,10 +8,8 @@ import clsx from 'clsx';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import Admin from './admin';
-import ChildishOne from './childishOne';
-import ChildishTwo from './childishTwo';
-import FundamentalOne from './fundamentalOne';
-import FundamentalTwo from './fundamentalTwo';
+import Teacher from './teacher';
+import Student from './students';
 
 const drawerWidth = 240;
 
@@ -148,50 +146,30 @@ export default function MenuLeft(props) {
               <ChevronLeftIcon />
             </>
           ) : (
-            <ChevronRightIcon />
-          )}
+              <ChevronRightIcon />
+            )}
         </IconButton>
       </div>
 
-      {userData.userType === 'student' && userData.grade === 0 ? (
-        <ChildishOne props={props} />
-      ) : (
-        ''
-      )}
-      {userData.userType === 'student' && userData.grade === 10 ? (
-        <ChildishTwo props={props} />
-      ) : (
-        ''
-      )}
       {userData.userType === 'student' &&
-      userData.grade > 0 &&
-      userData.grade <= 5 ? (
-        <FundamentalOne props={props} />
-      ) : (
-        ''
-      )}
-      {userData.userType === 'student' && userData.grade > 5 ? (
-        <FundamentalTwo props={props} />
-      ) : (
-        ''
-      )}
 
-      {userData.userType === 'admin' || userData.userType === 'management' ? (
+        <Student props={props} />
+
+      }
+
+
+      {userData.userType === 'admin' && (
         <>
           <Divider />
           <Admin props={props} />
         </>
-      ) : (
-        ''
       )}
 
-      {userData.userType === 'teacher' && userData.confirmed ? (
+      {userData.userType === 'teacher' && (
         <>
           <Divider />
-          <Admin props={props} />
+          <Teacher props={props} />
         </>
-      ) : (
-        ''
       )}
 
       <Divider />

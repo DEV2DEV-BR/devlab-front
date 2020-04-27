@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
+    display: 'flex',
+    justifyContent: 'center'
   },
   table: {
     minWidth: 650,
@@ -52,15 +54,12 @@ export default function Activitys(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
   const [inputName, setInputName] = useState('');
-  const [myClass, setMyClass] = useState('');
+  const [inputCellphone, setInputCellphone] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
   const [progressLoad, setProgressLoad] = useState(false);
-  const [grade, setGrade] = useState([]);
-  const [school, setSchool] = useState([]);
-  const [period, setPeriod] = useState([]);
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -99,10 +98,7 @@ export default function Activitys(props) {
             querySnapshot.forEach((doc) => {
               setInputName(doc.data().name);
               setInputEmail(doc.data().email);
-              setSchool(doc.data().school);
-              setPeriod(doc.data().period);
-              setGrade(doc.data().grade);
-              setMyClass(doc.data().myClass);
+              setInputCellphone(doc.data().cellphone);
               setProgressLoad(false);
             });
           });
@@ -114,20 +110,6 @@ export default function Activitys(props) {
     loadData();
   }, []);
 
-  const handleChangeGrade = (event) => {
-    setGrade(event.target.value);
-  };
-
-  const handleChangeSchool = (event) => {
-    setSchool(event.target.value);
-  };
-  const handleChangePeriod = (event) => {
-    setPeriod(event.target.value);
-  };
-
-  const handleChangeMyClass = (event) => {
-    setMyClass(event.target.value);
-  };
 
   const handleRegister = () => {
     setProgress(true);
@@ -137,9 +119,7 @@ export default function Activitys(props) {
 
     if (
       inputName !== '' &&
-      school[0] !== undefined &&
-      period !== '' &&
-      grade !== ''
+      inputCellphone !== ''
     ) {
       if (inputPassword !== '' && inputConfirmPassword !== '') {
         if (inputPassword === inputConfirmPassword) {
@@ -152,16 +132,9 @@ export default function Activitys(props) {
               userRef
                 .update({
                   name: inputName,
-                  school,
-                  period,
-                  grade,
-                  myClass,
+                  cellphone: inputCellphone,
                 })
                 .then(function () {
-                  localStorage.setItem('period', period);
-                  localStorage.setItem('school', school);
-                  localStorage.setItem('grade', grade);
-                  localStorage.setItem('myClass', myClass);
                   notifySuccess('Dados atualizados com sucesso!');
                   setProgress(false);
                 })
@@ -183,17 +156,10 @@ export default function Activitys(props) {
         userRef
           .update({
             name: inputName,
-            school,
-            period,
-            grade,
-            myClass,
+            cellphone: inputCellphone,
           })
           .then(function () {
             setProgress(false);
-            localStorage.setItem('period', period);
-            localStorage.setItem('school', school);
-            localStorage.setItem('grade', grade);
-            localStorage.setItem('myClass', myClass);
             notifySuccess('Dados atualizados com sucesso!');
           })
           .catch(function (error) {
@@ -226,14 +192,13 @@ export default function Activitys(props) {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              width: '50%',
             }}
           >
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
                 margin: 10,
               }}
             >
@@ -252,8 +217,8 @@ export default function Activitys(props) {
                   <p style={{ margin: 10 }}>Aguarde...</p>
                 </div>
               ) : (
-                <>
-                  {/* <Avatar
+                  <>
+                    {/* <Avatar
                     style={{ width: '150px', height: '150px' }}
                     className={classes.avatar}
                     src={ProfilePicture}
@@ -261,223 +226,111 @@ export default function Activitys(props) {
 
                   <input type="file" onChange={() => {}} /> */}
 
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        autoComplete="fname"
-                        name="fullName"
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="fullName"
-                        value={inputName}
-                        onChange={(event) => setInputName(event.target.value)}
-                        label="Nome Completo"
-                        autoFocus
-                      />
-                    </Grid>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        disabled
-                        id="email"
-                        value={inputEmail}
-                        onChange={(event) => setInputEmail(event.target.value)}
-                        label="E-mail"
-                        name="email"
-                        autoComplete="email"
-                      />
-                    </Grid>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <InputLabel htmlFor="serie">Escola*</InputLabel>
-                      <Select
-                        native
-                        value={school}
-                        onChange={handleChangeSchool}
-                        fullWidth
-                        required
-                        label="Escola"
-                        inputProps={{
-                          name: 'school',
-                          id: 'school',
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        <option value={'0HgQobTQkPyMtB7BLIBI'}>
-                          EMEIF Álvares Machado
-                        </option>
-                        <option value={'Tr8VHeCJofsyx5nP9zIa'}>
-                          EMEIF Professora Aparecida Marques Vaccaro
-                        </option>
-                        <option value={'cnh92zAndBb3T6DAvGsy'}>
-                          EMEIF Governador Franco Montoro
-                        </option>
-                        <option value={'eqdFnW5EQg4JiOdwCA0Q'}>
-                          EMEIF Governador Mário Covas
-                        </option>
-                        <option value={'oVOEa86ZL8hA8e6nOyu6'}>
-                          EMEIF Márcia Helena Fernandez de Araújo
-                        </option>
-                        <option value={'vJG0RnawKCTIAYHjntj8'}>
-                          EMEIF Vereador José Molina
-                        </option>
-                        <option value={'yxv6KHgmdzTGZINhBheq'}>
-                          EMEIF Professora Tereza Ito Polidório
-                        </option>
-                      </Select>
-                    </Grid>
-                  </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          autoComplete="fname"
+                          name="fullName"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="fullName"
+                          value={inputName}
+                          onChange={(event) => setInputName(event.target.value)}
+                          label="Nome Completo"
+                          autoFocus
+                        />
+                      </Grid>
+                    </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          disabled
+                          id="email"
+                          value={inputEmail}
+                          onChange={(event) => setInputEmail(event.target.value)}
+                          label="E-mail"
+                          name="email"
+                          autoComplete="email"
+                        />
+                      </Grid>
+                    </FormControl>
 
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <InputLabel htmlFor="serie">Período*</InputLabel>
-                      <Select
-                        native
-                        value={period}
-                        onChange={handleChangePeriod}
-                        fullWidth
-                        required
-                        label="Período"
-                        inputProps={{
-                          name: 'period',
-                          id: 'period',
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        <option value={'Matutino'}>Manhã</option>
-                        <option value={'Vespertino'}>Tarde</option>
-                        <option value={'Noturno'}>Noite</option>
-                      </Select>
-                    </Grid>
-                  </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          disabled
+                          id="cellphone"
+                          value={inputCellphone}
+                          onChange={(event) => setInputCellphone(event.target.value)}
+                          label="Celular"
+                          name="cellphone"
+                          autoComplete="cellphone"
+                        />
+                      </Grid>
+                    </FormControl>
 
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <InputLabel htmlFor="serie">Série*</InputLabel>
-                      <Select
-                        native
-                        value={grade}
-                        onChange={handleChangeGrade}
-                        fullWidth
-                        required
-                        label="Série"
-                        inputProps={{
-                          name: 'serie',
-                          id: 'serie',
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        <option value={1}>1º Ano</option>
-                        <option value={2}>2º Ano</option>
-                        <option value={3}>3º Ano</option>
-                        <option value={4}>4º Ano</option>
-                        <option value={5}>5º Ano</option>
-                        <option value={6}>6º Ano</option>
-                        <option value={7}>7º Ano</option>
-                        <option value={8}>8º Ano</option>
-                        <option value={9}>9º Ano</option>
-                      </Select>
-                    </Grid>
-                  </FormControl>
 
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <InputLabel htmlFor="myClass">Turma*</InputLabel>
-                      <Select
-                        native
-                        value={myClass}
-                        onChange={handleChangeMyClass}
-                        fullWidth
-                        required
-                        label="Turma"
-                        inputProps={{
-                          name: 'myClass',
-                          id: 'myClass',
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        <option value={'A'}>A</option>
-                        <option value={'B'}>B</option>
-                        <option value={'C'}>C</option>
-                        <option value={'D'}>D</option>
-                        <option value={'E'}>E</option>
-                      </Select>
-                    </Grid>
-                  </FormControl>
-
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        name="password"
-                        label="Senha"
-                        value={inputPassword}
-                        onChange={(event) =>
-                          setInputPassword(event.target.value)
-                        }
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                      />
-                    </Grid>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        name="confirm-password"
-                        label="Confirmação de senha"
-                        type="password"
-                        value={inputConfirmPassword}
-                        onChange={(event) =>
-                          setInputConfirmPassword(event.target.value)
-                        }
-                        id="confirm-password"
-                        autoComplete="current-password"
-                      />
-                    </Grid>
-                  </FormControl>
-                </>
-              )}
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          name="password"
+                          label="Senha"
+                          value={inputPassword}
+                          onChange={(event) =>
+                            setInputPassword(event.target.value)
+                          }
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                        />
+                      </Grid>
+                    </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          name="confirm-password"
+                          label="Confirmação de senha"
+                          type="password"
+                          value={inputConfirmPassword}
+                          onChange={(event) =>
+                            setInputConfirmPassword(event.target.value)
+                          }
+                          id="confirm-password"
+                          autoComplete="current-password"
+                        />
+                      </Grid>
+                    </FormControl>
+                  </>
+                )}
 
               {progress ? (
                 <div
@@ -493,41 +346,41 @@ export default function Activitys(props) {
                   <p style={{ margin: 10 }}>Atualizando...</p>
                 </div>
               ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    width: '100%',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    onClick={handleRegister}
+                  <div
                     style={{
-                      backgroundColor: '#318F6B',
-                      color: '#fff',
-                      marginRight: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                      justifyContent: 'space-between',
                     }}
-                    className={classes.submit}
                   >
-                    ATUALIZAR
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      onClick={handleRegister}
+                      style={{
+                        backgroundColor: '#318F6B',
+                        color: '#fff',
+                        marginRight: 10,
+                      }}
+                      className={classes.submit}
+                    >
+                      ATUALIZAR
                   </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
-                      color: '#fff',
-                    }}
-                    className={classes.submitRight}
-                  >
-                    Cancelar
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: 'rgba(126,64,144,1)',
+                        color: '#fff',
+                      }}
+                      className={classes.submitRight}
+                    >
+                      Cancelar
                   </Button>
-                </div>
-              )}
+                  </div>
+                )}
             </div>
           </Grid>
         </Container>
