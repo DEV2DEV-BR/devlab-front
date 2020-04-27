@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import Budget from '../../components/Budget';
+import CoursesList from '../../components/CoursesList';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
 
@@ -39,7 +39,7 @@ export default function Dashboard(props) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <Budget />
+            <CoursesList />
           </Grid>
         </Container>
         <Box pt={4}>

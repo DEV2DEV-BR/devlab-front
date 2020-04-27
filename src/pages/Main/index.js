@@ -85,7 +85,7 @@ export default function Album() {
               paragraph
               style={{ color: '#fff', textShadow: '#000' }}
             >
-              <div>Bem vindo ao School Docs! </div>
+              <div><p>Bem vindo ao School Docs! </p></div>
               Após fazer o login, você terá acesso a todos os materiais
               disponíveis para download.
             </Typography>
@@ -124,8 +124,8 @@ export default function Album() {
                 </Grid>
               </div>
             ) : (
-              ''
-            )}
+                ''
+              )}
           </Container>
         </div>
         <Container className={classe.cardGrid} maxWidth="md">

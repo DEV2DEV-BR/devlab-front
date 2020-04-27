@@ -7,30 +7,30 @@ import PanoramaIcon from '@material-ui/icons/Panorama';
 import React from 'react';
 
 export default function mainListItems(props) {
-  const handleToActivitys = (idSubject, subjects) => {
-    props.props.props.push('/activitys', { idSubject, subjects });
+  const handleToMyCourses = () => {
+    props.props.props.push('/activitys');
   };
-
   const redirectProfile = () => {
     props.props.props.push('/profile');
   };
 
   return (
     <div>
-      <ListSubheader inset>Usuário</ListSubheader>
+      <ListSubheader inset>Minha Conta</ListSubheader>
       <ListItem button onClick={() => redirectProfile()}>
         <ListItemIcon>
           <AccountBox />
         </ListItemIcon>
-        <ListItemText primary="Minha Conta" />
+        <ListItemText primary="Perfil" />
       </ListItem>
-      <ListSubheader inset>Disciplinas</ListSubheader>
-      <ListItem button onClick={() => handleToActivitys(10, 'Infantil I')}>
+      <ListSubheader inset>Estudos</ListSubheader>
+      <ListItem button onClick={() => handleToMyCourses()}>
         <ListItemIcon>
           <PanoramaIcon />
         </ListItemIcon>
-        <ListItemText primary="Infantil I" />
+        <ListItemText primary="Meus Cursos" />
       </ListItem>
+
     </div>
   );
 }

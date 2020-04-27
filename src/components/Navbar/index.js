@@ -67,7 +67,7 @@ export default function Album() {
             <Typography variant="h6" color="inherit" noWrap>
               <img
                 src={Logo}
-                style={{ maxHeight: 90, padding: 0, margin: 0 }}
+                style={{ maxHeight: 90, padding: 0, margin: 0, width: 60 }}
                 alt="Logo"
               />
             </Typography>
@@ -93,25 +93,25 @@ export default function Album() {
             </Link>
           </>
         ) : (
-          <div>
-            <Link
-              to="/dashboard"
-              style={{
-                marginLeft: 10,
-                marginRight: 10,
-                textDecoration: 'none',
-              }}
-            >
-              <Button
-                variant="contained"
-                size="small"
-                style={{ backgroundColor: '#318F6B', color: '#fff' }}
+            <div>
+              <Link
+                to="/dashboard"
+                style={{
+                  marginLeft: 10,
+                  marginRight: 10,
+                  textDecoration: 'none',
+                }}
               >
-                Voltar para dashboard
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{ backgroundColor: '#318F6B', color: '#fff' }}
+                >
+                  Voltar para dashboard
               </Button>
-            </Link>
-          </div>
-        )}
+              </Link>
+            </div>
+          )}
       </Toolbar>
     </AppBar>
   );

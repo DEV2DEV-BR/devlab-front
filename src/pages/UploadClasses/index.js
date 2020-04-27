@@ -273,7 +273,7 @@ export default function UploadFiles(props) {
             .put(image);
           uploadTask.on(
             'state_changed',
-            (snapshot) => {},
+            (snapshot) => { },
             (error) => {
               // Error function ...
               console.log(error);
@@ -353,7 +353,7 @@ export default function UploadFiles(props) {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3} style={{ width: '80%' }}>
             <form className={classes.form}>
-              <h1 style={{ marginLeft: 10 }}>Cadastro de Materiais</h1>
+              <h1 style={{ marginLeft: 10 }}>Cadastrar Aulas</h1>
 
               <Grid container spacing={2}>
                 {progressLoadData ? (
@@ -370,161 +370,161 @@ export default function UploadFiles(props) {
                     <p style={{ margin: 10 }}>Carregando...</p>
                   </div>
                 ) : (
-                  <>
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                      style={{ margin: 10 }}
-                    >
-                      <Grid item xs={12}>
-                        <InputLabel htmlFor="serie">Escola*</InputLabel>
-                        <Select
-                          native
-                          value={school}
-                          onChange={handleChangeSchool}
-                          fullWidth
-                          required
-                          label="Escolas"
-                          inputProps={{
-                            name: 'school',
-                            id: 'school',
-                          }}
-                        >
-                          <option aria-label="None" value="" />
-                          {schoolsSystem.map((d) =>
-                            schoolsTeacher.map((td) =>
-                              td == d.id ? (
-                                <option value={td}>{d.name}</option>
-                              ) : (
-                                ''
+                    <>
+                      <FormControl
+                        variant="outlined"
+                        fullWidth
+                        className={classes.formControl}
+                        style={{ margin: 10 }}
+                      >
+                        <Grid item xs={12}>
+                          <InputLabel htmlFor="serie">Escola*</InputLabel>
+                          <Select
+                            native
+                            value={school}
+                            onChange={handleChangeSchool}
+                            fullWidth
+                            required
+                            label="Escolas"
+                            inputProps={{
+                              name: 'school',
+                              id: 'school',
+                            }}
+                          >
+                            <option aria-label="None" value="" />
+                            {schoolsSystem.map((d) =>
+                              schoolsTeacher.map((td) =>
+                                td == d.id ? (
+                                  <option value={td}>{d.name}</option>
+                                ) : (
+                                    ''
+                                  )
                               )
-                            )
-                          )}
-                        </Select>
-                      </Grid>
-                    </FormControl>
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                      style={{ margin: 10 }}
-                    >
-                      <Grid item xs={12}>
-                        <InputLabel htmlFor="serie">Série*</InputLabel>
-                        <Select
-                          native
-                          value={grade}
-                          onChange={handleChangeGrade}
-                          fullWidth
-                          required
-                          label="Série"
-                          inputProps={{
-                            name: 'grade',
-                            id: 'grade',
-                          }}
-                        >
-                          <option aria-label="None" value="" />
-                          {gradesTeacher.map((t) => (
-                            <option value={t}>{t}º Ano</option>
-                          ))}
-                        </Select>
-                      </Grid>
-                    </FormControl>
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                      style={{ margin: 10 }}
-                    >
-                      <Grid item xs={12}>
-                        <InputLabel htmlFor="discipline">
-                          Disciplina*
+                            )}
+                          </Select>
+                        </Grid>
+                      </FormControl>
+                      <FormControl
+                        variant="outlined"
+                        fullWidth
+                        className={classes.formControl}
+                        style={{ margin: 10 }}
+                      >
+                        <Grid item xs={12}>
+                          <InputLabel htmlFor="serie">Série*</InputLabel>
+                          <Select
+                            native
+                            value={grade}
+                            onChange={handleChangeGrade}
+                            fullWidth
+                            required
+                            label="Série"
+                            inputProps={{
+                              name: 'grade',
+                              id: 'grade',
+                            }}
+                          >
+                            <option aria-label="None" value="" />
+                            {gradesTeacher.map((t) => (
+                              <option value={t}>{t}º Ano</option>
+                            ))}
+                          </Select>
+                        </Grid>
+                      </FormControl>
+                      <FormControl
+                        variant="outlined"
+                        fullWidth
+                        className={classes.formControl}
+                        style={{ margin: 10 }}
+                      >
+                        <Grid item xs={12}>
+                          <InputLabel htmlFor="discipline">
+                            Disciplina*
                         </InputLabel>
-                        <Select
-                          native
-                          value={discipline}
-                          onChange={handleChangeDiscipline}
-                          fullWidth
-                          required
-                          label="Disciplina"
-                          inputProps={{
-                            name: 'discipline',
-                            id: 'discipline',
-                          }}
-                        >
-                          <option aria-label="None" value="" />
+                          <Select
+                            native
+                            value={discipline}
+                            onChange={handleChangeDiscipline}
+                            fullWidth
+                            required
+                            label="Disciplina"
+                            inputProps={{
+                              name: 'discipline',
+                              id: 'discipline',
+                            }}
+                          >
+                            <option aria-label="None" value="" />
 
-                          {disciplinesSystem.map((d) =>
-                            disciplinesTeacher.map((td) =>
-                              td == d.id ? (
-                                <option value={td}>{d.name}</option>
-                              ) : (
-                                ''
+                            {disciplinesSystem.map((d) =>
+                              disciplinesTeacher.map((td) =>
+                                td == d.id ? (
+                                  <option value={td}>{d.name}</option>
+                                ) : (
+                                    ''
+                                  )
                               )
-                            )
-                          )}
-                        </Select>
-                      </Grid>
-                    </FormControl>
+                            )}
+                          </Select>
+                        </Grid>
+                      </FormControl>
 
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                      style={{ margin: 10 }}
-                    >
-                      <Grid item xs={12}>
-                        <InputLabel htmlFor="period">Período*</InputLabel>
-                        <Select
-                          native
-                          value={period}
-                          onChange={handleChangePeriod}
-                          fullWidth
-                          required
-                          label="Período"
-                          inputProps={{
-                            name: 'period',
-                            id: 'period',
-                          }}
-                        >
-                          <option aria-label="None" value="" />
-                          {periodsTeacher.map((p) => (
-                            <option value={p}>{p}</option>
-                          ))}
-                        </Select>
-                      </Grid>
-                    </FormControl>
+                      <FormControl
+                        variant="outlined"
+                        fullWidth
+                        className={classes.formControl}
+                        style={{ margin: 10 }}
+                      >
+                        <Grid item xs={12}>
+                          <InputLabel htmlFor="period">Período*</InputLabel>
+                          <Select
+                            native
+                            value={period}
+                            onChange={handleChangePeriod}
+                            fullWidth
+                            required
+                            label="Período"
+                            inputProps={{
+                              name: 'period',
+                              id: 'period',
+                            }}
+                          >
+                            <option aria-label="None" value="" />
+                            {periodsTeacher.map((p) => (
+                              <option value={p}>{p}</option>
+                            ))}
+                          </Select>
+                        </Grid>
+                      </FormControl>
 
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                      style={{ margin: 10 }}
-                    >
-                      <Grid item xs={12}>
-                        <InputLabel htmlFor="myClass">Turma*</InputLabel>
-                        <Select
-                          native
-                          value={myClass}
-                          onChange={handleChangeMyClass}
-                          fullWidth
-                          required
-                          label="Turma"
-                          inputProps={{
-                            name: 'myClass',
-                            id: 'myClass',
-                          }}
-                        >
-                          <option aria-label="None" value="" />
-                          {classTeacher.map((p) => (
-                            <option value={p}>{p}</option>
-                          ))}
-                        </Select>
-                      </Grid>
-                    </FormControl>
-                  </>
-                )}
+                      <FormControl
+                        variant="outlined"
+                        fullWidth
+                        className={classes.formControl}
+                        style={{ margin: 10 }}
+                      >
+                        <Grid item xs={12}>
+                          <InputLabel htmlFor="myClass">Turma*</InputLabel>
+                          <Select
+                            native
+                            value={myClass}
+                            onChange={handleChangeMyClass}
+                            fullWidth
+                            required
+                            label="Turma"
+                            inputProps={{
+                              name: 'myClass',
+                              id: 'myClass',
+                            }}
+                          >
+                            <option aria-label="None" value="" />
+                            {classTeacher.map((p) => (
+                              <option value={p}>{p}</option>
+                            ))}
+                          </Select>
+                        </Grid>
+                      </FormControl>
+                    </>
+                  )}
 
                 <FormControl
                   variant="outlined"
@@ -566,34 +566,34 @@ export default function UploadFiles(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                <div style={{ display: 'flex', width: '100%' }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    disabled={!!progress}
-                    style={{
-                      backgroundColor: '#318F6B',
-                      color: '#fff',
-                    }}
-                    onClick={handleRegister}
-                    className={classes.submitLeft}
-                  >
-                    CADASTRAR
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      disabled={!!progress}
+                      style={{
+                        backgroundColor: '#318F6B',
+                        color: '#fff',
+                      }}
+                      onClick={handleRegister}
+                      className={classes.submitLeft}
+                    >
+                      CADASTRAR
                   </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
-                      color: '#fff',
-                    }}
-                    onClick={handleClear}
-                    className={classes.submitRight}
-                  >
-                    LIMPAR
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: 'rgba(126,64,144,1)',
+                        color: '#fff',
+                      }}
+                      onClick={handleClear}
+                      className={classes.submitRight}
+                    >
+                      LIMPAR
                   </Button>
-                </div>
-              )}
+                  </div>
+                )}
             </form>
           </Grid>
         </Container>
