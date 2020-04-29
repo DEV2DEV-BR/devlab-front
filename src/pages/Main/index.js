@@ -8,8 +8,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Background from '../../assets/background.jpg';
 import Copyright from '../../components/Copyright';
+import CoursesList from '../../components/CoursesList';
 import Navbar from '../../components/Navbar';
-import CoursesList from '../../components/CoursesList'
 import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
