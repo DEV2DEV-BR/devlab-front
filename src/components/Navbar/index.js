@@ -65,11 +65,12 @@ export default function Album() {
         >
           <Link style={{ textDecoration: 'none', color: '#fff' }} to="/">
             <Typography variant="h6" color="inherit" noWrap>
-              <img
+              {/* <img
                 src={Logo}
                 style={{ maxHeight: 90, padding: 0, margin: 0, width: 60 }}
                 alt="Logo"
-              />
+              /> */}
+              <h3>{`<JACODE/> XD`}</h3>
             </Typography>
           </Link>
         </Typography>
