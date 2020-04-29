@@ -1,7 +1,4 @@
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -10,10 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Background from '../../assets/background.jpg';
-import IMG1 from '../../assets/img1.jpg';
-import IMG2 from '../../assets/img2.jpg';
-import IMG3 from '../../assets/img3.jpg';
 import Copyright from '../../components/Copyright';
+import CoursesList from '../../components/CoursesList';
 import Navbar from '../../components/Navbar';
 import { istAuthenticated } from '../../services/auth';
 
@@ -76,7 +71,7 @@ export default function Album() {
               gutterBottom
               style={{ color: '#fff', textShadow: '#000' }}
             >
-              School Docs
+              JACODE CURSOS
             </Typography>
             <Typography
               variant="h5"
@@ -85,7 +80,7 @@ export default function Album() {
               paragraph
               style={{ color: '#fff', textShadow: '#000' }}
             >
-              <div><p>Bem vindo ao School Docs! </p></div>
+              <div><p>Bem vindo à JACODE CURSOS! </p></div>
               Após fazer o login, você terá acesso a todos os materiais
               disponíveis para download.
             </Typography>
@@ -128,62 +123,11 @@ export default function Album() {
               )}
           </Container>
         </div>
+        {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}
         <Container className={classe.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            <Grid item key={1} xs={12} sm={6} md={4}>
-              <Card className={classe.card}>
-                <CardMedia
-                  className={classe.cardMedia}
-                  image={IMG1}
-                  title="Image title"
-                />
-                <CardContent className={classe.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Cadastre-se
-                  </Typography>
-                  <Typography>
-                    Para acessar a plataforma, faça o seu cadastro com{' '}
-                    <b>NOME COMPLETO</b> e série <b>CORRETA</b>.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item key={2} xs={12} sm={6} md={4}>
-              <Card className={classe.card}>
-                <CardMedia
-                  className={classe.cardMedia}
-                  image={IMG3}
-                  title="Image title"
-                />
-                <CardContent className={classe.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Faça o Login
-                  </Typography>
-                  <Typography>
-                    Faça o login com seu e-mail e senha previamente cadastrados.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item key={3} xs={12} sm={6} md={4}>
-              <Card className={classe.card}>
-                <CardMedia
-                  className={classe.cardMedia}
-                  image={IMG2}
-                  title="Image title"
-                />
-                <CardContent className={classe.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Veja seus materiais
-                  </Typography>
-                  <Typography>
-                    Após o login, você terá acesso a todos os materiais
-                    disponiveis, organizados por disciplina.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <CoursesList buy={true} />
           </Grid>
         </Container>
       </main>

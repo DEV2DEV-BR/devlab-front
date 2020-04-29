@@ -8,7 +8,7 @@ import React from 'react';
 
 export default function mainListItems(props) {
   const handleToMyCourses = () => {
-    props.props.props.push('/activitys');
+    props.props.props.push('/dashboard');
   };
   const redirectProfile = () => {
     props.props.props.push('/profile');
