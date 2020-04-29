@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
@@ -47,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
@@ -199,23 +204,17 @@ export default function Activitys(props) {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
+                alignItems: 'center',
                 margin: 10,
               }}
             >
               <h1>Meu Perfil</h1>
 
               {progressLoad ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    padding: 20,
-                  }}
-                >
-                  <CircularProgress />
-                  <p style={{ margin: 10 }}>Aguarde...</p>
-                </div>
+                <Backdrop className={classes.backdrop} open={progressLoad}>
+                  <CircularProgress color="inherit" />
+                  <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
+                </Backdrop>
               ) : (
                   <>
                     {/* <Avatar
@@ -384,7 +383,7 @@ export default function Activitys(props) {
             </div>
           </Grid>
         </Container>
-        <Box pt={4}>
+        <Box pt={4} style={{ marginBottom: 10 }}>
           <Copyright />
         </Box>
       </main>

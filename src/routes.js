@@ -6,6 +6,7 @@ import Main from './pages/Main';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import ClassesByCourse from './pages/ClassesByCourse';
 import UploadClasses from './pages/UploadClasses';
 import { istAuthenticated } from './services/auth';
 
@@ -34,6 +35,7 @@ const Routes = () => (
 
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/add-classes" component={UploadClasses} />
+      <PrivateRoute path="/classes-by-course" component={ClassesByCourse} />
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   </BrowserRouter>

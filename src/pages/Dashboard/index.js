@@ -39,7 +39,7 @@ export default function Dashboard(props) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <CoursesList />
+            <CoursesList buy={false} history={props.history} />
           </Grid>
         </Container>
         <Box pt={4}>
