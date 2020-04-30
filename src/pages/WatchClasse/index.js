@@ -45,6 +45,7 @@ export default function WatchClasse(props) {
   const classes = useStyles();
 
   const [classesData, setClassesData] = useState([]);
+  const [linksData, setLinksData] = useState([]);
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
@@ -81,12 +82,15 @@ export default function WatchClasse(props) {
       .get()
       .then((querySnapshot) => {
         const classes = [];
+        const links = [];
         querySnapshot.forEach((doc) => {
           if (doc.data().id == idClasse) {
             classes.push(doc.data());
+            links.push(doc.data().links);
           }
         });
         setClassesData(classes);
+        setLinksData(links);
         setProgress(false);
       })
       .catch(function (error) {
@@ -118,82 +122,111 @@ export default function WatchClasse(props) {
       <div className={classes.root}>
         <CssBaseline />
 
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
-            <Grid container spacing={3}>
-              <Backdrop className={classes.backdrop} open={progress}>
-                <CircularProgress color="inherit" />
-                <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
-              </Backdrop>
+        {classesData.map((classe) => (
+          <main className={classes.content} key={classe.id}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              <Grid container spacing={3}>
+                <Backdrop className={classes.backdrop} open={progress}>
+                  <CircularProgress color="inherit" />
+                  <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
+                </Backdrop>
 
-              {!progress ? (
-                <>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid container spacing={2}>
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          marginBottom: 10,
-                        }}
-                      >
-                        <Button
-                          variant="contained"
+                {!progress ? (
+                  <>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid container spacing={2}>
+                        <h2
                           style={{
-                            backgroundColor: '#318F6B',
-                            color: '#fff',
+                            marginLeft: '11%',
+                            marginTop: 20,
+                            color: '#7a7171',
+                            cursor: 'pointer',
                           }}
                           onClick={() => goBack()}
                         >
-                          Voltar para o curso
-                        </Button>
+                          {courseData.name}
+                        </h2>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            marginTop: 0,
+                            marginBottom: 10,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <h4
+                            style={{
+                              padding: 0,
+                              margin: '0 0 0 10%',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {classe.order + '- ' + classe.name}
+                          </h4>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid container spacing={2}>
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        {classesData.map((classe) => (
-                          <video
-                            key={classe.id}
-                            src={classe.url_video}
-                            controls
-                            controlsList="nodownload"
-                            style={{ width: '100%' }}
-                          />
-                        ))}
+                    </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid
+                          item
+                          xs={12}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {classesData.map((classe) => (
+                            <video
+                              key={classe.id}
+                              src={classe.url_video}
+                              controls
+                              controlsList="nodownload"
+                              style={{ width: '80%' }}
+                            />
+                          ))}
+                        </Grid>
+                        <p style={{ marginLeft: '11%' }}>
+                          <b>Descrição: </b>
+                          {classe.description}
+                        </p>
+                        {/* <p style={{ marginLeft: '11%' }}>
+                          <b>Links: </b>
+                          {console.log(linksData)}
+                          {linksData.map((link) => (
+                            <a href={link.name} key={link.name}>
+                              {link.name}
+                            </a>
+                          ))}
+                        </p> */}
                       </Grid>
-                    </Grid>
-                  </FormControl>
-                </>
-              ) : (
-                ''
-              )}
-            </Grid>
-          </Container>
-          {!progress && (
-            <Box pt={4}>
-              <Copyright />
-            </Box>
-          )}
-        </main>
+                    </FormControl>
+                  </>
+                ) : (
+                  ''
+                )}
+              </Grid>
+            </Container>
+            {!progress && (
+              <Box pt={4} style={{ marginBottom: 15 }}>
+                <Copyright />
+              </Box>
+            )}
+          </main>
+        ))}
       </div>
     </div>
   );

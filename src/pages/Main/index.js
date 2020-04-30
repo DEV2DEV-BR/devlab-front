@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Background from '../../assets/background.jpg';
 import Copyright from '../../components/Copyright';
@@ -44,8 +44,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Album() {
+export default function Main(props) {
   const classe = useStyles();
+  const [history, setHistory] = useState(props.history);
 
   return (
     <React.Fragment>
@@ -60,6 +61,7 @@ export default function Album() {
             backgroundImage: `url(
               ${Background}
             )`,
+            filter: `contrast(1.2)`,
           }}
         >
           <Container maxWidth="sm">
@@ -71,16 +73,17 @@ export default function Album() {
               gutterBottom
               style={{ color: '#fff', textShadow: '#000' }}
             >
-              JACODE CURSOS
+              <b>JACODE CURSOS</b>
             </Typography>
             <Typography
               variant="h5"
               align="center"
               color="textSecondary"
               paragraph
-              style={{ color: '#fff', textShadow: '#000' }}
+              style={{ color: '#fff', textShadow: '#000', boxShadow: '5px' }}
             >
-              <div><p>Bem vindo à JACODE CURSOS! </p></div>
+              Bem vindo à JACODE CURSOS!
+              <br />
               Após fazer o login, você terá acesso a todos os materiais
               disponíveis para download.
             </Typography>
@@ -89,7 +92,7 @@ export default function Album() {
               <div className={classe.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Link to="/signIn" style={{ textDecoration: 'none' }}>
+                    <Link to="/sign-in" style={{ textDecoration: 'none' }}>
                       <Button
                         size="large"
                         variant="contained"
@@ -103,7 +106,7 @@ export default function Album() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link to="/signUp" style={{ textDecoration: 'none' }}>
+                    <Link to="/sign-up" style={{ textDecoration: 'none' }}>
                       <Button
                         size="large"
                         variant="contained"
@@ -119,15 +122,15 @@ export default function Album() {
                 </Grid>
               </div>
             ) : (
-                ''
-              )}
+              ''
+            )}
           </Container>
         </div>
         {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}
         <Container className={classe.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            <CoursesList buy={true} />
+            <CoursesList buy={true} history={history} />
           </Grid>
         </Container>
       </main>

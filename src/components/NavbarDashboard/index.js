@@ -125,6 +125,10 @@ export default function NavBarDashboard(props) {
     props.history.push('/');
   };
 
+  const handleShop = () => {
+    props.history.push('/');
+  };
+
   return (
     <AppBar
       position="absolute"
@@ -148,7 +152,7 @@ export default function NavBarDashboard(props) {
               style={{ height: '50px', padding: 0, margin: 0 }}
               alt="Logo"
             /> */}
-            <h3>{`<JACODE/> XD`}</h3>
+            <b>{`<JACODE/> XD`}</b>
           </Link>
         </Typography>
 
@@ -160,28 +164,33 @@ export default function NavBarDashboard(props) {
             margin: 0,
           }}
         >
-        <div>
-          <IconButton color="inherit" onClick={handleLogout} style={{margin:0, padding:0}}>
-            <Badge color="secondary">
-              <ShoppingCartIcon />
-            </Badge>
-            <p style={{ fontSize: 12, margin: 2 }}>Loja</p>
-          </IconButton>
-          <IconButton color="inherit" onClick={handleLogout} style={{margin:0, padding:0}}>
-            <Badge color="secondary">
-              <ExitToAppIcon />
-            </Badge>
-            <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
-          </IconButton>
+          <div>
+            <IconButton
+              color="inherit"
+              onClick={handleShop}
+              style={{ marginRight: 15, padding: 0 }}
+            >
+              <Badge color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+              <p style={{ fontSize: 12, margin: 2 }}>Loja</p>
+            </IconButton>
+            <IconButton
+              color="inherit"
+              onClick={handleLogout}
+              style={{ margin: 0, padding: 0 }}
+            >
+              <Badge color="secondary">
+                <ExitToAppIcon />
+              </Badge>
+              <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
+            </IconButton>
+          </div>
+
+          <p style={{ padding: 0, margin: '10px 0px 0px 6px' }}>
+            <b>Bem vindo:</b> {userData.name}
+          </p>
         </div>
-
-        <p style={{ padding: 0, margin: '0px 0px 0px 18px' }}>
-          <b>Bem vindo:</b> {userData.name}
-        </p>
-
-        </div>
-
-
       </Toolbar>
     </AppBar>
   );

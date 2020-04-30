@@ -70,7 +70,7 @@ export default function Album() {
                 style={{ maxHeight: 90, padding: 0, margin: 0, width: 60 }}
                 alt="Logo"
               /> */}
-              <h3>{`<JACODE/> XD`}</h3>
+              <b>{`<JACODE/> XD`}</b>
             </Typography>
           </Link>
         </Typography>
@@ -78,7 +78,7 @@ export default function Album() {
         {!istAuthenticated() ? (
           <>
             <Link
-              to="/signIn"
+              to="/sign-in"
               style={{
                 marginLeft: 10,
                 marginRight: 10,
@@ -94,25 +94,25 @@ export default function Album() {
             </Link>
           </>
         ) : (
-            <div>
-              <Link
-                to="/dashboard"
-                style={{
-                  marginLeft: 10,
-                  marginRight: 10,
-                  textDecoration: 'none',
-                }}
+          <div>
+            <Link
+              to="/dashboard"
+              style={{
+                marginLeft: 10,
+                marginRight: 10,
+                textDecoration: 'none',
+              }}
+            >
+              <Button
+                variant="contained"
+                size="small"
+                style={{ backgroundColor: '#318F6B', color: '#fff' }}
               >
-                <Button
-                  variant="contained"
-                  size="small"
-                  style={{ backgroundColor: '#318F6B', color: '#fff' }}
-                >
-                  Voltar para dashboard
+                Voltar para dashboard
               </Button>
-              </Link>
-            </div>
-          )}
+            </Link>
+          </div>
+        )}
       </Toolbar>
     </AppBar>
   );

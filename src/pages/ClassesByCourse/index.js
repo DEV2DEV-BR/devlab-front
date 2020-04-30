@@ -137,7 +137,7 @@ export default function ClassesByCourse(props) {
                       borderColor: '#c6b3b3',
                       borderStyle: 'solid',
                       borderRadius: 4,
-                      margin: '0px 0px 10px 0px',
+                      margin: '10px 0px 10px 0px',
                       padding: 10,
                     }}
                   >
@@ -164,7 +164,7 @@ export default function ClassesByCourse(props) {
                           <p
                             style={{ color: '#918787', margin: 0, padding: 0 }}
                           >
-                            Nº Aulas
+                            {classesData.length} Aula (s)
                           </p>
                         </div>
                       </Grid>

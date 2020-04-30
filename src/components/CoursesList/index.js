@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 300,
     margin: 5,
     padding: 0,
+    boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
   },
   media: {
     height: 0,
@@ -31,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '46.25%', // 16:9
   },
   expand: {
-    backgroundColor: '#45c',
     textAlign: 'center',
     margin: '0px 0px 0px 15px',
     padding: '0px 0px 0px 15px',
@@ -54,6 +54,8 @@ const CoursesList = (props) => {
   const loadDataCourses = () => {
     setProgress(true);
 
+    const myCourses = JSON.parse(localStorage.getItem('myCourses'));
+
     async function fetchData() {
       const db = firebase.firestore();
 
@@ -64,7 +66,13 @@ const CoursesList = (props) => {
         .then((querySnapshot) => {
           const courses = [];
           querySnapshot.forEach((doc) => {
-            courses.push(doc.data());
+            if (!props.buy) {
+              if (myCourses.includes(doc.data().id)) {
+                courses.push(doc.data());
+              }
+            } else {
+              courses.push(doc.data());
+            }
           });
           setCoursesData(courses);
           setProgress(false);
@@ -77,8 +85,16 @@ const CoursesList = (props) => {
     fetchData();
   };
 
+  const handleBuyCourse = () => {
+    'PagSeguroLightbox(this); return false;';
+  };
+
   const handleRedirectAllClasses = (id) => {
     props.history.push('/classes-by-course', { id });
+  };
+
+  const handleOpenCourseDetail = (id) => {
+    props.history.push('/course-details', { id });
   };
 
   useEffect(() => {
@@ -108,6 +124,8 @@ const CoursesList = (props) => {
   useEffect(() => {
     return () => {
       setUserData('');
+      setCoursesData('');
+      setProgress('');
     };
   }, []);
 
@@ -129,11 +147,24 @@ const CoursesList = (props) => {
             }
             title={m.name}
           />
-          <CardMedia
-            className={classes.media}
-            image={m.image}
-            title={m.title}
-          />
+          {props.buy ? (
+            <CardMedia
+              className={classes.media}
+              image={m.image}
+              title={m.title}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleOpenCourseDetail(m.id)}
+            />
+          ) : (
+            <CardMedia
+              className={classes.media}
+              image={m.image}
+              title={m.title}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleRedirectAllClasses(m.id)}
+            />
+          )}
+
           <CardContent style={{ margin: 0 }}>
             <Typography variant="body2" color="textSecondary" component="p">
               <b>Descrição: </b>
@@ -163,7 +194,7 @@ const CoursesList = (props) => {
                   <form
                     action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
                     method="post"
-                    onSubmit="PagSeguroLightbox(this); return false; "
+                    onSubmit={() => handleBuyCourse}
                     target="_blank"
                     style={{ width: '100%' }}
                   >
