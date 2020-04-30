@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
 import TextField from '@material-ui/core/TextField';
+import MyEditor from '../../components/MyEditor';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,7 +83,7 @@ export default function UploadFiles(props) {
   const [inputName, setInputName] = useState('');
   const [inputDuration, setInputDuration] = useState('');
   const [inputPrice, setInputPrice] = useState('');
-  const [inputUrlPayment, setInputUrlPayment] = useState('');
+  const [inputCodePayment, setInputCodePayment] = useState('');
   const [inputShortDescription, setInputShortDescription] = useState('');
 
   const [description, setDescription] = useState('');
@@ -103,56 +104,36 @@ export default function UploadFiles(props) {
     setPosition(event.target.value);
   };
 
-  const handleChange = (e) => {
+  const handleChangeImageBackground = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
       setImage(image);
     }
   };
 
-  // const loadTeacher = async () => {
-  //   setProgressLoadData(true);
-  //   const db = firebase.firestore();
+  const handleChangeImageCourse = (e) => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      setImage(image);
+    }
+  };
 
-  //   const usersRef = db.collection('users');
-
-  //   await usersRef
-  //     .where('userType', '==', 'teacher')
-  //     .where('id', '==', localStorage.getItem('user'))
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       const users = [];
-  //       querySnapshot.forEach((doc) => {
-  //         users.push(doc.data());
-  //         setDisciplinesTeacher(
-  //           ...disciplinesTeacher,
-  //           doc.data().teacherDisciplines
-  //         );
-  //         setSchoolsTeacher(...schoolsTeacher, doc.data().teacherSchools);
-  //         setPeriodsTeacher(...periodsTeacher, doc.data().teacherPeriods);
-  //         setGradesTeacher(...gradesTeacher, doc.data().teacherGrades);
-  //         setClassTeacher(...myClass, doc.data().teacherClass);
-  //       });
-  //       setTeachers(users);
-  //       setProgressLoadData(false);
-  //     })
-  //     .catch(function (error) {
-  //       console.log('Error getting documents: ', error);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   loadTeacher();
-  // }, []);
-
-  const extensionsPermitted = ['mp4', 'avi'];
+  const extensionsPermitted = ['png', 'jpg', 'jpeg'];
 
   const handleRegister = () => {
     if (image !== null) {
       const extension = image.name.split('.').pop();
 
       if (extensionsPermitted.includes(extension)) {
-        if (position !== '' && description !== '') {
+        if (
+          inputName !== '' &&
+          inputDuration !== '' &&
+          inputPrice !== '' &&
+          inputCodePayment !== '' &&
+          inputShortDescription !== '' &&
+          description !== '' &&
+          requirements !== ''
+        ) {
           let date = new Date();
           let day = date.getDate();
           let month = date.getMonth();
@@ -164,7 +145,7 @@ export default function UploadFiles(props) {
           setProgress(true);
 
           const uploadTask = storage
-            .ref(`all_supplies/${image.name}`)
+            .ref(`images_courses/${image.name}`)
             .put(image);
           uploadTask.on(
             'state_changed',
@@ -176,32 +157,36 @@ export default function UploadFiles(props) {
             () => {
               // complete function ...
               storage
-                .ref('all_supplies')
+                .ref('images_courses')
                 .child(image.name)
                 .getDownloadURL()
                 .then((url) => {
                   const cloudFirestore = firebase.firestore();
 
                   cloudFirestore
-                    .collection('all_supplies')
+                    .collection('courses')
                     .add({
-                      position,
-                      url,
-                      createdAt: date,
-                      date: createdAt,
+                      author: localStorage.getItem('user'),
+                      name: inputName,
+                      background:
+                        'https://firebasestorage.googleapis.com/v0/b/jacode-cursos.appspot.com/o/generic%2Fbackground-default.jpg?alt=media&token=95d180a0-9d96-4b87-9d6c-344d25e8c0f0',
                       description,
+                      duration: inputDuration,
+                      image: url,
+                      price: inputPrice,
+                      requirements,
+                      shortDescription: inputShortDescription,
+                      codePayment: inputCodePayment,
+                      createdAt: date,
                       id: '',
                     })
                     .then(function (doc) {
-                      cloudFirestore
-                        .collection('all_supplies')
-                        .doc(doc.id)
-                        .update({
-                          id: doc.id,
-                        });
+                      cloudFirestore.collection('courses').doc(doc.id).update({
+                        id: doc.id,
+                      });
                       setProgress(false);
                       handleClear();
-                      notifySuccess('Atividade enviada');
+                      notifySuccess('Curso Criado, agora adicione aulas!');
                     })
                     .catch(function (error) {
                       console.error('Error adding domcument', error);
@@ -243,38 +228,11 @@ export default function UploadFiles(props) {
                 variant="outlined"
                 fullWidth
                 className={classes.formControl}
-                style={{
-                  display: 'flex',
-                  borderWidth: '1px',
-                  borderColor: '#c6b3b3',
-                  borderStyle: 'solid',
-                  borderRadius: 4,
-                  margin: 10,
-                  padding: 10,
-                }}
+                style={{ margin: 10 }}
               >
                 <Grid container spacing={2}>
-                  <Grid item xs={12} style={{ display: 'flex' }}>
-                    <img
-                      src="https://cdn.pixabay.com/photo/2015/01/20/13/13/ipad-605439_960_720.jpg"
-                      alt="course"
-                      style={{ width: '150px', borderRadius: 5 }}
-                    />
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        padding: 10,
-                      }}
-                    >
-                      <h2 style={{ color: '#7a7171', margin: 0, padding: 0 }}>
-                        Nome do Curso
-                      </h2>
-                      <p style={{ color: '#918787', margin: 0, padding: 0 }}>
-                        Nº Aulas
-                      </p>
-                    </div>
+                  <Grid item xs={12} style={{ textAlign: 'center' }}>
+                    <h1>Criar Cursos</h1>
                   </Grid>
                 </Grid>
               </FormControl>
@@ -340,8 +298,9 @@ export default function UploadFiles(props) {
                       variant="outlined"
                       required
                       fullWidth
+                      type="number"
                       id="price"
-                      value={inputDuration}
+                      value={inputPrice}
                       onChange={(event) => setInputPrice(event.target.value)}
                       label="Preço"
                     />
@@ -358,17 +317,17 @@ export default function UploadFiles(props) {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      autoComplete="furlPayment"
-                      name="urlPayment"
+                      autoComplete="fcodePayment"
+                      name="codePayment"
                       variant="outlined"
                       required
                       fullWidth
-                      id="urlPayment"
-                      value={inputUrlPayment}
+                      id="codePayment"
+                      value={inputCodePayment}
                       onChange={(event) =>
-                        setInputUrlPayment(event.target.value)
+                        setInputCodePayment(event.target.value)
                       }
-                      label="Url de pagamento"
+                      label="Código pagamento pagamento pagseguro"
                     />
                   </Grid>
                 </Grid>
@@ -442,7 +401,7 @@ export default function UploadFiles(props) {
                   </Grid>
                 </FormControl>
 
-                <Grid container spacing={2}>
+                {/* <Grid container spacing={2}>
                   <FormControl
                     variant="outlined"
                     fullWidth
@@ -460,11 +419,14 @@ export default function UploadFiles(props) {
                     <Grid item xs={12}>
                       <p style={{ marginLeft: 10 }}>Imagem de Fundo</p>
                       <div style={{ margin: '10px 10px 20px 10px' }}>
-                        <input type="file" onChange={handleChange} />
+                        <input
+                          type="file"
+                          onChange={handleChangeImageBackground}
+                        />
                       </div>
                     </Grid>
                   </FormControl>
-                </Grid>
+                </Grid> */}
                 <Grid container spacing={2}>
                   <FormControl
                     variant="outlined"
@@ -483,7 +445,7 @@ export default function UploadFiles(props) {
                     <Grid item xs={12}>
                       <p style={{ marginLeft: 10 }}>Imagem do Curso</p>
                       <div style={{ margin: '10px 10px 20px 10px' }}>
-                        <input type="file" onChange={handleChange} />
+                        <input type="file" onChange={handleChangeImageCourse} />
                       </div>
                     </Grid>
                   </FormControl>
