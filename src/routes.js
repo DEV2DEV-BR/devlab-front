@@ -8,6 +8,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import CoursesDetails from './pages/CoursesDetails';
 import ClassesByCourse from './pages/ClassesByCourse';
+import CreateCourse from './pages/CreateCourse';
 import UploadClasses from './pages/UploadClasses';
 import WatchClasse from './pages/WatchClasse';
 import { istAuthenticated } from './services/auth';
@@ -37,6 +38,7 @@ const Routes = () => (
       <Route path="/course-details" component={CoursesDetails} />
 
       <PrivateRoute path="/dashboard" component={Dashboard} />
+      <PrivateRoute path="/create-course" component={CreateCourse} />
       <PrivateRoute path="/add-classes" component={UploadClasses} />
       <PrivateRoute path="/classes-by-course" component={ClassesByCourse} />
       <PrivateRoute path="/watch-classe" component={WatchClasse} />

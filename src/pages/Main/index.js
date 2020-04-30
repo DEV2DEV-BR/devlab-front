@@ -129,7 +129,15 @@ export default function Main(props) {
         {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}
         <Container className={classe.cardGrid} maxWidth="md">
           {/* End hero unit */}
-          <Grid container spacing={4}>
+          <Grid
+            container
+            spacing={4}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
             <CoursesList buy={true} history={history} />
           </Grid>
         </Container>
