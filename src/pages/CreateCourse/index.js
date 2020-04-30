@@ -321,7 +321,6 @@ export default function UploadFiles(props) {
                       value={inputDuration}
                       onChange={(event) => setInputDuration(event.target.value)}
                       label="Duração em horas"
-                      autoFocus
                     />
                   </Grid>
                 </Grid>
@@ -345,7 +344,6 @@ export default function UploadFiles(props) {
                       value={inputDuration}
                       onChange={(event) => setInputPrice(event.target.value)}
                       label="Preço"
-                      autoFocus
                     />
                   </Grid>
                 </Grid>
@@ -371,7 +369,6 @@ export default function UploadFiles(props) {
                         setInputUrlPayment(event.target.value)
                       }
                       label="Url de pagamento"
-                      autoFocus
                     />
                   </Grid>
                 </Grid>
@@ -398,7 +395,6 @@ export default function UploadFiles(props) {
                           setInputShortDescription(event.target.value)
                         }
                         label="Descrição Curta"
-                        autoFocus
                       />
                     </Grid>
                   </Grid>
