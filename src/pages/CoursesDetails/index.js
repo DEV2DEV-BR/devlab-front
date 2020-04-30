@@ -175,59 +175,45 @@ export default function CoursesDetails(props) {
             >
               {courseData.shortDescription}
             </Typography>
-
-            <div className={classes.heroButtons}>
-              <Grid container spacing={2} justify="center">
-                <Grid item>
-                  {courseData.price > 0 ? (
-                    <form
-                      action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                      method="post"
-                      onSubmit={() => handleBuyCourse}
-                      target="_blank"
-                      style={{ width: '100%' }}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <h3 style={{ color: '#fff' }}>{classesData.length} Aula (s)</h3>
+              <h3 style={{ color: '#fff' }}>{courseData.duration} Hora (s)</h3>
+            </div>
+          </Container>
+        </div>
+        {!progress && (
+          <div className={classes.heroButtons}>
+            <Grid container spacing={2} justify="center">
+              {courseData.price > 0 ? (
+                <form
+                  action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
+                  method="post"
+                  onSubmit={() => handleBuyCourse}
+                  target="_blank"
+                  style={{ width: '30%' }}
+                >
+                  {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                  <input
+                    type="hidden"
+                    name="code"
+                    value="162B809E2424004DD4312FB71861400C"
+                  />
+                  <input type="hidden" name="iot" value="button" />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    style={{ backgroundColor: '#318F6B' }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                      }}
                     >
-                      {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                      <input
-                        type="hidden"
-                        name="code"
-                        value="162B809E2424004DD4312FB71861400C"
-                      />
-                      <input type="hidden" name="iot" value="button" />
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        style={{ backgroundColor: '#318F6B' }}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <MdAddShoppingCart size={18} color="#fff" />
-                          <p
-                            style={{
-                              margin: '0px 0px 0px 10px',
-                              fontSize: 16,
-                              fontWeight: 'bold',
-                              color: '#fff',
-                            }}
-                          >
-                            {format(courseData.price)}
-                          </p>
-                        </div>
-                      </Button>
-                    </form>
-                  ) : (
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      style={{ backgroundColor: '#318F6B' }}
-                    >
+                      <MdAddShoppingCart size={18} color="#fff" />
                       <p
                         style={{
                           margin: '0px 0px 0px 10px',
@@ -236,15 +222,32 @@ export default function CoursesDetails(props) {
                           color: '#fff',
                         }}
                       >
-                        CURSO GRÁTIS
+                        {format(courseData.price)}
                       </p>
-                    </Button>
-                  )}
-                </Grid>
-              </Grid>
-            </div>
-          </Container>
-        </div>
+                    </div>
+                  </Button>
+                </form>
+              ) : (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  style={{ backgroundColor: '#318F6B', width: '30%' }}
+                >
+                  <p
+                    style={{
+                      margin: '0px 0px 0px 10px',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#fff',
+                    }}
+                  >
+                    CURSO GRÁTIS
+                  </p>
+                </Button>
+              )}
+            </Grid>
+          </div>
+        )}
         {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
@@ -268,10 +271,12 @@ export default function CoursesDetails(props) {
                             <TableCell>
                               <b>Aula</b>
                             </TableCell>
-                            <TableCell align="left">
+                            <TableCell align="center">
                               <b>Descrição</b>
                             </TableCell>
-                            <TableCell align="right"></TableCell>
+                            <TableCell align="right">
+                              <b>Duração</b>
+                            </TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -285,25 +290,16 @@ export default function CoursesDetails(props) {
                                 {classe.order}
                               </TableCell>
                               <TableCell
-                                align="left"
-                                style={{ textAlign: 'justify' }}
+                                align="center"
+                                style={{ textAlign: 'center' }}
                               >
                                 {classe.description}
                               </TableCell>
-                              <TableCell align="right">
-                                <Button
-                                  variant="contained"
-                                  size="small"
-                                  style={{
-                                    backgroundColor: 'rgba(126,64,144,1)',
-                                    color: '#fff',
-                                  }}
-                                  onClick={() =>
-                                    handleWatchClasse(classe.id, courseData.id)
-                                  }
-                                >
-                                  Assistir
-                                </Button>
+                              <TableCell
+                                align="center"
+                                style={{ textAlign: 'right' }}
+                              >
+                                {classe.duration} Min.
                               </TableCell>
                             </TableRow>
                           ))}
