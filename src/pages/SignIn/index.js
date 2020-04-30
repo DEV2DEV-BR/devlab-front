@@ -17,6 +17,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Image from '../../assets/pencil.jpg';
+import BackgroundSignIn from '../../assets/background-signIn.jpg';
 import { email, login } from '../../services/auth';
 
 function Copyright() {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: `url(${Image})`,
+    backgroundImage: `url(${BackgroundSignIn})`,
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light'
@@ -116,21 +117,15 @@ export default function SignIn(props) {
               .get()
               .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                  const { id, grade, myClass, userType, school, period } = doc.data();
+                  const { id, myCourses, userType } = doc.data();
+
                   localStorage.setItem('userType', userType);
 
-                  if (period) {
-                    localStorage.setItem('period', period);
-                  }
-                  if (school) {
-                    localStorage.setItem('school', school);
-                  }
-                  if (grade) {
-                    localStorage.setItem('grade', grade);
-                  }
-
-                  if (myClass) {
-                    localStorage.setItem('myClass', myClass);
+                  if (myCourses) {
+                    localStorage.setItem(
+                      'myCourses',
+                      JSON.stringify(myCourses)
+                    );
                   }
 
                   localStorage.setItem('user', id);
@@ -225,7 +220,9 @@ export default function SignIn(props) {
                 <Link to="/">Voltar para o início</Link>
               </Grid>
               <Grid item>
-                <Link to="/signUp">{'Não tem acesso ainda? Cadastre-se!'}</Link>
+                <Link to="/sign-up">
+                  {'Não tem acesso ainda? Cadastre-se!'}
+                </Link>
               </Grid>
             </Grid>
             <Box mt={5}>

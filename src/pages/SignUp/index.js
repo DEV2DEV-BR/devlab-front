@@ -55,7 +55,6 @@ export default function SignUp(props) {
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
 
-
   const notifySuccess = (message) => {
     toast.success(message, {
       position: 'top-right',
@@ -114,7 +113,7 @@ export default function SignUp(props) {
                   id: doc.id,
                 });
                 notifySuccess('Parabéns!');
-                props.history.push('/signIn');
+                props.history.push('/sign-in');
                 setProgress(false);
               })
               .catch(function (error) {
@@ -189,7 +188,6 @@ export default function SignUp(props) {
               />
             </Grid>
 
-
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -235,22 +233,22 @@ export default function SignUp(props) {
               <p style={{ margin: 10 }}>Aguarde...</p>
             </div>
           ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
-                className={classes.submit}
-              >
-                Cadastrar
-              </Button>
-            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
+              className={classes.submit}
+            >
+              Cadastrar
+            </Button>
+          )}
           <Grid container justify="flex-end">
             <Grid item xs>
               <Link to="/">Voltar para o início</Link>
             </Grid>
             <Grid item>
-              <Link to="/signIn">Já tem cadastro? Faça login!</Link>
+              <Link to="/sign-in">Já tem cadastro? Faça login!</Link>
             </Grid>
           </Grid>
         </form>

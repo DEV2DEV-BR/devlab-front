@@ -6,6 +6,7 @@ import Main from './pages/Main';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import CoursesDetails from './pages/CoursesDetails';
 import ClassesByCourse from './pages/ClassesByCourse';
 import UploadClasses from './pages/UploadClasses';
 import WatchClasse from './pages/WatchClasse';
@@ -31,8 +32,9 @@ const Routes = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/" exact component={Main} />
-      <Route path="/signIn" component={SignIn} />
-      <Route path="/signUp" component={SignUp} />
+      <Route path="/sign-in" component={SignIn} />
+      <Route path="/sign-up" component={SignUp} />
+      <Route path="/course-details" component={CoursesDetails} />
 
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/add-classes" component={UploadClasses} />

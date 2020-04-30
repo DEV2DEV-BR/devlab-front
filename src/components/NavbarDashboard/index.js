@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import clsx from 'clsx';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
@@ -124,6 +125,10 @@ export default function NavBarDashboard(props) {
     props.history.push('/');
   };
 
+  const handleShop = () => {
+    props.history.push('/');
+  };
+
   return (
     <AppBar
       position="absolute"
@@ -142,11 +147,12 @@ export default function NavBarDashboard(props) {
             style={{ textDecoration: 'none', color: '#fff' }}
             to="/dashboard"
           >
-            <img
+            {/* <img
               src={Logo}
               style={{ height: '50px', padding: 0, margin: 0 }}
               alt="Logo"
-            />
+            /> */}
+            <b>{`<JACODE/> XD`}</b>
           </Link>
         </Typography>
 
@@ -158,20 +164,33 @@ export default function NavBarDashboard(props) {
             margin: 0,
           }}
         >
-          <p style={{ padding: 0, margin: 0 }}>
+          <div>
+            <IconButton
+              color="inherit"
+              onClick={handleShop}
+              style={{ marginRight: 15, padding: 0 }}
+            >
+              <Badge color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+              <p style={{ fontSize: 12, margin: 2 }}>Loja</p>
+            </IconButton>
+            <IconButton
+              color="inherit"
+              onClick={handleLogout}
+              style={{ margin: 0, padding: 0 }}
+            >
+              <Badge color="secondary">
+                <ExitToAppIcon />
+              </Badge>
+              <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
+            </IconButton>
+          </div>
+
+          <p style={{ padding: 0, margin: '10px 0px 0px 6px' }}>
             <b>Bem vindo:</b> {userData.name}
           </p>
-          <p style={{ padding: 0, margin: 0 }}>
-            <b>Perfil atual:</b> {userData.userType}
-          </p>
         </div>
-
-        <IconButton color="inherit" onClick={handleLogout}>
-          <Badge color="secondary">
-            <ExitToAppIcon />
-          </Badge>
-          <p style={{ fontSize: 15, margin: 5 }}>Sair</p>
-        </IconButton>
       </Toolbar>
     </AppBar>
   );
