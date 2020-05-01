@@ -1,30 +1,25 @@
+import Backdrop from '@material-ui/core/Backdrop';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import React, { useState, useEffect } from 'react';
-import Box from '@material-ui/core/Box';
-import { Link } from 'react-router-dom';
-import Background from '../../assets/background-default.jpg';
-import firebase from 'firebase';
-import Copyright from '../../components/Copyright';
-import CoursesList from '../../components/CoursesList';
-import Navbar from '../../components/Navbar';
-import { istAuthenticated } from '../../services/auth';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
-import { MdAddShoppingCart } from 'react-icons/md';
-import { format } from '../../util/format';
-import FormControl from '@material-ui/core/FormControl';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import firebase from 'firebase';
+import React, { useEffect, useState } from 'react';
+import { MdAddShoppingCart } from 'react-icons/md';
+import Background from '../../assets/background-default.jpg';
+import Copyright from '../../components/Copyright';
+import Navbar from '../../components/Navbar';
+import { format } from '../../util/format';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -162,7 +157,7 @@ export default function CoursesDetails(props) {
               align="center"
               color="textPrimary"
               gutterBottom
-              style={{ color: '#fff', textShadow: '#000' }}
+              style={{ color: '#fff', textShadow: '2px 2px #000' }}
             >
               <b>{courseData.name}</b>
             </Typography>
@@ -171,7 +166,7 @@ export default function CoursesDetails(props) {
               align="center"
               color="textSecondary"
               paragraph
-              style={{ color: '#fff', textShadow: '#000', boxShadow: '5px' }}
+              style={{ color: '#fff', textShadow: '2px 2px #000' }}
             >
               {courseData.shortDescription}
             </Typography>

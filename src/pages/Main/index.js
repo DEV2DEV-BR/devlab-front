@@ -6,10 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Background from '../../assets/background.jpg';
 import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
 import Navbar from '../../components/Navbar';
+import Background from '../../assets/background-default.jpg';
 import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
@@ -61,7 +61,6 @@ export default function Main(props) {
             backgroundImage: `url(
               ${Background}
             )`,
-            filter: `contrast(1.2)`,
           }}
         >
           <Container maxWidth="sm">
@@ -71,7 +70,7 @@ export default function Main(props) {
               align="center"
               color="textPrimary"
               gutterBottom
-              style={{ color: '#fff', textShadow: '#000' }}
+              style={{ color: '#fff', textShadow: '2px 2px #000' }}
             >
               <b>JACODE CURSOS</b>
             </Typography>
@@ -80,7 +79,11 @@ export default function Main(props) {
               align="center"
               color="textSecondary"
               paragraph
-              style={{ color: '#fff', textShadow: '#000', boxShadow: '5px' }}
+              style={{
+                color: '#fff',
+                textShadow: '2px 2px #000',
+                boxShadow: '5px',
+              }}
             >
               Bem vindo à JACODE CURSOS!
               <br />
