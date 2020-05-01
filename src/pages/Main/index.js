@@ -6,10 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Background from '../../assets/background-default.jpg';
 import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
 import Navbar from '../../components/Navbar';
-import Background from '../../assets/background-default.jpg';
 import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
