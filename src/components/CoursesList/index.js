@@ -138,15 +138,12 @@ const CoursesList = (props) => {
         </Backdrop>
       )}
       {coursesData.map((m) => (
-        <Card className={classes.root} key={m.id}>
-          <CardHeader
-            avatar={
-              <Avatar aria-label="recipe" className={classes.avatar}>
-                JA
-              </Avatar>
-            }
-            title={m.name}
-          />
+        <Card
+          className={classes.root}
+          key={m.id}
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleOpenCourseDetail(m.id)}
+        >
           {props.buy ? (
             <CardMedia
               className={classes.media}
@@ -165,15 +162,25 @@ const CoursesList = (props) => {
             />
           )}
 
-          <CardContent style={{ margin: 0 }}>
-            <Typography variant="body2" color="textSecondary" component="p">
-              <b>Descrição: </b>
-              {m.shortDescription}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+          <CardHeader
+            avatar={
+              <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
+            }
+            title={m.name}
+          />
+
+          <CardContent
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              margin: 0,
+            }}
+          >
+            {/* <Typography variant="body2" color="textSecondary" component="p">
               <b>Requisitos: </b>
               {m.requirements}
-            </Typography>
+            </Typography> */}
 
             {!props.buy ? (
               <>
@@ -188,70 +195,75 @@ const CoursesList = (props) => {
                 </IconButton>
               </>
             ) : (
-              <CardActions disableSpacing>
-                {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
-                {m.price > 0 ? (
-                  <form
-                    action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                    method="post"
-                    onSubmit={() => handleBuyCourse}
-                    target="_blank"
-                    style={{ width: '100%' }}
-                  >
-                    {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                    <input
-                      type="hidden"
-                      name="code"
-                      value="162B809E2424004DD4312FB71861400C"
-                    />
-                    <input type="hidden" name="iot" value="button" />
+              <>
+                <CardActions disableSpacing>
+                  {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
+                  {m.price > 0 ? (
+                    <form
+                      action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
+                      method="post"
+                      onSubmit={() => handleBuyCourse}
+                      target="_blank"
+                      style={{ width: '100%', marginBottom: 10 }}
+                    >
+                      {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                      <input type="hidden" name="code" value={m.codePayment} />
+                      <input type="hidden" name="iot" value="button" />
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#318F6B',
+                          position: 'relative',
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <MdAddShoppingCart size={18} color="#fff" />
+                          <p
+                            style={{
+                              margin: '0px 0px 0px 10px',
+                              fontSize: 16,
+                              fontWeight: 'bold',
+                              color: '#fff',
+                            }}
+                          >
+                            {format(m.price)}
+                          </p>
+                        </div>
+                      </Button>
+                    </form>
+                  ) : (
                     <Button
-                      type="submit"
                       fullWidth
                       variant="contained"
                       style={{ backgroundColor: '#318F6B' }}
                     >
-                      <div
+                      <p
                         style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
+                          margin: '0px 0px 0px 10px',
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                          color: '#fff',
                         }}
                       >
-                        <MdAddShoppingCart size={18} color="#fff" />
-                        <p
-                          style={{
-                            margin: '0px 0px 0px 10px',
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            color: '#fff',
-                          }}
-                        >
-                          {format(m.price)}
-                        </p>
-                      </div>
+                        CURSO GRÁTIS
+                      </p>
                     </Button>
-                  </form>
-                ) : (
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{ backgroundColor: '#318F6B' }}
-                  >
-                    <p
-                      style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
-                      CURSO GRÁTIS
-                    </p>
-                  </Button>
-                )}
-              </CardActions>
+                  )}
+                </CardActions>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  <b>Descrição: </b>
+                  {m.shortDescription}
+                </Typography>
+              </>
             )}
           </CardContent>
         </Card>

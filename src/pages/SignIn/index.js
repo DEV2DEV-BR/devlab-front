@@ -16,7 +16,6 @@ import firebase from 'firebase';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Image from '../../assets/pencil.jpg';
 import BackgroundSignIn from '../../assets/background-signIn.jpg';
 import { email, login } from '../../services/auth';
 

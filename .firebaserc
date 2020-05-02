@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "decel-machado",
-    "jacode-docs": "jacode-docs"
+    "default": "jacode-cursos"
   }
 }
