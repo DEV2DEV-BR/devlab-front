@@ -11,11 +11,23 @@ import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
 import Navbar from '../../components/Navbar';
 import { istAuthenticated } from '../../services/auth';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import DiscordIcon from '../../assets/discord.png';
+import BlogIcon from '../../assets/blog.png';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
-    marginRight: theme.spacing(2),
+    width: 50,
+    height: 50,
+    margin: 10,
+    color: '#fff',
+    '&:hover': {
+      opacity: 0.5,
+    },
   },
+
   heroContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
@@ -90,6 +102,51 @@ export default function Main(props) {
               Após fazer o login, você terá acesso a todos os materiais
               disponíveis para download.
             </Typography>
+            <Typography
+              variant="h5"
+              align="center"
+              color="textSecondary"
+              paragraph
+              style={{
+                color: '#fff',
+                textShadow: '2px 2px #000',
+                boxShadow: '5px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <a href="https://www.facebook.com/danieljacode" target="_blank">
+                <FacebookIcon className={classe.icon} />
+              </a>
+              <a
+                href="https://www.instagram.com/danieldeandradelopes/"
+                target="_blank"
+              >
+                <InstagramIcon className={classe.icon} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/daniel-de-andrade-lopes-5242b4b1/"
+                target="_blank"
+              >
+                <LinkedInIcon className={classe.icon} />
+              </a>
+              <a href="http://blog.jacode.com.br/" target="_blank">
+                <img
+                  src={BlogIcon}
+                  alt="blog"
+                  className={classe.icon}
+                  style={{ width: 40, height: 40 }}
+                />
+              </a>
+              <a href="https://discord.gg/3Wmcp86" target="_blank">
+                <img
+                  src={DiscordIcon}
+                  alt="discord community"
+                  className={classe.icon}
+                />
+              </a>
+            </Typography>
 
             {!istAuthenticated() ? (
               <div className={classe.heroButtons}>
@@ -130,15 +187,14 @@ export default function Main(props) {
           </Container>
         </div>
         {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}
-        <Container className={classe.cardGrid} maxWidth="md">
+        <Container className={classe.cardGrid} maxWidth="lg">
           {/* End hero unit */}
           <Grid
             container
-            spacing={4}
+            spacing={6}
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
             }}
           >
             <CoursesList buy={true} history={history} />

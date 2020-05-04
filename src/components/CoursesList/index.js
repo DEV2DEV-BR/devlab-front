@@ -223,7 +223,6 @@ const CoursesList = (props) => {
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'flex-end',
-                            alignItems: 'center',
                           }}
                         >
                           <MdAddShoppingCart size={18} color="#fff" />
