@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from 'firebase';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import BackgroundSignIn from '../../assets/background-signIn.jpg';
@@ -71,6 +71,7 @@ export default function SignIn(props) {
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [progress, setProgress] = useState(false);
+  const [idCourseFree, setIdCourseFree] = useState('');
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -93,6 +94,16 @@ export default function SignIn(props) {
       draggable: true,
     });
   };
+
+  useEffect(() => {
+    if (props.history.location.state) {
+      const { idCourseFree } = props.history.location.state;
+
+      if (idCourseFree) {
+        setIdCourseFree(idCourseFree);
+      }
+    }
+  }, []);
 
   const handleLogin = async (event) => {
     setProgress(true);
@@ -130,7 +141,11 @@ export default function SignIn(props) {
                   localStorage.setItem('user', id);
 
                   setProgress(false);
-                  props.history.push('/dashboard');
+                  if (idCourseFree) {
+                    props.history.push('/register-course', { idCourseFree });
+                  } else {
+                    props.history.push('/dashboard');
+                  }
                 });
               });
           }

@@ -169,7 +169,7 @@ export default function WatchClasse(props) {
                               cursor: 'pointer',
                             }}
                           >
-                            {classe.order + '- ' + classe.name}
+                            {classe.position + '- ' + classe.title}
                           </h4>
                         </Grid>
                       </Grid>

@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuLeft(props) {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [userData, setuserData] = useState([]);
 
   useEffect(() => {
@@ -146,17 +146,12 @@ export default function MenuLeft(props) {
               <ChevronLeftIcon />
             </>
           ) : (
-              <ChevronRightIcon />
-            )}
+            <ChevronRightIcon />
+          )}
         </IconButton>
       </div>
 
-      {userData.userType === 'student' &&
-
-        <Student props={props} />
-
-      }
-
+      {userData.userType === 'student' && <Student props={props} />}
 
       {userData.userType === 'admin' && (
         <>

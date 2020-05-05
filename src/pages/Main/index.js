@@ -194,6 +194,7 @@ export default function Main(props) {
             style={{
               display: 'flex',
               flexDirection: 'row',
+              justifyContent: 'center',
             }}
           >
             <CoursesList buy={true} history={history} />

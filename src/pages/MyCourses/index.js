@@ -7,13 +7,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import NoEncryptionIcon from '@material-ui/icons/NoEncryption';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
+import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -205,7 +206,7 @@ export default function Dashboard(props) {
                       }}
                     >
                       <img
-                        src={course.image}
+                        src={course.image || LoadingImage}
                         alt="course"
                         style={{
                           width: '100px',

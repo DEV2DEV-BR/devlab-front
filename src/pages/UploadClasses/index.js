@@ -1,18 +1,18 @@
 import { Button } from '@material-ui/core';
+import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
 
@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
     marginLeft: 10,
     width: '30%',
+  },
+
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
@@ -104,7 +109,7 @@ export default function UploadFiles(props) {
   };
 
   const loadDataCourse = async () => {
-    setProgress(true);
+    setProgressLoadData(true);
 
     const { id } = props.history.location.state;
 
@@ -117,7 +122,7 @@ export default function UploadFiles(props) {
       .then(function (doc) {
         if (doc.exists) {
           setCourseData(doc.data());
-          setProgress(false);
+          setProgressLoadData(false);
         } else {
           // doc.data() will be undefined in this case
           console.log('No such document!');
@@ -164,7 +169,7 @@ export default function UploadFiles(props) {
       const extension = image.name.split('.').pop();
 
       if (extensionsPermitted.includes(extension)) {
-        if (position !== '' && description !== '') {
+        if (inputTitleClasse !== '' && description !== '') {
           let date = new Date();
           let day = date.getDate();
           let month = date.getMonth();
@@ -212,9 +217,9 @@ export default function UploadFiles(props) {
                   cloudFirestore
                     .collection('classes')
                     .add({
-                      name,
-                      position,
-                      url,
+                      title: inputTitleClasse,
+                      position: classesData.length + 1,
+                      url_video: url,
                       createdAt: date,
                       date: createdAt,
                       description,
@@ -282,7 +287,7 @@ export default function UploadFiles(props) {
                 <Grid container spacing={2}>
                   <Grid item xs={12} style={{ display: 'flex' }}>
                     <img
-                      src={courseData.image}
+                      src={courseData.image || LoadingImage}
                       alt="course"
                       style={{ width: '150px', borderRadius: 5 }}
                     />
@@ -306,51 +311,6 @@ export default function UploadFiles(props) {
               </FormControl>
 
               <Grid container spacing={2}>
-                {progressLoadData ? (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      width: '100%',
-                      justifyContent: 'center',
-                      padding: 20,
-                    }}
-                  >
-                    <CircularProgress />
-                    <p style={{ margin: 10 }}>Carregando...</p>
-                  </div>
-                ) : (
-                  <>
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                      style={{ margin: 10 }}
-                    >
-                      <Grid item xs={12}>
-                        <InputLabel htmlFor="position">Position*</InputLabel>
-                        <Select
-                          native
-                          value={position}
-                          onChange={handleChangeposition}
-                          fullWidth
-                          required
-                          label="Position"
-                          inputProps={{
-                            name: 'position',
-                            id: 'position',
-                          }}
-                        >
-                          <option aria-label="None" value="" />
-                          {[1, 2, 3].map((p) => (
-                            <option value={p}>{p}</option>
-                          ))}
-                        </Select>
-                      </Grid>
-                    </FormControl>
-                  </>
-                )}
-
                 <FormControl
                   variant="outlined"
                   fullWidth

@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import UploadClasses from './pages/UploadClasses';
+import RegisterCourse from './pages/RegisterCourse';
 import WatchClasse from './pages/WatchClasse';
 import { istAuthenticated } from './services/auth';
 
@@ -43,6 +44,7 @@ const Routes = () => (
       <PrivateRoute path="/add-classes" component={UploadClasses} />
       <PrivateRoute path="/classes-by-course" component={ClassesByCourse} />
       <PrivateRoute path="/watch-classe" component={WatchClasse} />
+      <PrivateRoute path="/register-course" component={RegisterCourse} />
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>
