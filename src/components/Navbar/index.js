@@ -75,6 +75,16 @@ export default function Album() {
           </Link>
         </Typography>
 
+        <Button
+          href="https://jacode.coursify.me/"
+          target="_blank"
+          size="small"
+          variant="contained"
+          style={{ backgroundColor: '#f27676', color: '#fff' }}
+        >
+          Acessar Site Antigo
+        </Button>
+
         {!istAuthenticated() ? (
           <>
             <Link
@@ -87,6 +97,7 @@ export default function Album() {
             >
               <Button
                 variant="contained"
+                size="small"
                 style={{ backgroundColor: '#318F6B', color: '#fff' }}
               >
                 Login
