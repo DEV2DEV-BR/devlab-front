@@ -7,13 +7,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import NoEncryptionIcon from '@material-ui/icons/NoEncryption';
+import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
+import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
-import firebase from 'firebase';
-import Snackbar from '@material-ui/core/Snackbar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,18 @@ export default function Dashboard(props) {
   const [history, setHistory] = useState(props.history);
   const [progress, setProgress] = useState(false);
   const [coursesData, setCoursesData] = useState([]);
+
+  const handleDisable = () => {
+    // console.log('disable');
+  };
+
+  const handleEdit = () => {
+    // console.log('edit');
+  };
+
+  const handleAddClasses = (id) => {
+    props.history.push('/add-classes', { id });
+  };
 
   const loadDataCourses = () => {
     setProgress(true);
@@ -193,7 +206,7 @@ export default function Dashboard(props) {
                       }}
                     >
                       <img
-                        src={course.image}
+                        src={course.image || LoadingImage}
                         alt="course"
                         style={{
                           width: '100px',
@@ -218,10 +231,24 @@ export default function Dashboard(props) {
                       </div>
                     </div>
                     <div style={{ display: 'flex' }}>
-                      <IconButton aria-label="share">
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleEdit()}
+                      >
                         <EditIcon />
                       </IconButton>
-                      <IconButton aria-label="share">
+
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleAddClasses(course.id)}
+                      >
+                        <AddCircleIcon />
+                      </IconButton>
+
+                      <IconButton
+                        aria-label="disable"
+                        onClick={() => handleDisable()}
+                      >
                         <NoEncryptionIcon />
                       </IconButton>
                     </div>

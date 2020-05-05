@@ -147,7 +147,8 @@ export default function CoursesDetails(props) {
             backgroundImage: `url(
               ${Background}
             )`,
-            width: '100%',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '100%',
           }}
         >
           <Container maxWidth="sm">
@@ -282,7 +283,7 @@ export default function CoursesDetails(props) {
                                 scope="row"
                                 style={{ minWidth: 100 }}
                               >
-                                {classe.order}
+                                {classe.position}
                               </TableCell>
                               <TableCell
                                 align="center"

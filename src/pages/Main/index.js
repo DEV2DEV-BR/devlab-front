@@ -84,7 +84,7 @@ export default function Main(props) {
               gutterBottom
               style={{ color: '#fff', textShadow: '2px 2px #000' }}
             >
-              <b>JACODE CURSOS</b>
+              {/* <b>JACODE CURSOS</b> */}
             </Typography>
             <Typography
               variant="h5"
@@ -99,8 +99,7 @@ export default function Main(props) {
             >
               Bem vindo à JACODE CURSOS!
               <br />
-              Após fazer o login, você terá acesso a todos os materiais
-              disponíveis para download.
+              Aqui você embarca de um jeito e sai de outro!
             </Typography>
             <Typography
               variant="h5"
@@ -195,6 +194,7 @@ export default function Main(props) {
             style={{
               display: 'flex',
               flexDirection: 'row',
+              justifyContent: 'center',
             }}
           >
             <CoursesList buy={true} history={history} />

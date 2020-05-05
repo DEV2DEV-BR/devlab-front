@@ -191,7 +191,7 @@ export default function ClassesByCourse(props) {
                               scope="row"
                               style={{ minWidth: 100 }}
                             >
-                              {classe.order}
+                              {classe.position}
                             </TableCell>
                             <TableCell
                               align="left"

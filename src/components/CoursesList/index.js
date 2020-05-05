@@ -8,16 +8,14 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { red } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import LaunchIcon from '@material-ui/icons/Launch';
-import ShareIcon from '@material-ui/icons/Share';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { MdAddShoppingCart } from 'react-icons/md';
+import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import { format } from '../../util/format';
+import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +69,9 @@ const CoursesList = (props) => {
                 courses.push(doc.data());
               }
             } else {
-              courses.push(doc.data());
+              if (doc.data().enable) {
+                courses.push(doc.data());
+              }
             }
           });
           setCoursesData(courses);
@@ -87,6 +87,14 @@ const CoursesList = (props) => {
 
   const handleBuyCourse = () => {
     'PagSeguroLightbox(this); return false;';
+  };
+
+  const handleStartFreeCourse = (idCourseFree) => {
+    if (!istAuthenticated()) {
+      props.history.push('/sign-in', { idCourseFree });
+      return;
+    }
+    props.history.push('/register-course', { idCourseFree });
   };
 
   const handleRedirectAllClasses = (id) => {
@@ -138,12 +146,7 @@ const CoursesList = (props) => {
         </Backdrop>
       )}
       {coursesData.map((m) => (
-        <Card
-          className={classes.root}
-          key={m.id}
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleOpenCourseDetail(m.id)}
-        >
+        <Card className={classes.root} key={m.id} style={{ cursor: 'pointer' }}>
           {props.buy ? (
             <CardMedia
               className={classes.media}
@@ -183,17 +186,39 @@ const CoursesList = (props) => {
             </Typography> */}
 
             {!props.buy ? (
-              <>
-                <IconButton
-                  aria-label="watch now"
+              <div>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
                   onClick={() => handleRedirectAllClasses(m.id)}
+                  style={{
+                    backgroundColor: '#318F6B',
+                    position: 'relative',
+                  }}
                 >
-                  <LaunchIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                  <ShareIcon />
-                </IconButton>
-              </>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <MdMovie size={18} color="#fff" />
+                    <p
+                      style={{
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
+                      }}
+                    >
+                      Assistir
+                    </p>
+                  </div>
+                </Button>
+              </div>
             ) : (
               <>
                 <CardActions disableSpacing>
@@ -223,6 +248,7 @@ const CoursesList = (props) => {
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'flex-end',
+                            alignItems: 'center',
                           }}
                         >
                           <MdAddShoppingCart size={18} color="#fff" />
@@ -243,6 +269,7 @@ const CoursesList = (props) => {
                     <Button
                       fullWidth
                       variant="contained"
+                      onClick={() => handleStartFreeCourse(m.id)}
                       style={{ backgroundColor: '#318F6B' }}
                     >
                       <p

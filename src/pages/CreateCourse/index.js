@@ -175,6 +175,7 @@ export default function UploadFiles(props) {
                       shortDescription: inputShortDescription,
                       codePayment: inputCodePayment,
                       createdAt: date,
+                      enable: true,
                       id: '',
                     })
                     .then(function (doc) {
