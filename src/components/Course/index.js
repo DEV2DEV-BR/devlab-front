@@ -1,0 +1,305 @@
+import Avatar from '@material-ui/core/Avatar';
+import Backdrop from '@material-ui/core/Backdrop';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { red } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import firebase from 'firebase';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
+import { format } from '../../util/format';
+import { istAuthenticated } from '../../services/auth';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: 450,
+    width: 450,
+    height: 500,
+    margin: 5,
+    padding: 0,
+    boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
+  },
+  media: {
+    height: 0,
+    width: '100%',
+    paddingTop: '46.25%', // 16:9
+  },
+  expand: {
+    textAlign: 'center',
+    margin: '0px 0px 0px 15px',
+    padding: '0px 0px 0px 15px',
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
+const CoursesList = (props) => {
+  const classes = useStyles();
+  const [userData, setUserData] = useState([]);
+  const [courseData, setCourseData] = useState([]);
+  const [progress, setProgress] = useState(false);
+
+  const loadDataCourses = () => {
+    setProgress(true);
+
+    console.log(props.id);
+
+    async function fetchData() {
+      const db = firebase.firestore();
+
+      const coursesRef = db.collection('courses').doc('md4FoVpqpOvJuHK226eN');
+
+      await coursesRef
+        .get()
+        .then(function (doc) {
+          if (doc.exists) {
+            setCourseData(doc.data());
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!');
+          }
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error);
+        });
+    }
+
+    fetchData();
+  };
+
+  const handleBuyCourse = () => {
+    'PagSeguroLightbox(this); return false;';
+  };
+
+  const handleStartFreeCourse = (idCourseFree) => {
+    if (!istAuthenticated()) {
+      props.history.push('/sign-in', { idCourseFree });
+      return;
+    }
+    props.history.push('/register-course', { idCourseFree });
+  };
+
+  const handleRedirectAllClasses = (id) => {
+    props.history.push('/classes-by-course', { id });
+  };
+
+  const handleOpenCourseDetail = (id) => {
+    props.history.push('/course-details', { id });
+  };
+
+  useEffect(() => {
+    setProgress(true);
+
+    const db = firebase.firestore();
+
+    const usersRef = db.collection('users');
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        usersRef
+          .where('uid', '==', user.uid)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              setUserData(doc.data());
+              setProgress(false);
+            });
+          });
+      }
+    });
+
+    loadDataCourses();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      setUserData('');
+      setCourseData('');
+      setProgress('');
+    };
+  }, []);
+
+  return (
+    <>
+      {progress && (
+        <Backdrop className={classes.backdrop} open={progress}>
+          <CircularProgress color="inherit" />
+          <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
+        </Backdrop>
+      )}
+      <Card
+        className={classes.root}
+        key={courseData.id}
+        style={{ cursor: 'pointer' }}
+      >
+        {props.buy ? (
+          <CardMedia
+            className={classes.media}
+            image={courseData.image}
+            title={courseData.title}
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleOpenCourseDetail(courseData.id)}
+          />
+        ) : (
+          <CardMedia
+            className={classes.media}
+            image={courseData.image}
+            title={courseData.title}
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleRedirectAllClasses(courseData.id)}
+          />
+        )}
+
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
+          }
+          title={courseData.name}
+        />
+
+        <CardContent
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            margin: 0,
+          }}
+        >
+          {/* <Typography variant="body2" color="textSecondary" component="p">
+              <b>Requisitos: </b>
+              {courseData.requirements}
+            </Typography> */}
+
+          {!props.buy ? (
+            <div>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={() => handleRedirectAllClasses(courseData.id)}
+                style={{
+                  backgroundColor: '#318F6B',
+                  position: 'relative',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}
+                >
+                  <MdMovie size={18} color="#fff" />
+                  <p
+                    style={{
+                      margin: '0px 0px 0px 10px',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#fff',
+                    }}
+                  >
+                    MATRICULAR
+                  </p>
+                </div>
+              </Button>
+            </div>
+          ) : (
+            <>
+              <CardActions disableSpacing>
+                {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
+                {courseData.price > 0 ? (
+                  <form
+                    action="https://pagseguro.uol.cocourseData.br/checkout/v2/payment.html"
+                    method="post"
+                    onSubmit={() => handleBuyCourse}
+                    target="_blank"
+                    style={{ width: '100%', marginBottom: 10 }}
+                  >
+                    {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                    <input
+                      type="hidden"
+                      name="code"
+                      value={courseData.codePayment}
+                    />
+                    <input type="hidden" name="iot" value="button" />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: '#318F6B',
+                        position: 'relative',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <MdAddShoppingCart size={18} color="#fff" />
+                        <p
+                          style={{
+                            margin: '0px 0px 0px 10px',
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                          }}
+                        >
+                          {format(courseData.price)}
+                        </p>
+                      </div>
+                    </Button>
+                  </form>
+                ) : (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => handleStartFreeCourse(courseData.id)}
+                    style={{ backgroundColor: '#318F6B' }}
+                  >
+                    <p
+                      style={{
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
+                      }}
+                    >
+                      CURSO GRÁTIS
+                    </p>
+                  </Button>
+                )}
+              </CardActions>
+              <Typography variant="body2" color="textSecondary" component="p">
+                <b>Descrição: </b>
+                {courseData.shortDescription}
+              </Typography>
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </>
+  );
+};
+
+CoursesList.propTypes = {
+  className: PropTypes.string,
+};
+
+export default CoursesList;
