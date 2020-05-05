@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
-export const TOKEN_KEY = '@school-docs-token';
-export const EMAIL_USER = '@school-docs-email';
+export const TOKEN_KEY = '@jacode-token';
+export const EMAIL_USER = '@jacode-email';
 
 export const istAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);

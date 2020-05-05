@@ -9,8 +9,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
@@ -78,10 +79,14 @@ export default function UploadFiles(props) {
   const [image, setImage] = useState(null);
 
   const [position, setPosition] = useState('');
+  const [inputTitleClasse, setInputTitleClasse] = useState('');
 
   const [description, setDescription] = useState('');
   const [progress, setProgress] = useState(false);
   const [progressLoadData, setProgressLoadData] = useState(false);
+
+  const [classesData, setClassesData] = useState([]);
+  const [courseData, setCourseData] = useState([]);
 
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
@@ -98,56 +103,68 @@ export default function UploadFiles(props) {
     }
   };
 
-  // const loadTeacher = async () => {
-  //   setProgressLoadData(true);
-  //   const db = firebase.firestore();
+  const loadDataCourse = async () => {
+    setProgress(true);
 
-  //   const usersRef = db.collection('users');
+    const { id } = props.history.location.state;
 
-  //   await usersRef
-  //     .where('userType', '==', 'teacher')
-  //     .where('id', '==', localStorage.getItem('user'))
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       const users = [];
-  //       querySnapshot.forEach((doc) => {
-  //         users.push(doc.data());
-  //         setDisciplinesTeacher(
-  //           ...disciplinesTeacher,
-  //           doc.data().teacherDisciplines
-  //         );
-  //         setSchoolsTeacher(...schoolsTeacher, doc.data().teacherSchools);
-  //         setPeriodsTeacher(...periodsTeacher, doc.data().teacherPeriods);
-  //         setGradesTeacher(...gradesTeacher, doc.data().teacherGrades);
-  //         setClassTeacher(...myClass, doc.data().teacherClass);
-  //       });
-  //       setTeachers(users);
-  //       setProgressLoadData(false);
-  //     })
-  //     .catch(function (error) {
-  //       console.log('Error getting documents: ', error);
-  //     });
-  // };
+    const db = firebase.firestore();
 
-  // useEffect(() => {
-  //   loadTeacher();
-  // }, []);
+    const coursesRef = db.collection('courses').doc(id);
 
+    await coursesRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          setCourseData(doc.data());
+          setProgress(false);
+        } else {
+          // doc.data() will be undefined in this case
+          console.log('No such document!');
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting documents: ', error);
+      });
 
-  const extensionsPermitted = [
-    'mp4',
-    'avi'
-  ];
+    const classesRef = db.collection(`courses/${id}/classes`).orderBy('id');
 
-  const handleRegister = () => {
+    await classesRef
+      .get()
+      .then((querySnapshot) => {
+        const classes = [];
+        querySnapshot.forEach((doc) => {
+          classes.push(doc.data());
+        });
+        setClassesData(classes);
+        setProgress(false);
+      })
+      .catch(function (error) {
+        console.log('Error getting documents: ', error);
+      });
+  };
+
+  useEffect(() => {
+    loadDataCourse();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      setCourseData([]);
+      setClassesData([]);
+    };
+  }, []);
+
+  const extensionsPermitted = ['mp3', 'mp4', 'avi'];
+
+  const handleRegister = (name) => {
+    const { id } = props.history.location.state;
+
     if (image !== null) {
       const extension = image.name.split('.').pop();
 
       if (extensionsPermitted.includes(extension)) {
-        if (
-          position !== '' &&
-          description !== ''
-        ) {
+        if (position !== '' && description !== '') {
           let date = new Date();
           let day = date.getDate();
           let month = date.getMonth();
@@ -158,12 +175,22 @@ export default function UploadFiles(props) {
 
           setProgress(true);
 
-          const uploadTask = storage
-            .ref(`all_supplies/${image.name}`)
+          console.log(
+            `courses/${localStorage.getItem('@jacode-email')}/${name}/${
+              image.name
+            }`
+          );
+
+          const uploadClasse = storage
+            .ref(
+              `courses/${localStorage.getItem('@jacode-email')}/${name}/${
+                image.name
+              }`
+            )
             .put(image);
-          uploadTask.on(
+          uploadClasse.on(
             'state_changed',
-            (snapshot) => { },
+            (snapshot) => {},
             (error) => {
               // Error function ...
               console.log(error);
@@ -171,15 +198,21 @@ export default function UploadFiles(props) {
             () => {
               // complete function ...
               storage
-                .ref('all_supplies')
+                .ref('courses')
+                .child(localStorage.getItem('@jacode-email'))
+                .child(name)
                 .child(image.name)
                 .getDownloadURL()
                 .then((url) => {
-                  const cloudFirestore = firebase.firestore();
+                  const cloudFirestore = firebase
+                    .firestore()
+                    .collection('courses')
+                    .doc(id);
 
                   cloudFirestore
-                    .collection('all_supplies')
+                    .collection('classes')
                     .add({
+                      name,
                       position,
                       url,
                       createdAt: date,
@@ -188,12 +221,9 @@ export default function UploadFiles(props) {
                       id: '',
                     })
                     .then(function (doc) {
-                      cloudFirestore
-                        .collection('all_supplies')
-                        .doc(doc.id)
-                        .update({
-                          id: doc.id,
-                        });
+                      cloudFirestore.collection('classes').doc(doc.id).update({
+                        id: doc.id,
+                      });
                       setProgress(false);
                       handleClear();
                       notifySuccess('Atividade enviada');
@@ -218,6 +248,7 @@ export default function UploadFiles(props) {
   const handleClear = () => {
     setDescription('');
     setPosition('');
+    setInputTitleClasse('');
   };
 
   return (
@@ -238,14 +269,37 @@ export default function UploadFiles(props) {
                 variant="outlined"
                 fullWidth
                 className={classes.formControl}
-                style={{ display: 'flex', borderWidth: '1px', borderColor: '#c6b3b3', borderStyle: 'solid', borderRadius: 4, margin: 10, padding: 10 }}
+                style={{
+                  display: 'flex',
+                  borderWidth: '1px',
+                  borderColor: '#c6b3b3',
+                  borderStyle: 'solid',
+                  borderRadius: 4,
+                  margin: 10,
+                  padding: 10,
+                }}
               >
-                <Grid container spacing={2} >
-                  <Grid item xs={12} style={{ display: 'flex' }} >
-                    <img src="https://cdn.pixabay.com/photo/2015/01/20/13/13/ipad-605439_960_720.jpg" alt="course" style={{ width: '150px', borderRadius: 5 }} />
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: 10 }}>
-                      <h2 style={{ color: '#7a7171', margin: 0, padding: 0 }}>Nome do Curso</h2>
-                      <p style={{ color: '#918787', margin: 0, padding: 0 }}>Nº Aulas</p>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} style={{ display: 'flex' }}>
+                    <img
+                      src={courseData.image}
+                      alt="course"
+                      style={{ width: '150px', borderRadius: 5 }}
+                    />
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        padding: 10,
+                      }}
+                    >
+                      <h2 style={{ color: '#7a7171', margin: 0, padding: 0 }}>
+                        {courseData.name}
+                      </h2>
+                      <p style={{ color: '#918787', margin: 0, padding: 0 }}>
+                        Nº {classesData.length}
+                      </p>
                     </div>
                   </Grid>
                 </Grid>
@@ -266,37 +320,60 @@ export default function UploadFiles(props) {
                     <p style={{ margin: 10 }}>Carregando...</p>
                   </div>
                 ) : (
-                    <>
+                  <>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                      style={{ margin: 10 }}
+                    >
+                      <Grid item xs={12}>
+                        <InputLabel htmlFor="position">Position*</InputLabel>
+                        <Select
+                          native
+                          value={position}
+                          onChange={handleChangeposition}
+                          fullWidth
+                          required
+                          label="Position"
+                          inputProps={{
+                            name: 'position',
+                            id: 'position',
+                          }}
+                        >
+                          <option aria-label="None" value="" />
+                          {[1, 2, 3].map((p) => (
+                            <option value={p}>{p}</option>
+                          ))}
+                        </Select>
+                      </Grid>
+                    </FormControl>
+                  </>
+                )}
 
-                      <FormControl
-                        variant="outlined"
-                        fullWidth
-                        className={classes.formControl}
-                        style={{ margin: 10 }}
-                      >
-                        <Grid item xs={12}>
-                          <InputLabel htmlFor="position">Position*</InputLabel>
-                          <Select
-                            native
-                            value={position}
-                            onChange={handleChangeposition}
-                            fullWidth
-                            required
-                            label="Position"
-                            inputProps={{
-                              name: 'position',
-                              id: 'position',
-                            }}
-                          >
-                            <option aria-label="None" value="" />
-                            {[1, 2, 3].map((p) => (
-                              <option value={p}>{p}</option>
-                            ))}
-                          </Select>
-                        </Grid>
-                      </FormControl>
-                    </>
-                  )}
+                <FormControl
+                  variant="outlined"
+                  fullWidth
+                  className={classes.formControl}
+                  style={{ margin: 10 }}
+                >
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="fname"
+                      name="fullName"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="fullName"
+                      value={inputTitleClasse}
+                      onChange={(event) =>
+                        setInputTitleClasse(event.target.value)
+                      }
+                      label="Título"
+                      autoFocus
+                    />
+                  </Grid>
+                </FormControl>
 
                 <FormControl
                   variant="outlined"
@@ -338,34 +415,34 @@ export default function UploadFiles(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                  <div style={{ display: 'flex', width: '100%' }}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      disabled={!!progress}
-                      style={{
-                        backgroundColor: '#318F6B',
-                        color: '#fff',
-                      }}
-                      onClick={handleRegister}
-                      className={classes.submitLeft}
-                    >
-                      CADASTRAR
+                <div style={{ display: 'flex', width: '100%' }}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    disabled={!!progress}
+                    style={{
+                      backgroundColor: '#318F6B',
+                      color: '#fff',
+                    }}
+                    onClick={() => handleRegister(courseData.name)}
+                    className={classes.submitLeft}
+                  >
+                    CADASTRAR
                   </Button>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      style={{
-                        backgroundColor: 'rgba(126,64,144,1)',
-                        color: '#fff',
-                      }}
-                      onClick={handleClear}
-                      className={classes.submitRight}
-                    >
-                      LIMPAR
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'rgba(126,64,144,1)',
+                      color: '#fff',
+                    }}
+                    onClick={handleClear}
+                    className={classes.submitRight}
+                  >
+                    LIMPAR
                   </Button>
-                  </div>
-                )}
+                </div>
+              )}
             </form>
           </Grid>
         </Container>
