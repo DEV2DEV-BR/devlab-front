@@ -5,9 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
-import MenuLeft from '../../components/MenuLeft';
 import Course from '../../components/Course';
+import MenuLeft from '../../components/MenuLeft';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +31,28 @@ export default function RegisterCourse(props) {
   const [history, setHistory] = useState(props.history);
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
+
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
 
   const loadDataCourse = async () => {
     setProgress(true);

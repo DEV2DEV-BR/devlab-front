@@ -2,26 +2,23 @@ import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
-import { format } from '../../util/format';
-import { istAuthenticated } from '../../services/auth';
+import { MdMovie } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 450,
-    width: 450,
-    height: 500,
+    width: 350,
+    height: 300,
     margin: 5,
     padding: 0,
     boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
@@ -51,6 +48,28 @@ const CoursesList = (props) => {
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
   const loadDataCourses = () => {
     setProgress(true);
 
@@ -79,24 +98,21 @@ const CoursesList = (props) => {
     fetchData();
   };
 
-  const handleBuyCourse = () => {
-    'PagSeguroLightbox(this); return false;';
-  };
+  const handleEnrrol = () => {
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth();
+    let fullYear = date.getFullYear();
+    let createdAt = `${day}-${month}-${fullYear}`;
 
-  const handleStartFreeCourse = (idCourseFree) => {
-    if (!istAuthenticated()) {
-      props.history.push('/sign-in', { idCourseFree });
-      return;
-    }
-    props.history.push('/register-course', { idCourseFree });
-  };
+    setProgress(true);
+    const db = firebase.firestore();
 
-  const handleRedirectAllClasses = (id) => {
-    props.history.push('/classes-by-course', { id });
-  };
-
-  const handleOpenCourseDetail = (id) => {
-    props.history.push('/course-details', { id });
+    db.collection('users')
+      .doc(localStorage.getItem('user'))
+      .update({
+        myCourses: localStorage.getItem('myCourses') + courseData.id,
+      });
   };
 
   useEffect(() => {
@@ -139,28 +155,12 @@ const CoursesList = (props) => {
           <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
         </Backdrop>
       )}
-      <Card
-        className={classes.root}
-        key={courseData.id}
-        style={{ cursor: 'pointer' }}
-      >
-        {props.buy ? (
-          <CardMedia
-            className={classes.media}
-            image={courseData.image}
-            title={courseData.title}
-            style={{ cursor: 'pointer' }}
-            onClick={() => handleOpenCourseDetail(courseData.id)}
-          />
-        ) : (
-          <CardMedia
-            className={classes.media}
-            image={courseData.image}
-            title={courseData.title}
-            style={{ cursor: 'pointer' }}
-            onClick={() => handleRedirectAllClasses(courseData.id)}
-          />
-        )}
+      <Card className={classes.root} key={courseData.id}>
+        <CardMedia
+          className={classes.media}
+          image={courseData.image}
+          title={courseData.title}
+        />
 
         <CardHeader
           avatar={
@@ -181,117 +181,39 @@ const CoursesList = (props) => {
               <b>Requisitos: </b>
               {courseData.requirements}
             </Typography> */}
-
-          {!props.buy ? (
-            <div>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={() => handleRedirectAllClasses(courseData.id)}
+          <div>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={() => handleEnrrol(courseData.id)}
+              style={{
+                backgroundColor: '#318F6B',
+                position: 'relative',
+              }}
+            >
+              <div
                 style={{
-                  backgroundColor: '#318F6B',
-                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
                 }}
               >
-                <div
+                <MdMovie size={18} color="#fff" />
+                <p
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
+                    margin: '0px 0px 0px 10px',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: '#fff',
                   }}
                 >
-                  <MdMovie size={18} color="#fff" />
-                  <p
-                    style={{
-                      margin: '0px 0px 0px 10px',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      color: '#fff',
-                    }}
-                  >
-                    MATRICULAR
-                  </p>
-                </div>
-              </Button>
-            </div>
-          ) : (
-            <>
-              <CardActions disableSpacing>
-                {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
-                {courseData.price > 0 ? (
-                  <form
-                    action="https://pagseguro.uol.cocourseData.br/checkout/v2/payment.html"
-                    method="post"
-                    onSubmit={() => handleBuyCourse}
-                    target="_blank"
-                    style={{ width: '100%', marginBottom: 10 }}
-                  >
-                    {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                    <input
-                      type="hidden"
-                      name="code"
-                      value={courseData.codePayment}
-                    />
-                    <input type="hidden" name="iot" value="button" />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      style={{
-                        backgroundColor: '#318F6B',
-                        position: 'relative',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <MdAddShoppingCart size={18} color="#fff" />
-                        <p
-                          style={{
-                            margin: '0px 0px 0px 10px',
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            color: '#fff',
-                          }}
-                        >
-                          {format(courseData.price)}
-                        </p>
-                      </div>
-                    </Button>
-                  </form>
-                ) : (
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={() => handleStartFreeCourse(courseData.id)}
-                    style={{ backgroundColor: '#318F6B' }}
-                  >
-                    <p
-                      style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
-                      CURSO GRÁTIS
-                    </p>
-                  </Button>
-                )}
-              </CardActions>
-              <Typography variant="body2" color="textSecondary" component="p">
-                <b>Descrição: </b>
-                {courseData.shortDescription}
-              </Typography>
-            </>
-          )}
+                  MATRICULAR
+                </p>
+              </div>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </>
