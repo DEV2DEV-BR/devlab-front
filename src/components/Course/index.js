@@ -1,5 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
+import { format } from '../../util/format';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { MdMovie } from 'react-icons/md';
+import { MdMovie, MdAddShoppingCart } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +47,7 @@ const CoursesList = (props) => {
   const classes = useStyles();
   const [userData, setUserData] = useState([]);
   const [courseData, setCourseData] = useState([]);
+  const [myCourses, setMyCourses] = useState([]);
   const [progress, setProgress] = useState(false);
 
   const notifySuccess = (message) => {
@@ -70,15 +72,17 @@ const CoursesList = (props) => {
     });
   };
 
+  const handleBuyCourse = () => {
+    props.history.push('/dashboard');
+  };
+
   const loadDataCourses = () => {
     setProgress(true);
-
-    console.log(props.id);
 
     async function fetchData() {
       const db = firebase.firestore();
 
-      const coursesRef = db.collection('courses').doc('md4FoVpqpOvJuHK226eN');
+      const coursesRef = db.collection('courses').doc(props.id);
 
       await coursesRef
         .get()
@@ -98,46 +102,99 @@ const CoursesList = (props) => {
     fetchData();
   };
 
-  const handleEnrrol = () => {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth();
-    let fullYear = date.getFullYear();
-    let createdAt = `${day}-${month}-${fullYear}`;
+  const updateLocalStorageMyCourses = () => {
+    async function fetchData() {
+      const db = firebase.firestore();
 
+      const userRef = db.collection('users').doc(localStorage.getItem('user'));
+
+      await userRef
+        .get()
+        .then(function (doc) {
+          if (doc.exists) {
+            localStorage.setItem(
+              'myCourses',
+              JSON.stringify(doc.data().myCourses)
+            );
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!');
+          }
+          setProgress(false);
+          notifySuccess('Agora você já pode estudar!');
+          props.history.push('/dashboard');
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error);
+        });
+    }
+    fetchData();
+  };
+
+  const handleEnrrol = async () => {
     setProgress(true);
     const db = firebase.firestore();
 
-    db.collection('users')
+    await db
+      .collection('users')
       .doc(localStorage.getItem('user'))
       .update({
-        myCourses: localStorage.getItem('myCourses') + courseData.id,
+        myCourses: firebase.firestore.FieldValue.arrayUnion(courseData.id),
+      })
+      .then(() => {
+        updateLocalStorageMyCourses();
       });
   };
 
   useEffect(() => {
     setProgress(true);
 
-    const db = firebase.firestore();
+    async function fetchData() {
+      const db = firebase.firestore();
 
-    const usersRef = db.collection('users');
+      const usersRef = db.collection('users');
 
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        usersRef
-          .where('uid', '==', user.uid)
-          .get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              setUserData(doc.data());
-              setProgress(false);
+      firebase.auth().onAuthStateChanged(async function (user) {
+        if (user) {
+          await usersRef
+            .where('uid', '==', user.uid)
+            .get()
+            .then(async (querySnapshot) => {
+              const arrayMyCourses = [];
+              querySnapshot.forEach((doc) => {
+                setUserData(doc.data());
+                arrayMyCourses.push(doc.data().myCourses);
+                setProgress(false);
+              });
+              setMyCourses(arrayMyCourses);
             });
-          });
-      }
-    });
+        }
+      });
+    }
+    fetchData();
 
     loadDataCourses();
   }, []);
+
+  // User has switched back to the tab
+  // const onFocus = () => {
+  //   console.log('Tab is in focus');
+  // };
+
+  // User has switched away from the tab (AKA tab is hidden)
+  const onBlur = () => {
+    props.history.push('/dashboard');
+  };
+
+  useEffect(() => {
+    // window.addEventListener('focus', onFocus);
+    window.addEventListener('blur', onBlur);
+    // Specify how to clean up after this effect:
+    return () => {
+      // window.removeEventListener('focus', onFocus);
+      window.removeEventListener('blur', onBlur);
+    };
+  });
 
   useEffect(() => {
     return () => {
@@ -182,37 +239,85 @@ const CoursesList = (props) => {
               {courseData.requirements}
             </Typography> */}
           <div>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={() => handleEnrrol(courseData.id)}
-              style={{
-                backgroundColor: '#318F6B',
-                position: 'relative',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                }}
+            {courseData.price > 0 ? (
+              <form
+                action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
+                method="post"
+                target="_blank"
+                style={{ width: '100%', marginBottom: 10 }}
               >
-                <MdMovie size={18} color="#fff" />
-                <p
+                {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                <input
+                  type="hidden"
+                  name="code"
+                  value={courseData.codePayment}
+                />
+                <input type="hidden" name="iot" value="button" />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  onClick={() => handleBuyCourse}
                   style={{
-                    margin: '0px 0px 0px 10px',
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    color: '#fff',
+                    backgroundColor: '#318F6B',
+                    position: 'relative',
                   }}
                 >
-                  MATRICULAR
-                </p>
-              </div>
-            </Button>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <MdAddShoppingCart size={18} color="#fff" />
+                    <p
+                      style={{
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
+                      }}
+                    >
+                      {format(courseData.price)}
+                    </p>
+                  </div>
+                </Button>
+              </form>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={() => handleEnrrol(courseData.id)}
+                style={{
+                  backgroundColor: '#318F6B',
+                  position: 'relative',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                  }}
+                >
+                  <MdMovie size={18} color="#fff" />
+                  <p
+                    style={{
+                      margin: '0px 0px 0px 10px',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#fff',
+                    }}
+                  >
+                    MATRICULAR
+                  </p>
+                </div>
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

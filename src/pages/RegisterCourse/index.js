@@ -109,7 +109,10 @@ export default function RegisterCourse(props) {
               alignItems: 'center',
             }}
           >
-            <Course id={props.history.location.state.idCourseFree} />
+            <Course
+              id={props.history.location.state.idCourseFree}
+              history={props.history}
+            />
           </Grid>
         </Container>
         <Box pt={4}>
