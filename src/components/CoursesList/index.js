@@ -97,6 +97,10 @@ const CoursesList = (props) => {
     props.history.push('/register-course', { idCourseFree });
   };
 
+  const handleBuyCourseDisconnected = (idCourseFree) => {
+    props.history.push('/sign-in', { idCourseFree });
+  };
+
   const handleRedirectAllClasses = (id) => {
     props.history.push('/classes-by-course', { id });
   };
@@ -224,20 +228,58 @@ const CoursesList = (props) => {
                 <CardActions disableSpacing>
                   {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
                   {m.price > 0 ? (
-                    <form
-                      action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                      method="post"
-                      onSubmit={() => handleBuyCourse}
-                      target="_blank"
-                      style={{ width: '100%', marginBottom: 10 }}
-                    >
-                      {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                      <input type="hidden" name="code" value={m.codePayment} />
-                      <input type="hidden" name="iot" value="button" />
+                    istAuthenticated() ? (
+                      <form
+                        action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
+                        method="post"
+                        onSubmit={() => handleBuyCourse}
+                        target="_blank"
+                        style={{ width: '100%', marginBottom: 10 }}
+                      >
+                        {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                        <input
+                          type="hidden"
+                          name="code"
+                          value={m.codePayment}
+                        />
+                        <input type="hidden" name="iot" value="button" />
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          style={{
+                            backgroundColor: '#318F6B',
+                            position: 'relative',
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <MdAddShoppingCart size={18} color="#fff" />
+                            <p
+                              style={{
+                                margin: '0px 0px 0px 10px',
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                color: '#fff',
+                              }}
+                            >
+                              {format(m.price)}
+                            </p>
+                          </div>
+                        </Button>
+                      </form>
+                    ) : (
                       <Button
                         type="submit"
                         fullWidth
                         variant="contained"
+                        onClick={() => handleBuyCourseDisconnected(m.id)}
                         style={{
                           backgroundColor: '#318F6B',
                           position: 'relative',
@@ -264,7 +306,7 @@ const CoursesList = (props) => {
                           </p>
                         </div>
                       </Button>
-                    </form>
+                    )
                   ) : (
                     <Button
                       fullWidth
