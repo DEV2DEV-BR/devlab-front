@@ -99,7 +99,7 @@ export default function CoursesDetails(props) {
         console.log('Error getting documents: ', error);
       });
 
-    const classesRef = db.collection(`courses/${id}/classes`).orderBy('id');
+    const classesRef = db.collection(`courses/${id}/classes`).orderBy('position');
 
     await classesRef
       .get()
@@ -224,23 +224,23 @@ export default function CoursesDetails(props) {
                   </Button>
                 </form>
               ) : (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  style={{ backgroundColor: '#318F6B', width: '30%' }}
-                >
-                  <p
-                    style={{
-                      margin: '0px 0px 0px 10px',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      color: '#fff',
-                    }}
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    style={{ backgroundColor: '#318F6B', width: '30%' }}
                   >
-                    CURSO GRÁTIS
+                    <p
+                      style={{
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
+                      }}
+                    >
+                      CURSO GRÁTIS
                   </p>
-                </Button>
-              )}
+                  </Button>
+                )}
             </Grid>
           </div>
         )}
@@ -268,7 +268,7 @@ export default function CoursesDetails(props) {
                               <b>Aula</b>
                             </TableCell>
                             <TableCell align="center">
-                              <b>Descrição</b>
+                              <b>Nome da Aula</b>
                             </TableCell>
                             <TableCell align="right">
                               <b>Duração</b>
@@ -289,7 +289,7 @@ export default function CoursesDetails(props) {
                                 align="center"
                                 style={{ textAlign: 'center' }}
                               >
-                                {classe.description}
+                                {classe.title}
                               </TableCell>
                               <TableCell
                                 align="center"
@@ -304,8 +304,8 @@ export default function CoursesDetails(props) {
                     </TableContainer>
                   </>
                 ) : (
-                  ''
-                )}
+                    ''
+                  )}
               </Grid>
             </Container>
           </Grid>

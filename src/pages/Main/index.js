@@ -181,8 +181,8 @@ export default function Main(props) {
                 </Grid>
               </div>
             ) : (
-              ''
-            )}
+                ''
+              )}
           </Container>
         </div>
         {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}

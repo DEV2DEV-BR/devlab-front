@@ -182,20 +182,20 @@ export default function UploadFiles(props) {
 
           console.log(
             `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-              image.name
+            image.name
             }`
           );
 
           const uploadClasse = storage
             .ref(
               `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-                image.name
+              image.name
               }`
             )
             .put(image);
           uploadClasse.on(
             'state_changed',
-            (snapshot) => {},
+            (snapshot) => { },
             (error) => {
               // Error function ...
               console.log(error);
@@ -251,6 +251,7 @@ export default function UploadFiles(props) {
   };
 
   const handleClear = () => {
+    window.location.reload()
     setDescription('');
     setPosition('');
     setInputTitleClasse('');
@@ -375,34 +376,34 @@ export default function UploadFiles(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                <div style={{ display: 'flex', width: '100%' }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    disabled={!!progress}
-                    style={{
-                      backgroundColor: '#318F6B',
-                      color: '#fff',
-                    }}
-                    onClick={() => handleRegister(courseData.name)}
-                    className={classes.submitLeft}
-                  >
-                    CADASTRAR
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      disabled={!!progress}
+                      style={{
+                        backgroundColor: '#318F6B',
+                        color: '#fff',
+                      }}
+                      onClick={() => handleRegister(courseData.name)}
+                      className={classes.submitLeft}
+                    >
+                      CADASTRAR
                   </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
-                      color: '#fff',
-                    }}
-                    onClick={handleClear}
-                    className={classes.submitRight}
-                  >
-                    LIMPAR
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: 'rgba(126,64,144,1)',
+                        color: '#fff',
+                      }}
+                      onClick={handleClear}
+                      className={classes.submitRight}
+                    >
+                      LIMPAR
                   </Button>
-                </div>
-              )}
+                  </div>
+                )}
             </form>
           </Grid>
         </Container>
