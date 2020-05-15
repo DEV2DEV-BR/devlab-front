@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Background from '../../assets/background-default.jpg';
 import Copyright from '../../components/Copyright';
@@ -56,9 +56,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function Main(props) {
   const classe = useStyles();
   const [history, setHistory] = useState(props.history);
+
+
+  useEffect(() => {
+    const script = document.createElement("script");
+
+    script.id = "jivoChat"
+    script.src = "//code.jivosite.com/widget/6Sb49qf6LZ";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      document.getElementById('jivoChat').remove()
+    };
+  }, []);
+
+
 
   return (
     <React.Fragment>
