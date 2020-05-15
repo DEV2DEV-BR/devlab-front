@@ -178,6 +178,20 @@ export default function Main(props) {
                       </Button>
                     </Link>
                   </Grid>
+                  <Grid item>
+                    <Link to="/sign-up" style={{ textDecoration: 'none' }}>
+
+                      <Button
+                        href="https://jacode.coursify.me/"
+                        target="_blank"
+                        size="large"
+                        variant="contained"
+                        style={{ backgroundColor: '#f27676', color: '#fff' }}
+                      >
+                        Acessar Site Antigo
+                    </Button>
+                    </Link>
+                  </Grid>
                 </Grid>
               </div>
             ) : (

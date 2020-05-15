@@ -75,15 +75,6 @@ export default function Album() {
           </Link>
         </Typography>
 
-        <Button
-          href="https://jacode.coursify.me/"
-          target="_blank"
-          size="small"
-          variant="contained"
-          style={{ backgroundColor: '#f27676', color: '#fff' }}
-        >
-          Acessar Site Antigo
-        </Button>
 
         {!istAuthenticated() ? (
           <>
@@ -105,25 +96,25 @@ export default function Album() {
             </Link>
           </>
         ) : (
-          <div>
-            <Link
-              to="/dashboard"
-              style={{
-                marginLeft: 10,
-                marginRight: 10,
-                textDecoration: 'none',
-              }}
-            >
-              <Button
-                variant="contained"
-                size="small"
-                style={{ backgroundColor: '#318F6B', color: '#fff' }}
+            <div>
+              <Link
+                to="/dashboard"
+                style={{
+                  marginLeft: 10,
+                  marginRight: 10,
+                  textDecoration: 'none',
+                }}
               >
-                Voltar para dashboard
+                <Button
+                  variant="contained"
+                  size="small"
+                  style={{ backgroundColor: '#318F6B', color: '#fff' }}
+                >
+                  Voltar para dashboard
               </Button>
-            </Link>
-          </div>
-        )}
+              </Link>
+            </div>
+          )}
       </Toolbar>
     </AppBar>
   );
