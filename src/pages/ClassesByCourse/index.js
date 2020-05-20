@@ -74,7 +74,7 @@ export default function ClassesByCourse(props) {
         console.log('Error getting documents: ', error);
       });
 
-    const classesRef = db.collection(`courses/${id}/classes`).orderBy('id');
+    const classesRef = db.collection(`courses/${id}/classes`).orderBy('position');
 
     await classesRef
       .get()
@@ -221,8 +221,8 @@ export default function ClassesByCourse(props) {
                   </TableContainer>
                 </>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </Grid>
           </Container>
           {!progress && (
