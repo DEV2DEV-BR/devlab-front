@@ -19,6 +19,9 @@ import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     maxWidth: 300,
     margin: 5,
     padding: 0,
@@ -160,14 +163,14 @@ const CoursesList = (props) => {
               onClick={() => handleOpenCourseDetail(m.id)}
             />
           ) : (
-            <CardMedia
-              className={classes.media}
-              image={m.image}
-              title={m.title}
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleRedirectAllClasses(m.id)}
-            />
-          )}
+              <CardMedia
+                className={classes.media}
+                image={m.image}
+                title={m.title}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRedirectAllClasses(m.id)}
+              />
+            )}
 
           <CardHeader
             avatar={
@@ -198,7 +201,6 @@ const CoursesList = (props) => {
                   onClick={() => handleRedirectAllClasses(m.id)}
                   style={{
                     backgroundColor: '#318F6B',
-                    position: 'relative',
                   }}
                 >
                   <div
@@ -224,116 +226,117 @@ const CoursesList = (props) => {
                 </Button>
               </div>
             ) : (
-              <>
-                <CardActions disableSpacing>
-                  {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
-                  {m.price > 0 ? (
-                    istAuthenticated() ? (
-                      <form
-                        action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                        method="post"
-                        onSubmit={() => handleBuyCourse}
-                        target="_blank"
-                        style={{ width: '100%', marginBottom: 10 }}
-                      >
-                        {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                        <input
-                          type="hidden"
-                          name="code"
-                          value={m.codePayment}
-                        />
-                        <input type="hidden" name="iot" value="button" />
-                        <Button
-                          type="submit"
-                          fullWidth
-                          variant="contained"
-                          style={{
-                            backgroundColor: '#318F6B',
-                            position: 'relative',
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              justifyContent: 'flex-end',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <MdAddShoppingCart size={18} color="#fff" />
-                            <p
-                              style={{
-                                margin: '0px 0px 0px 10px',
-                                fontSize: 16,
-                                fontWeight: 'bold',
-                                color: '#fff',
-                              }}
-                            >
-                              {format(m.price)}
-                            </p>
-                          </div>
-                        </Button>
-                      </form>
-                    ) : (
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        onClick={() => handleBuyCourseDisconnected(m.id)}
-                        style={{
-                          backgroundColor: '#318F6B',
-                          position: 'relative',
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <MdAddShoppingCart size={18} color="#fff" />
-                          <p
-                            style={{
-                              margin: '0px 0px 0px 10px',
-                              fontSize: 16,
-                              fontWeight: 'bold',
-                              color: '#fff',
-                            }}
-                          >
-                            {format(m.price)}
-                          </p>
-                        </div>
-                      </Button>
-                    )
-                  ) : (
+                <>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    <b>Descrição: </b>
+                    {m.shortDescription}
+                  </Typography>
+
+                </>
+              )}
+          </CardContent>
+          {props.buy && (
+            <CardActions disableSpacing >
+              {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
+              {m.price > 0 ? (
+                istAuthenticated() ? (
+                  <form
+                    action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
+                    method="post"
+                    onSubmit={() => handleBuyCourse}
+                    target="_blank"
+                    style={{ width: '100%' }}
+                  >
+                    {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                    <input
+                      type="hidden"
+                      name="code"
+                      value={m.codePayment}
+                    />
+                    <input type="hidden" name="iot" value="button" />
                     <Button
+                      type="submit"
                       fullWidth
                       variant="contained"
-                      onClick={() => handleStartFreeCourse(m.id)}
-                      style={{ backgroundColor: '#318F6B' }}
+                      style={{
+                        backgroundColor: '#318F6B',
+                      }}
                     >
-                      <p
+                      <div
                         style={{
-                          margin: '0px 0px 0px 10px',
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          color: '#fff',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
                         }}
                       >
-                        CURSO GRÁTIS
-                      </p>
+                        <MdAddShoppingCart size={18} color="#fff" />
+                        <p
+                          style={{
+                            margin: '0px 0px 0px 10px',
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                          }}
+                        >
+                          {format(m.price)}
+                        </p>
+                      </div>
                     </Button>
-                  )}
-                </CardActions>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  <b>Descrição: </b>
-                  {m.shortDescription}
-                </Typography>
-              </>
-            )}
-          </CardContent>
+                  </form>
+                ) : (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      onClick={() => handleBuyCourseDisconnected(m.id)}
+                      style={{
+                        backgroundColor: '#318F6B',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <MdAddShoppingCart size={18} color="#fff" />
+                        <p
+                          style={{
+                            margin: '0px 0px 0px 10px',
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                          }}
+                        >
+                          {format(m.price)}
+                        </p>
+                      </div>
+                    </Button>
+                  )
+              ) : (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => handleStartFreeCourse(m.id)}
+                    style={{ backgroundColor: '#318F6B' }}
+                  >
+                    <p
+                      style={{
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
+
+                      }}
+                    >
+                      CURSO GRÁTIS
+                      </p>
+                  </Button>
+                )}
+            </CardActions>)}
         </Card>
       ))}
     </>
