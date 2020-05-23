@@ -56,30 +56,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function Main(props) {
   const classe = useStyles();
   const [history, setHistory] = useState(props.history);
 
-
   useEffect(() => {
-    const script = document.createElement("script");
+    const script = document.createElement('script');
 
-    script.id = "jivoChat"
-    script.src = "//code.jivosite.com/widget/6Sb49qf6LZ";
+    script.id = 'jivoChat';
+    script.src = '//code.jivosite.com/widget/6Sb49qf6LZ';
     script.async = true;
 
     document.body.appendChild(script);
-
-  }, [])
+  }, []);
 
   useEffect(() => {
     return () => {
-      document.getElementById('jivoChat').remove()
+      document.getElementById('jivoChat').remove();
     };
   }, []);
-
-
 
   return (
     <React.Fragment>
@@ -159,7 +154,11 @@ export default function Main(props) {
                   style={{ width: 40, height: 40 }}
                 />
               </a>
-              <a href="https://discord.gg/3Wmcp86" target="_blank">
+              <a
+                href="https://discord.gg/3Wmcp86"
+                target="_blank"
+                style={{ marginTop: 3 }}
+              >
                 <img
                   src={DiscordIcon}
                   alt="discord community"
@@ -200,7 +199,6 @@ export default function Main(props) {
                     </Link>
                   </Grid>
                   <Grid item>
-
                     <Button
                       href="https://jacode.coursify.me/"
                       target="_blank"
@@ -214,8 +212,8 @@ export default function Main(props) {
                 </Grid>
               </div>
             ) : (
-                ''
-              )}
+              ''
+            )}
           </Container>
         </div>
         {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}

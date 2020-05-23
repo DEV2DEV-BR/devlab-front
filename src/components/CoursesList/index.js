@@ -27,6 +27,15 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
   },
+  rootMyCourses: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    maxWidth: 250,
+    margin: 5,
+    padding: 0,
+    boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
+  },
   media: {
     height: 0,
     width: '100%',
@@ -68,8 +77,10 @@ const CoursesList = (props) => {
           const courses = [];
           querySnapshot.forEach((doc) => {
             if (!props.buy) {
-              if (myCourses.includes(doc.data().id)) {
-                courses.push(doc.data());
+              if (myCourses) {
+                if (myCourses.includes(doc.data().id)) {
+                  courses.push(doc.data());
+                }
               }
             } else {
               if (doc.data().enable) {
@@ -153,7 +164,11 @@ const CoursesList = (props) => {
         </Backdrop>
       )}
       {coursesData.map((m) => (
-        <Card className={classes.root} key={m.id} style={{ cursor: 'pointer' }}>
+        <Card
+          className={props.buy ? classes.root : classes.rootMyCourses}
+          key={m.id}
+          style={{ cursor: 'pointer' }}
+        >
           {props.buy ? (
             <CardMedia
               className={classes.media}
@@ -163,14 +178,14 @@ const CoursesList = (props) => {
               onClick={() => handleOpenCourseDetail(m.id)}
             />
           ) : (
-              <CardMedia
-                className={classes.media}
-                image={m.image}
-                title={m.title}
-                style={{ cursor: 'pointer' }}
-                onClick={() => handleRedirectAllClasses(m.id)}
-              />
-            )}
+            <CardMedia
+              className={classes.media}
+              image={m.image}
+              title={m.title}
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleRedirectAllClasses(m.id)}
+            />
+          )}
 
           <CardHeader
             avatar={
@@ -226,17 +241,16 @@ const CoursesList = (props) => {
                 </Button>
               </div>
             ) : (
-                <>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    <b>Descrição: </b>
-                    {m.shortDescription}
-                  </Typography>
-
-                </>
-              )}
+              <>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  <b>Descrição: </b>
+                  {m.shortDescription}
+                </Typography>
+              </>
+            )}
           </CardContent>
           {props.buy && (
-            <CardActions disableSpacing >
+            <CardActions disableSpacing>
               {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
               {m.price > 0 ? (
                 istAuthenticated() ? (
@@ -248,11 +262,7 @@ const CoursesList = (props) => {
                     style={{ width: '100%' }}
                   >
                     {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                    <input
-                      type="hidden"
-                      name="code"
-                      value={m.codePayment}
-                    />
+                    <input type="hidden" name="code" value={m.codePayment} />
                     <input type="hidden" name="iot" value="button" />
                     <Button
                       type="submit"
@@ -285,58 +295,58 @@ const CoursesList = (props) => {
                     </Button>
                   </form>
                 ) : (
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      onClick={() => handleBuyCourseDisconnected(m.id)}
-                      style={{
-                        backgroundColor: '#318F6B',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <MdAddShoppingCart size={18} color="#fff" />
-                        <p
-                          style={{
-                            margin: '0px 0px 0px 10px',
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            color: '#fff',
-                          }}
-                        >
-                          {format(m.price)}
-                        </p>
-                      </div>
-                    </Button>
-                  )
-              ) : (
                   <Button
+                    type="submit"
                     fullWidth
                     variant="contained"
-                    onClick={() => handleStartFreeCourse(m.id)}
-                    style={{ backgroundColor: '#318F6B' }}
+                    onClick={() => handleBuyCourseDisconnected(m.id)}
+                    style={{
+                      backgroundColor: '#318F6B',
+                    }}
                   >
-                    <p
+                    <div
                       style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
                       }}
                     >
-                      CURSO GRÁTIS
+                      <MdAddShoppingCart size={18} color="#fff" />
+                      <p
+                        style={{
+                          margin: '0px 0px 0px 10px',
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                          color: '#fff',
+                        }}
+                      >
+                        {format(m.price)}
                       </p>
+                    </div>
                   </Button>
-                )}
-            </CardActions>)}
+                )
+              ) : (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={() => handleStartFreeCourse(m.id)}
+                  style={{ backgroundColor: '#318F6B' }}
+                >
+                  <p
+                    style={{
+                      margin: '0px 0px 0px 10px',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#fff',
+                    }}
+                  >
+                    CURSO GRÁTIS
+                  </p>
+                </Button>
+              )}
+            </CardActions>
+          )}
         </Card>
       ))}
     </>

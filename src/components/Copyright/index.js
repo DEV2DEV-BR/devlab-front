@@ -4,7 +4,12 @@ import React from 'react';
 
 export default function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography
+      variant="body2"
+      color="textSecondary"
+      align="center"
+      style={{ marginBottom: 10 }}
+    >
       {'Copyright © '}
       <Links
         color="inherit"
