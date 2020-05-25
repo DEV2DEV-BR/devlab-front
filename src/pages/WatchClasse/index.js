@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
@@ -45,7 +44,7 @@ export default function WatchClasse(props) {
   const classes = useStyles();
 
   const [classesData, setClassesData] = useState([]);
-  const [linksData, setLinksData] = useState([]);
+  // const [linksData, setLinksData] = useState([]);
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
@@ -90,7 +89,7 @@ export default function WatchClasse(props) {
           }
         });
         setClassesData(classes);
-        setLinksData(links);
+        // setLinksData(links);
         setProgress(false);
       })
       .catch(function (error) {

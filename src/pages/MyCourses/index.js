@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(props) {
   const classes = useStyles();
 
-  const [history, setHistory] = useState(props.history);
+  const history = useState(props.history);
   const [progress, setProgress] = useState(false);
   const [coursesData, setCoursesData] = useState([]);
 
@@ -112,7 +112,7 @@ export default function Dashboard(props) {
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        {coursesData.length == 0 && (
+        {coursesData.length === 0 && (
           <Container
             maxWidth="lg"
             className={classes.container}
