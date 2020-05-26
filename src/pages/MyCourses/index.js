@@ -75,6 +75,7 @@ export default function Dashboard(props) {
             courses.push(doc.data());
           });
           setCoursesData(courses);
+          console.log(courses);
           setProgress(false);
         })
         .catch(function (error) {
