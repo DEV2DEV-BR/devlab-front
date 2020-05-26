@@ -9,10 +9,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
+import JoditEditor from 'jodit-react';
+
+const styles = {
+  editor: {
+    border: '1px solid gray',
+    minHeight: '6em',
+  },
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,29 +91,16 @@ export default function UploadFiles(props) {
   const [inputCodePayment, setInputCodePayment] = useState('');
   const [inputShortDescription, setInputShortDescription] = useState('');
 
-  const [description, setDescription] = useState('');
-  const [requirements, setRequirements] = useState('');
-
   const [progress, setProgress] = useState(false);
-  const [progressLoadData, setProgressLoadData] = useState(false);
 
-  const handleChangeRequirements = (event) => {
-    setRequirements(event.target.value);
-  };
+  const editorRequirement = useRef(null);
+  const [requirements, setRequirements] = useState('Aqui vão os requisitos');
 
-  const handleChangeDescription = (event) => {
-    setDescription(event.target.value);
-  };
+  const editorDescription = useRef(null);
+  const [description, setDescription] = useState('Aqui vai a descrição');
 
-  const handleChangeposition = (event) => {
-    setPosition(event.target.value);
-  };
-
-  const handleChangeImageBackground = (e) => {
-    if (e.target.files[0]) {
-      const image = e.target.files[0];
-      setImage(image);
-    }
+  const config = {
+    readonly: false, // all options from https://xdsoft.net/jodit/doc/
   };
 
   const handleChangeImageCourse = (e) => {
@@ -118,6 +113,7 @@ export default function UploadFiles(props) {
   const extensionsPermitted = ['png', 'jpg', 'jpeg'];
 
   const handleRegister = () => {
+    console.log(requirements);
     if (image !== null) {
       const extension = image.name.split('.').pop();
 
@@ -257,7 +253,10 @@ export default function UploadFiles(props) {
                       fullWidth
                       id="fullName"
                       value={inputName}
-                      onChange={(event) => setInputName(event.target.value)}
+                      onChange={(event) => {
+                        event.preventDefault();
+                        setInputName(event.target.value);
+                      }}
                       label="Nome do Curso"
                       autoFocus
                     />
@@ -370,16 +369,13 @@ export default function UploadFiles(props) {
                   style={{ margin: 10 }}
                 >
                   <Grid item xs={12}>
-                    <TextareaAutosize
-                      required
-                      style={{ width: '100%' }}
+                    <JoditEditor
+                      ref={editorDescription}
                       value={description}
-                      rowsMin={10}
-                      onChange={handleChangeDescription}
-                      id="outlined-required"
-                      label="Descrição"
-                      placeholder="Descrição"
-                      variant="outlined"
+                      config={config}
+                      tabIndex={1} // tabIndex of textarea
+                      onBlur={(newContent) => setDescription(newContent)} // preferred to use only this option to update the content for performance reasons
+                      onChange={(newContent) => {}}
                     />
                   </Grid>
                 </FormControl>
@@ -391,46 +387,17 @@ export default function UploadFiles(props) {
                   style={{ margin: 10 }}
                 >
                   <Grid item xs={12}>
-                    <TextareaAutosize
-                      required
-                      style={{ width: '100%' }}
+                    <JoditEditor
+                      ref={editorRequirement}
                       value={requirements}
-                      rowsMin={10}
-                      onChange={handleChangeRequirements}
-                      id="outlined-required"
-                      label="Requisitos"
-                      placeholder="Requisitos"
-                      variant="outlined"
+                      config={config}
+                      tabIndex={1} // tabIndex of textarea
+                      onBlur={(newContent) => setRequirements(newContent)} // preferred to use only this option to update the content for performance reasons
+                      onChange={(newContent) => {}}
                     />
                   </Grid>
                 </FormControl>
 
-                {/* <Grid container spacing={2}>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                    style={{
-                      display: 'flex',
-                      borderWidth: '1px',
-                      borderColor: '#c6b3b3',
-                      borderStyle: 'solid',
-                      borderRadius: 4,
-                      margin: 15,
-                      padding: 5,
-                    }}
-                  >
-                    <Grid item xs={12}>
-                      <p style={{ marginLeft: 10 }}>Imagem de Fundo</p>
-                      <div style={{ margin: '10px 10px 20px 10px' }}>
-                        <input
-                          type="file"
-                          onChange={handleChangeImageBackground}
-                        />
-                      </div>
-                    </Grid>
-                  </FormControl>
-                </Grid> */}
                 <Grid container spacing={2}>
                   <FormControl
                     variant="outlined"
