@@ -55,7 +55,10 @@ export default function Dashboard(props) {
   const [progress, setProgress] = useState(false);
   const [coursesData, setCoursesData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [courseEnabled, setCourseEnabled] = useState('');
+  const [messageBody, setMessageBody] = useState('');
+  const [title, setTitle] = useState('');
+  const [action, setAction] = useState('');
+  const [textButton, setTextButton] = useState('');
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -79,8 +82,25 @@ export default function Dashboard(props) {
     });
   };
 
-  const handleClickOpen = (course) => {
-    setCourseEnabled(course);
+  const handleClickOpen = (action, course) => {
+    if (action === 'toggle') {
+      setTitle(
+        `Você deseja ${course.enable ? 'desativar' : 'ativar'} o curso:  ${
+          course.name
+        } ?`
+      );
+      setMessageBody(
+        `Você poderá ${course.enable ? 'desativa-lo' : 'ativa-lo'} no futuro.`
+      );
+      setAction('toggle');
+      setTextButton(course.enable ? 'desativar' : 'ativar');
+    } else {
+      setTitle(`Desejar editar o curso: ${course.name}?`);
+      setMessageBody('Você será redirecionado para uma outra página!');
+      setAction('edit');
+      setTextButton('Editar');
+    }
+
     setOpen(true);
   };
 
@@ -111,8 +131,8 @@ export default function Dashboard(props) {
       });
   };
 
-  const handleEdit = () => {
-    // console.log('edit');
+  const handleEdit = (id) => {
+    props.history.push('/create-course', { id });
   };
 
   const handleAddClasses = (id) => {
@@ -293,7 +313,10 @@ export default function Dashboard(props) {
                     </div>
                     <div style={{ display: 'flex' }}>
                       <Tooltip content="Editar" direction="bottom">
-                        <IconButton aria-label="edit" onClick={() => {}}>
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => handleClickOpen('edit', course)}
+                        >
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
@@ -315,7 +338,7 @@ export default function Dashboard(props) {
                       >
                         <IconButton
                           aria-label="disable"
-                          onClick={() => handleClickOpen(course)}
+                          onClick={() => handleClickOpen('toggle', course)}
                         >
                           {course.enable ? (
                             <VisibilityIcon />
@@ -335,14 +358,10 @@ export default function Dashboard(props) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">
-                Você deseja {course.enable ? 'desativar' : 'ativar'}:
-                <b>{course.name}</b> ?
-              </DialogTitle>
+              <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  Você poderá {course.enable ? 'desativa-lo' : 'ativa-lo'} no
-                  futuro.
+                  {messageBody}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -350,11 +369,15 @@ export default function Dashboard(props) {
                   Cancelar
                 </Button>
                 <Button
-                  onClick={() => toggleStateCourse(course)}
+                  onClick={() =>
+                    action === 'toggle'
+                      ? toggleStateCourse(course)
+                      : handleEdit(course.id)
+                  }
                   color="secondary"
                   autoFocus
                 >
-                  {course.enable ? 'desativar' : 'ativar'}
+                  {textButton}
                 </Button>
               </DialogActions>
             </Dialog>

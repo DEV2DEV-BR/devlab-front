@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
@@ -9,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
@@ -56,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
     width: '30%',
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const notifySuccess = (message) => {
@@ -80,7 +85,7 @@ const notifyError = (message) => {
   });
 };
 
-export default function UploadFiles(props) {
+export default function CreateCourse(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
 
@@ -103,6 +108,13 @@ export default function UploadFiles(props) {
     readonly: false, // all options from https://xdsoft.net/jodit/doc/
   };
 
+  useEffect(() => {
+    if (props.history.location.state) {
+      loadDataCourse();
+      setProgress(true);
+    }
+  }, []);
+
   const handleChangeImageCourse = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
@@ -110,29 +122,56 @@ export default function UploadFiles(props) {
     }
   };
 
+  const loadDataCourse = () => {
+    async function fetchData() {
+      const db = firebase.firestore();
+
+      const coursesRef = db
+        .collection('courses')
+        .doc(`${props.history.location.state.id}`);
+
+      await coursesRef
+        .get()
+        .then(function (doc) {
+          if (doc.exists) {
+            setInputName(doc.data().name);
+            setInputDuration(doc.data().duration);
+            setInputPrice(doc.data().price);
+            setInputCodePayment(doc.data().codePayment);
+            setInputShortDescription(doc.data().shortDescription);
+            setDescription(doc.data().description);
+            setRequirements(doc.data().requirements);
+            setProgress(false);
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!');
+          }
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error);
+        });
+    }
+
+    fetchData();
+    setProgress(false);
+  };
+
   const extensionsPermitted = ['png', 'jpg', 'jpeg'];
 
-  const handleRegister = () => {
-    console.log(requirements);
-    if (image !== null) {
-      const extension = image.name.split('.').pop();
+  const handleEditCourse = () => {
+    if (
+      inputName !== '' &&
+      inputDuration !== '' &&
+      inputPrice !== '' &&
+      inputCodePayment !== '' &&
+      inputShortDescription !== '' &&
+      description !== '' &&
+      requirements !== ''
+    ) {
+      if (image !== null) {
+        const extension = image.name.split('.').pop();
 
-      if (extensionsPermitted.includes(extension)) {
-        if (
-          inputName !== '' &&
-          inputDuration !== '' &&
-          inputPrice !== '' &&
-          inputCodePayment !== '' &&
-          inputShortDescription !== '' &&
-          description !== '' &&
-          requirements !== ''
-        ) {
-          let date = new Date();
-          let day = date.getDate();
-          let month = date.getMonth();
-          let fullYear = date.getFullYear();
-          let createdAt = `${day}-${month}-${fullYear}`;
-
+        if (extensionsPermitted.includes(extension)) {
           const storage = firebase.storage();
 
           setProgress(true);
@@ -154,37 +193,105 @@ export default function UploadFiles(props) {
                 .child(image.name)
                 .getDownloadURL()
                 .then((url) => {
-                  const cloudFirestore = firebase.firestore();
+                  addedInfoCollectionCourse(url, false);
+                });
+            }
+          );
+        } else {
+          notifyError('Esse tipo de arquivo não é permitido!');
+        }
+      } else {
+        addedInfoCollectionCourse('', false);
+      }
+    } else {
+      notifyError('Preencha todos os campos');
+    }
+  };
 
-                  cloudFirestore
-                    .collection('courses')
-                    .add({
-                      author: localStorage.getItem('user'),
-                      name: inputName,
-                      background:
-                        'https://firebasestorage.googleapis.com/v0/b/jacode-cursos.appspot.com/o/generic%2Fbackground-default.jpg?alt=media&token=95d180a0-9d96-4b87-9d6c-344d25e8c0f0',
-                      description,
-                      duration: inputDuration,
-                      image: url,
-                      price: inputPrice,
-                      requirements,
-                      shortDescription: inputShortDescription,
-                      codePayment: inputCodePayment,
-                      createdAt: date,
-                      enable: true,
-                      id: '',
-                    })
-                    .then(function (doc) {
-                      cloudFirestore.collection('courses').doc(doc.id).update({
-                        id: doc.id,
-                      });
-                      setProgress(false);
-                      handleClear();
-                      notifySuccess('Curso Criado, agora adicione aulas!');
-                    })
-                    .catch(function (error) {
-                      console.error('Error adding domcument', error);
-                    });
+  const addedInfoCollectionCourse = (url, clear) => {
+    const cloudFirestore = firebase.firestore();
+
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth();
+    let fullYear = date.getFullYear();
+    let createdAt = `${day}-${month}-${fullYear}`;
+
+    let payload = {
+      author: localStorage.getItem('user'),
+      name: inputName,
+      background:
+        'https://firebasestorage.googleapis.com/v0/b/jacode-cursos.appspot.com/o/generic%2Fbackground-default.jpg?alt=media&token=95d180a0-9d96-4b87-9d6c-344d25e8c0f0',
+      description,
+      duration: inputDuration,
+      price: inputPrice,
+      requirements,
+      shortDescription: inputShortDescription,
+      codePayment: inputCodePayment,
+      createdAt: date,
+      enable: true,
+      id: '',
+    };
+
+    if (url !== '') {
+      payload = { ...payload, image: url };
+    }
+
+    cloudFirestore
+      .collection('courses')
+      .doc(`${props.history.location.state.id}`)
+      .update(payload)
+      .then(() => {
+        setProgress(false);
+        if (clear) {
+          handleClear();
+        } else {
+          loadDataCourse();
+        }
+
+        notifySuccess('Curso atualizado com sucesso!');
+      })
+      .catch(function (error) {
+        console.error('Error adding domcument', error);
+      });
+  };
+
+  const handleRegister = () => {
+    if (image !== null) {
+      const extension = image.name.split('.').pop();
+
+      if (extensionsPermitted.includes(extension)) {
+        if (
+          inputName !== '' &&
+          inputDuration !== '' &&
+          inputPrice !== '' &&
+          inputCodePayment !== '' &&
+          inputShortDescription !== '' &&
+          description !== '' &&
+          requirements !== ''
+        ) {
+          const storage = firebase.storage();
+
+          setProgress(true);
+
+          const uploadTask = storage
+            .ref(`images_courses/${image.name}`)
+            .put(image);
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {},
+            (error) => {
+              // Error function ...
+              console.log(error);
+            },
+            () => {
+              // complete function ...
+              storage
+                .ref('images_courses')
+                .child(image.name)
+                .getDownloadURL()
+                .then((url) => {
+                  addedInfoCollectionCourse(url, true);
                 });
             }
           );
@@ -212,6 +319,12 @@ export default function UploadFiles(props) {
 
   return (
     <div className={classes.root}>
+      {progress && (
+        <Backdrop className={classes.backdrop} open={progress}>
+          <CircularProgress color="inherit" />
+          <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
+        </Backdrop>
+      )}
       <CssBaseline />
 
       <div>
@@ -232,7 +345,11 @@ export default function UploadFiles(props) {
               >
                 <Grid container spacing={2}>
                   <Grid item xs={12} style={{ textAlign: 'center' }}>
-                    <h1>Criar Cursos</h1>
+                    <h1>
+                      {props.history.location.state
+                        ? 'Editando curso'
+                        : 'Criar Cursos'}
+                    </h1>
                   </Grid>
                 </Grid>
               </FormControl>
@@ -446,7 +563,11 @@ export default function UploadFiles(props) {
                       backgroundColor: '#318F6B',
                       color: '#fff',
                     }}
-                    onClick={handleRegister}
+                    onClick={
+                      props.history.location.state
+                        ? handleEditCourse
+                        : handleRegister
+                    }
                     className={classes.submitLeft}
                   >
                     CADASTRAR
