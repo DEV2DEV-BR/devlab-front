@@ -34,18 +34,18 @@ export default function secondaryListItems(props) {
         </ListItemIcon>
         <ListItemText primary="Minha Conta" />
       </ListItem> */}
-      <ListSubheader inset>Gestão</ListSubheader>
+      <ListSubheader inset>Admin</ListSubheader>
       <ListItem button onClick={() => redirectUploadFiles()}>
         <ListItemIcon>
           <BackupIcon />
         </ListItemIcon>
-        <ListItemText primary="Enviar materiais" />
+        <ListItemText primary="Organizações" />
       </ListItem>
       <ListItem button onClick={() => redirectHomeWork()}>
         <ListItemIcon>
           <Functions />
         </ListItemIcon>
-        <ListItemText primary="Atividades" />
+        <ListItemText primary="Configurações" />
       </ListItem>
 
       {type === 'admin' || type === 'management' ? (
