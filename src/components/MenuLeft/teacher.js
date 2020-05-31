@@ -23,13 +23,6 @@ export default function secondaryListItems(props) {
 
   return (
     <div>
-      {/* <ListSubheader inset>Usuário</ListSubheader>
-      <ListItem button onClick={() => redirectProfile()}>
-        <ListItemIcon>
-          <AccountBox />
-        </ListItemIcon>
-        <ListItemText primary="Minha Conta" />
-      </ListItem> */}
       <ListSubheader inset>Gerenciar Cursos</ListSubheader>
       <ListItem button onClick={() => redirectCreateCourse()}>
         <ListItemIcon>
@@ -37,12 +30,7 @@ export default function secondaryListItems(props) {
         </ListItemIcon>
         <ListItemText primary="Criar Curso" />
       </ListItem>
-      {/* <ListItem button onClick={() => redirectAddClasses()}>
-        <ListItemIcon>
-          <BackupIcon />
-        </ListItemIcon>
-        <ListItemText primary="Adicionar Aulas" />
-      </ListItem> */}
+
       <ListSubheader inset>Meus Cursos</ListSubheader>
       <ListItem button onClick={() => redirectListCourses()}>
         <ListItemIcon>

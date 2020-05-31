@@ -69,7 +69,7 @@ const CoursesList = (props) => {
     async function fetchData() {
       const db = firebase.firestore();
 
-      const coursesRef = db.collection('courses');
+      const coursesRef = db.collection('courses').orderBy('price', 'desc');
 
       await coursesRef
         .get()

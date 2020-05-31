@@ -9,12 +9,21 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
-import NoEncryptionIcon from '@material-ui/icons/NoEncryption';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import { toast } from 'react-toastify';
+import Tooltip from 'react-tooltip-lite';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,13 +54,85 @@ export default function Dashboard(props) {
   const history = useState(props.history);
   const [progress, setProgress] = useState(false);
   const [coursesData, setCoursesData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [messageBody, setMessageBody] = useState('');
+  const [title, setTitle] = useState('');
+  const [action, setAction] = useState('');
+  const [textButton, setTextButton] = useState('');
 
-  const handleDisable = () => {
-    // console.log('disable');
+  const notifySuccess = (message) => {
+    toast.success(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
-  const handleEdit = () => {
-    // console.log('edit');
+  const notifyError = (message) => {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  const handleClickOpen = (action, course) => {
+    if (action === 'toggle') {
+      setTitle(
+        `Você deseja ${course.enable ? 'desativar' : 'ativar'} o curso:  ${
+          course.name
+        } ?`
+      );
+      setMessageBody(
+        `Você poderá ${course.enable ? 'desativa-lo' : 'ativa-lo'} no futuro.`
+      );
+      setAction('toggle');
+      setTextButton(course.enable ? 'desativar' : 'ativar');
+    } else {
+      setTitle(`Desejar editar o curso: ${course.name}?`);
+      setMessageBody('Você será redirecionado para uma outra página!');
+      setAction('edit');
+      setTextButton('Editar');
+    }
+
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const toggleStateCourse = (course) => {
+    const status = course.enable;
+
+    const db = firebase.firestore();
+    var courseRef = db.collection('courses').doc(course.id);
+
+    courseRef
+      .update({
+        enable: !status,
+      })
+      .then(function () {
+        notifySuccess('Dados atualizados com sucesso!');
+        setProgress(false);
+        loadDataCourses();
+        handleClose();
+      })
+      .catch(function (error) {
+        // The document probably doesn't exist.
+        console.error('Error updating document: ', error);
+        setProgress(false);
+      });
+  };
+
+  const handleEdit = (id) => {
+    props.history.push('/create-course', { id });
   };
 
   const handleAddClasses = (id) => {
@@ -231,31 +312,75 @@ export default function Dashboard(props) {
                       </div>
                     </div>
                     <div style={{ display: 'flex' }}>
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => handleEdit()}
-                      >
-                        <EditIcon />
-                      </IconButton>
+                      <Tooltip content="Editar" direction="bottom">
+                        <IconButton
+                          aria-label="edit"
+                          onClick={() => handleClickOpen('edit', course)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
 
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => handleAddClasses(course.id)}
-                      >
-                        <AddCircleIcon />
-                      </IconButton>
+                      <Tooltip content="Adicionar Aulas" direction="bottom">
+                        <IconButton
+                          aria-label="add"
+                          onClick={() => handleAddClasses(course.id)}
+                        >
+                          <AddCircleIcon />
+                        </IconButton>
+                      </Tooltip>
 
-                      <IconButton
-                        aria-label="disable"
-                        onClick={() => handleDisable()}
+                      <Tooltip
+                        content={
+                          course.enable ? 'Desativar Curso' : 'Ativar Curso'
+                        }
+                        direction="bottom"
                       >
-                        <NoEncryptionIcon />
-                      </IconButton>
+                        <IconButton
+                          aria-label="disable"
+                          onClick={() => handleClickOpen('toggle', course)}
+                        >
+                          {course.enable ? (
+                            <VisibilityIcon />
+                          ) : (
+                            <VisibilityOffIcon />
+                          )}
+                        </IconButton>
+                      </Tooltip>
                     </div>
                   </Grid>
                 </Grid>
               </FormControl>
             </Grid>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {messageBody}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={() =>
+                    action === 'toggle'
+                      ? toggleStateCourse(course)
+                      : handleEdit(course.id)
+                  }
+                  color="secondary"
+                  autoFocus
+                >
+                  {textButton}
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Container>
         ))}
         <Box pt={4}>

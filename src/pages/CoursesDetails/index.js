@@ -192,7 +192,7 @@ export default function CoursesDetails(props) {
                   <input
                     type="hidden"
                     name="code"
-                    value="162B809E2424004DD4312FB71861400C"
+                    value={courseData.codePayment}
                   />
                   <input type="hidden" name="iot" value="button" />
                   <Button
