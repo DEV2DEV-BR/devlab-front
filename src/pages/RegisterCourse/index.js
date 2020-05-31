@@ -29,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
 export default function RegisterCourse(props) {
   const classes = useStyles();
   const [history, setHistory] = useState(props.history);
-  const [courseData, setCourseData] = useState([]);
-  const [progress, setProgress] = useState(false);
 
   const notifySuccess = (message) => {
     toast.success(message, {
@@ -54,35 +52,7 @@ export default function RegisterCourse(props) {
     });
   };
 
-  const loadDataCourse = async () => {
-    setProgress(true);
-
-    if (!props.history.location.state) {
-      return props.history.push('/dashboard');
-    }
-
-    const { id } = props.history.location.state;
-
-    const db = firebase.firestore();
-
-    const coursesRef = db.collection('courses').doc(id);
-
-    await coursesRef
-      .get()
-      .then(function (doc) {
-        if (doc.exists) {
-          setCourseData(doc.data());
-          setProgress(false);
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!');
-        }
-      })
-      .catch(function (error) {
-        console.log('Error getting documents: ', error);
-      });
-  };
-
+  
   useEffect(() => {
     return () => {
       setHistory('');
