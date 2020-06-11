@@ -7,6 +7,7 @@ import CreateCourse from './pages/CreateCourse';
 import Dashboard from './pages/Dashboard';
 import Main from './pages/Main';
 import MyCourses from './pages/MyCourses';
+import MyStudents from './pages/MyStudents';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -46,6 +47,7 @@ const Routes = () => (
       <PrivateRoute path="/watch-classe" component={WatchClasse} />
       <PrivateRoute path="/register-course" component={RegisterCourse} />
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
+      <PrivateRoute path="/list-my-students" component={MyStudents} />      
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   </BrowserRouter>

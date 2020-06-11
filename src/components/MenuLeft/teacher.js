@@ -3,7 +3,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import AddToQueue from '@material-ui/icons/AddToQueue';
-import BackupIcon from '@material-ui/icons/Backup';
 import FormatListNumbered from '@material-ui/icons/FormatListNumbered';
 import School from '@material-ui/icons/School';
 import React from 'react';
@@ -19,7 +18,9 @@ export default function secondaryListItems(props) {
     props.props.props.push('/list-my-courses');
   };
 
-  const type = localStorage.getItem('userData');
+  const redirectListStudents = () => {
+    props.props.props.push('/list-my-students');
+  };
 
   return (
     <div>
@@ -30,13 +31,18 @@ export default function secondaryListItems(props) {
         </ListItemIcon>
         <ListItemText primary="Criar Curso" />
       </ListItem>
-
-      <ListSubheader inset>Meus Cursos</ListSubheader>
       <ListItem button onClick={() => redirectListCourses()}>
         <ListItemIcon>
           <FormatListNumbered />
         </ListItemIcon>
-        <ListItemText primary="Meus Cursos" />
+        <ListItemText primary="Cursos" />
+      </ListItem>
+      <ListSubheader inset>Gerenciar Alunos</ListSubheader>
+      <ListItem button onClick={() => redirectListStudents()}>
+        <ListItemIcon>
+          <School />
+        </ListItemIcon>
+        <ListItemText primary="Alunos" />
       </ListItem>
     </div>
   );

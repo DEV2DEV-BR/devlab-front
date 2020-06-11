@@ -5,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/logo.png';
 import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,12 +63,7 @@ export default function Album() {
           className={classes.title}
         >
           <Link style={{ textDecoration: 'none', color: '#fff' }} to="/">
-            <Typography variant="h6" color="inherit" noWrap>
-              {/* <img
-                src={Logo}
-                style={{ maxHeight: 90, padding: 0, margin: 0, width: 60 }}
-                alt="Logo"
-              /> */}
+            <Typography variant="h6" color="inherit" noWrap>              
               <b>{`<JACODE/> XD`}</b>
             </Typography>
           </Link>
