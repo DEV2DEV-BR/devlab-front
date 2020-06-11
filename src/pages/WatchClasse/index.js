@@ -44,7 +44,6 @@ export default function WatchClasse(props) {
   const classes = useStyles();
 
   const [classesData, setClassesData] = useState([]);
-  // const [linksData, setLinksData] = useState([]);
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
@@ -83,7 +82,7 @@ export default function WatchClasse(props) {
         const classes = [];
         const links = [];
         querySnapshot.forEach((doc) => {
-          if (doc.data().id == idClasse) {
+          if (doc.data().id === idClasse) {
             classes.push(doc.data());
             links.push(doc.data().links);
           }

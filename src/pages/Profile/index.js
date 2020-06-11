@@ -1,13 +1,11 @@
 import { Button } from '@material-ui/core';
+import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
