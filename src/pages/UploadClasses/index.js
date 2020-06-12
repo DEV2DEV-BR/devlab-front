@@ -13,7 +13,6 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
-import MenuLeft from '../../components/MenuLeft';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -262,7 +261,6 @@ export default function UploadFiles(props) {
 
       <div>
         <div className={classes.appBarSpacer} />
-        <MenuLeft props={props.history} />
       </div>
 
       <main className={classes.content}>

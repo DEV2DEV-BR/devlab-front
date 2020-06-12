@@ -1,0 +1,231 @@
+import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuIcon from '@material-ui/icons/Menu';
+import AccountBox from '@material-ui/icons/AccountBox';
+import PanoramaIcon from '@material-ui/icons/Panorama';
+import CardMembership from '@material-ui/icons/CardMembership';
+import { Link } from 'react-router-dom';
+import firebase from 'firebase';
+import AddToQueue from '@material-ui/icons/AddToQueue';
+import FormatListNumbered from '@material-ui/icons/FormatListNumbered';
+import School from '@material-ui/icons/School';
+import BackupIcon from '@material-ui/icons/Backup';
+import Functions from '@material-ui/icons/Functions';
+
+const useStyles = makeStyles({
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: 'auto',
+  },
+  items: {
+    display: 'flex',
+    alignItems: 'center',
+    textDecoration: 'none',
+    color: '#707070',
+
+    '&:hover': {
+      color: '#707070',
+      textDecoration: 'none',
+    },
+  },
+});
+
+export default function TemporaryDrawer() {
+  const classes = useStyles();
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+  const [userData, setuserData] = useState([]);
+
+  useEffect(() => {
+    const db = firebase.firestore();
+
+    const usersRef = db.collection('users');
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        usersRef
+          .where('uid', '==', user.uid)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              setuserData(doc.data());
+            });
+          });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      setuserData('');
+    };
+  }, []);
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor) => (
+    <div
+      className={clsx(classes.list, {
+        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+      })}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      {userData.userType === 'student' && (
+        <>
+          <List>
+            {['Perfil'].map((text, index) => (
+              <ListItem button key={text}>
+                <Link to={index === 0 && '/profile'} className={classes.items}>
+                  <ListItemIcon>{index === 0 && <AccountBox />}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {['Meus Cursos', 'Certificados'].map((text, index) => (
+              <ListItem button key={text}>
+                <Link
+                  to={
+                    index === 0
+                      ? '/dashboard'
+                      : index === 1 && 'my-certificates'
+                  }
+                  className={classes.items}
+                >
+                  <ListItemIcon>
+                    <ListItemIcon>
+                      {index === 0 ? (
+                        <PanoramaIcon />
+                      ) : (
+                        index === 1 && <CardMembership />
+                      )}
+                    </ListItemIcon>
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+
+      {userData.userType === 'teacher' && (
+        <>
+          <List>
+            {['Criar Curso', 'Cursos'].map((text, index) => (
+              <ListItem button key={text}>
+                <Link
+                  to={
+                    index === 0
+                      ? '/create-course'
+                      : index === 1 && '/list-my-courses'
+                  }
+                  className={classes.items}
+                >
+                  <ListItemIcon>
+                    {index === 0 ? (
+                      <AddToQueue />
+                    ) : (
+                      index === 1 && <FormatListNumbered />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {['Alunos'].map((text, index) => (
+              <ListItem button key={text}>
+                <Link
+                  to={index === 0 && '/list-my-students'}
+                  className={classes.items}
+                >
+                  <ListItemIcon>
+                    <ListItemIcon>
+                      {index === 0 ? (
+                        <PanoramaIcon />
+                      ) : (
+                        index === 1 && <School />
+                      )}
+                    </ListItemIcon>
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+
+      {userData.userType === 'admin' && (
+        <>
+          <List>
+            {['Organizações', 'Configurações'].map((text, index) => (
+              <ListItem button key={text}>
+                <Link
+                  to={
+                    index === 0 ? '/organizations' : index === 1 && '/settings'
+                  }
+                  className={classes.items}
+                >
+                  <ListItemIcon>
+                    {index === 0 ? <Functions /> : index === 1 && <School />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      )}
+    </div>
+  );
+
+  return (
+    <div>
+      {['left'].map((anchor) => (
+        <React.Fragment key={anchor}>
+          <Button onClick={toggleDrawer(anchor, true)}>
+            <MenuIcon style={{ color: '#fff' }} />
+          </Button>
+          <Drawer
+            anchor={anchor}
+            open={state[anchor]}
+            onClose={toggleDrawer(anchor, false)}
+          >
+            {list(anchor)}
+          </Drawer>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}

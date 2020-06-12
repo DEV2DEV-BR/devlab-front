@@ -9,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
-import MenuLeft from '../../components/MenuLeft';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,7 +113,6 @@ export default function WatchClasse(props) {
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div>
         <div className={classes.appBarSpacer} />
-        <MenuLeft props={props.history} />
       </div>
 
       <div className={classes.root}>

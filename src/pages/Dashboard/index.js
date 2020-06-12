@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import CoursesList from '../../components/CoursesList';
 import Copyright from '../../components/Copyright';
 import MenuLeft from '../../components/MenuLeft';
+import Menu from '../../components/Menu';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +41,6 @@ export default function Dashboard(props) {
       <CssBaseline />
       <div>
         <div className={classes.appBarSpacer} />
-        <MenuLeft props={history} />
       </div>
 
       <main className={classes.content}>

@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
 import Course from '../../components/Course';
-import MenuLeft from '../../components/MenuLeft';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,7 +51,6 @@ export default function RegisterCourse(props) {
     });
   };
 
-  
   useEffect(() => {
     return () => {
       setHistory('');
@@ -64,7 +62,6 @@ export default function RegisterCourse(props) {
       <CssBaseline />
       <div>
         <div className={classes.appBarSpacer} />
-        <MenuLeft props={history} />
       </div>
 
       <main className={classes.content}>
