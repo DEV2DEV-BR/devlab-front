@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { logout } from '../../services/auth';
+import Menu from '../../components/Menu';
 
 const drawerWidth = 240;
 
@@ -135,6 +136,7 @@ export default function NavBarDashboard(props) {
       style={{ backgroundColor: '#7e4090' }}
     >
       <Toolbar className={classes.toolbar}>
+        <Menu history={props.history} />
         <Typography
           component="h1"
           variant="h6"

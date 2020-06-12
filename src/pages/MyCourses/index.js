@@ -15,7 +15,6 @@ import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
-import MenuLeft from '../../components/MenuLeft';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -188,7 +187,6 @@ export default function Dashboard(props) {
       <CssBaseline />
       <div>
         <div className={classes.appBarSpacer} />
-        <MenuLeft props={history} />
       </div>
 
       <main className={classes.content}>

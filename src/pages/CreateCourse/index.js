@@ -13,7 +13,6 @@ import firebase from 'firebase';
 import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
-import MenuLeft from '../../components/MenuLeft';
 import JoditEditor from 'jodit-react';
 
 const styles = {
@@ -329,7 +328,6 @@ export default function CreateCourse(props) {
 
       <div>
         <div className={classes.appBarSpacer} />
-        <MenuLeft props={props.history} />
       </div>
 
       <main className={classes.content}>
