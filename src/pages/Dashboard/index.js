@@ -12,6 +12,7 @@ import Menu from '../../components/Menu';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    width: '100%',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
