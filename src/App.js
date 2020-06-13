@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Routes from './routes';
 import history from './services/history';
+import 'video-react/dist/video-react.css';
 
 function App() {
   return (
