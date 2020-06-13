@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
