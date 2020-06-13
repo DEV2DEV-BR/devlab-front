@@ -66,7 +66,7 @@ export default function WatchClasse(props) {
 
     const { idCourse, idClasse } = props.history.location.state;
 
-    await verifyActualProgress(idCourse, idClasse);
+    // await verifyActualProgress(idCourse, idClasse);
 
     const db = firebase.firestore();
 
@@ -188,8 +188,8 @@ export default function WatchClasse(props) {
 
   useEffect(() => {
     return () => {
-      saveProgress();
-      // setClassesData([]);
+      // saveProgress();
+      setClassesData([]);
     };
   }, []);
 
@@ -290,10 +290,10 @@ export default function WatchClasse(props) {
                             </Player>
                           ))}
                         </Grid>
-                        <Button onClick={() => saveProgress()}>Save</Button>
+                        {/* <Button onClick={() => saveProgress()}>Save</Button>
                         <Button onClick={() => goTo(progressClasse)}>
                           goto
-                        </Button>
+                        </Button> */}
                         <p style={{ marginLeft: '11%' }}>
                           <b>Descrição: </b>
                           {classe.description}
