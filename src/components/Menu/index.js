@@ -108,7 +108,7 @@ export default function TemporaryDrawer() {
           </List>
           <Divider />
           <List>
-            {['Meus Cursos', 'Certificados'].map((text, index) => (
+            {['Meus Cursos'].map((text, index) => (
               <ListItem button key={text}>
                 <Link
                   to={
