@@ -209,7 +209,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   containerButton: {
-    width: '30%',
+    width: '100%',
     [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
       width: '100%',
     },
