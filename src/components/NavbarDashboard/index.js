@@ -11,8 +11,8 @@ import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { logout } from '../../services/auth';
 import Menu from '../../components/Menu';
+import { logout } from '../../services/auth';
 
 const drawerWidth = 240;
 

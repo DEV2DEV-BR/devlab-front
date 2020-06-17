@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles } from '@material-ui/core/styles';
 import AccountBox from '@material-ui/icons/AccountBox';
-import PanoramaIcon from '@material-ui/icons/Panorama';
-import CardMembership from '@material-ui/icons/CardMembership';
-import { Link } from 'react-router-dom';
-import firebase from 'firebase';
 import AddToQueue from '@material-ui/icons/AddToQueue';
+import CardMembership from '@material-ui/icons/CardMembership';
 import FormatListNumbered from '@material-ui/icons/FormatListNumbered';
-import School from '@material-ui/icons/School';
-import BackupIcon from '@material-ui/icons/Backup';
 import Functions from '@material-ui/icons/Functions';
+import MenuIcon from '@material-ui/icons/Menu';
+import PanoramaIcon from '@material-ui/icons/Panorama';
+import School from '@material-ui/icons/School';
+import clsx from 'clsx';
+import firebase from 'firebase';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   list: {

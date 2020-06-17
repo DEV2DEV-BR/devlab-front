@@ -7,17 +7,18 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
-import React, { useEffect, useState, useRef } from 'react';
-import Copyright from '../../components/Copyright';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  Player,
   BigPlayButton,
   ControlBar,
-  ReplayControl,
+
   ForwardControl,
-  PlaybackRateMenuButton,
+  PlaybackRateMenuButton, Player,
+
+
+  ReplayControl
 } from 'video-react';
-import { Button } from '@material-ui/core';
+import Copyright from '../../components/Copyright';
 
 const useStyles = makeStyles((theme) => ({
   root: {
