@@ -1,5 +1,5 @@
-import React from 'react';
 import { Editor, EditorState } from 'draft-js';
+import React from 'react';
 
 export default function MyEditor() {
   const [editorState, setEditorState] = React.useState(

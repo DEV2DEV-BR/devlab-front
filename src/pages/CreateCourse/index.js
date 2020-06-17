@@ -7,13 +7,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
-import React, { useState, useRef, useEffect } from 'react';
+import JoditEditor from 'jodit-react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
-import JoditEditor from 'jodit-react';
 
 const styles = {
   editor: {

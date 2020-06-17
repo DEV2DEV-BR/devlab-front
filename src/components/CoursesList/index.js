@@ -14,8 +14,8 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
-import { format } from '../../util/format';
 import { istAuthenticated } from '../../services/auth';
+import { format } from '../../util/format';
 
 const useStyles = makeStyles((theme) => ({
   root: {

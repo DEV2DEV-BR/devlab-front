@@ -4,18 +4,18 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, { useState, useEffect } from 'react';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Background from '../../assets/background-default.jpg';
+import BlogIcon from '../../assets/blog.png';
+import DiscordIcon from '../../assets/discord.png';
 import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
 import Navbar from '../../components/Navbar';
 import { istAuthenticated } from '../../services/auth';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import DiscordIcon from '../../assets/discord.png';
-import BlogIcon from '../../assets/blog.png';
 
 const useStyles = makeStyles((theme) => ({
   icon: {

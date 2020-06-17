@@ -3,7 +3,6 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';

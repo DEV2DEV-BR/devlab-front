@@ -1,6 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
-import { format } from '../../util/format';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,8 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { MdMovie, MdAddShoppingCart } from 'react-icons/md';
+import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import { format } from '../../util/format';
 
 const useStyles = makeStyles((theme) => ({
   root: {

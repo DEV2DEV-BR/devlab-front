@@ -3,11 +3,9 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState, useEffect } from 'react';
-import CoursesList from '../../components/CoursesList';
+import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
-import MenuLeft from '../../components/MenuLeft';
-import Menu from '../../components/Menu';
+import CoursesList from '../../components/CoursesList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
