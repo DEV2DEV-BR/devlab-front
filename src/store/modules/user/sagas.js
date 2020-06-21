@@ -1,9 +1,8 @@
 // * is a generator like as async
 // generator > async
 
-import { call, put, all, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import api from '../../../services/api';
-import { addUserSuccess } from './actions';
 
 function* addUser({ id }) {
   const response = yield call(api.get, `/products/${id}`);
