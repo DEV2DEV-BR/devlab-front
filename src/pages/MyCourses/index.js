@@ -306,7 +306,7 @@ export default function Dashboard(props) {
                           {course.name}
                         </h2>
                         <p style={{ color: '#918787', margin: 0, padding: 0 }}>
-                          {coursesData.length} Aula (s)
+                          {course.duration} Horas
                         </p>
                       </div>
                     </div>
