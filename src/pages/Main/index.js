@@ -16,6 +16,7 @@ import CoursesList from '../../components/CoursesList';
 import Footer from '../../components/Footer';
 import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import { istAuthenticated } from '../../services/auth';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -25,6 +26,12 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     '&:hover': {
       opacity: 0.5,
+    },
+
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      width: 35,
+      height: 35,
+      margin: 5,
     },
   },
 
@@ -127,51 +134,55 @@ export default function Main(props) {
                 justifyContent: 'center',
               }}
             >
-              <a
-                href="https://www.facebook.com/danieljacode"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FacebookIcon className={classe.icon} />
-              </a>
-              <a
-                href="https://www.instagram.com/danieldeandradelopes/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <InstagramIcon className={classe.icon} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/daniel-de-andrade-lopes-5242b4b1/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <LinkedInIcon className={classe.icon} />
-              </a>
-              <a
-                href="http://blog.jacode.com.br/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={BlogIcon}
-                  alt="blog"
-                  className={classe.icon}
-                  style={{ width: 40, height: 40 }}
-                />
-              </a>
-              <a
-                href="https://discord.gg/3Wmcp86"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ marginTop: 3 }}
-              >
-                <img
-                  src={DiscordIcon}
-                  alt="discord community"
-                  className={classe.icon}
-                />
-              </a>
+              <Tooltip title="Facebook">
+                <a
+                  href="https://www.facebook.com/danieljacode"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FacebookIcon className={classe.icon} />
+                </a>
+              </Tooltip>
+              <Tooltip title="Instagram">
+                <a
+                  href="https://www.instagram.com/danieldeandradelopes/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <InstagramIcon className={classe.icon} />
+                </a>
+              </Tooltip>
+              <Tooltip title="LinkedIn">
+                <a
+                  href="https://www.linkedin.com/in/daniel-de-andrade-lopes-5242b4b1/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LinkedInIcon className={classe.icon} />
+                </a>
+              </Tooltip>
+              <Tooltip title="Discord">
+                <a
+                  href="https://discord.gg/3Wmcp86"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={DiscordIcon}
+                    alt="discord community"
+                    className={classe.icon}
+                  />
+                </a>
+              </Tooltip>
+              <Tooltip title="Blog">
+                <a
+                  href="http://blog.jacode.com.br/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={BlogIcon} alt="blog" className={classe.icon} />
+                </a>
+              </Tooltip>
             </Typography>
 
             {!istAuthenticated() ? (

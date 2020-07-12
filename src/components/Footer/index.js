@@ -1,6 +1,7 @@
 import React from 'react';
 import Copyright from '../Copyright';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,6 +35,30 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  organization: {
+    margin: 0,
+    fontSize: '18px',
+    fontWeight: 'bold',
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      marginTop: 10,
+      fontSize: '14px',
+    },
+  },
+  title: {
+    margin: 0,
+    fontWeight: 'bold',
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      marginTop: 10,
+      fontSize: '14px',
+    },
+  },
+  subTitle: {
+    margin: 0,
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      textAlign: 'center',
+      fontSize: '12px',
+    },
+  },
 }));
 
 function Footer() {
@@ -42,15 +67,22 @@ function Footer() {
   return (
     <div className={classes.container}>
       <div className={classes.middle}>
-        <div>
-          <b>{`<JACODE/> XD`}</b>
-        </div>
+        <Link
+          to="/"
+          style={{ textDecoration: 'none', color: 'rgba(0, 0, 0, 0.87)' }}
+        >
+          <div>
+            <h3 className={classes.organization}>{`<JACODE/> XD`}</h3>
+          </div>
+        </Link>
         <div>
           <Copyright />
         </div>
         <div className={classes.contact}>
-          <h3 style={{ margin: 0 }}>CONTATO</h3>
-          <p style={{ margin: 0 }}>Email: danieldeandradelopes@gmail.com</p>
+          <h3 className={classes.title}>CONTATO</h3>
+          <p className={classes.subTitle}>
+            <b>Email: </b> danieldeandradelopes@gmail.com
+          </p>
         </div>
       </div>
     </div>
