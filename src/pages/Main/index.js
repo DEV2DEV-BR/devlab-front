@@ -198,7 +198,7 @@ export default function Main(props) {
                       </Button>
                     </Link>
                   </Grid>
-                  <Grid item>
+                  {/* <Grid item>
                     <Button
                       href="https://jacode.coursify.me/"
                       target="_blank"
@@ -208,7 +208,7 @@ export default function Main(props) {
                     >
                       Acessar Site Antigo
                     </Button>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </div>
             ) : (

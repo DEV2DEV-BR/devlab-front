@@ -14,20 +14,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
+import { BigPlayButton, ControlBar, Player } from 'video-react';
 import Background from '../../assets/background-default.jpg';
 import Copyright from '../../components/Copyright';
 import Navbar from '../../components/Navbar';
 import { format } from '../../util/format';
-import {
-  BigPlayButton,
-  ControlBar,
-  ForwardControl,
-  PlaybackRateMenuButton,
-  Player,
-  ReplayControl,
-} from 'video-react';
+import ModalWithMedia from '../../components/ModalWithMedia';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -236,7 +230,20 @@ export default function CoursesDetails(props) {
   const [classesData, setClassesData] = useState([]);
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [urlClasse, setUrlClasse] = useState('');
+  const [titleClasse, setTitleClasse] = useState('');
   const playerRef = useRef();
+
+  const handleClickOpen = (urlVideo, titleClasse) => {
+    setUrlClasse(urlVideo);
+    setTitleClasse(titleClasse);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleBuyCourse = () => {
     'PagSeguroLightbox(this); return false;';
@@ -308,6 +315,13 @@ export default function CoursesDetails(props) {
     <React.Fragment>
       <CssBaseline />
       <Navbar />
+
+      <ModalWithMedia
+        open={open}
+        handleClose={handleClose}
+        url={urlClasse}
+        title={titleClasse}
+      />
 
       {progress && (
         <Backdrop className={classes.backdrop} open={progress}>
@@ -478,8 +492,11 @@ export default function CoursesDetails(props) {
                             <TableCell align="center">
                               <b>Nome da Aula</b>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="center">
                               <b>Duração</b>
+                            </TableCell>
+                            <TableCell align="right">
+                              <b>Assistir</b>
                             </TableCell>
                           </TableRow>
                         </TableHead>
@@ -501,9 +518,31 @@ export default function CoursesDetails(props) {
                               </TableCell>
                               <TableCell
                                 align="center"
-                                style={{ textAlign: 'right' }}
+                                style={{ textAlign: 'center' }}
                               >
                                 {classe.duration} Min.
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                style={{ textAlign: 'right' }}
+                              >
+                                {classe?.open ? (
+                                  <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() =>
+                                      handleClickOpen(
+                                        classe?.url_video,
+                                        classe?.title
+                                      )
+                                    }
+                                  >
+                                    Ver
+                                  </Button>
+                                ) : (
+                                  'Aula privada'
+                                )}
                               </TableCell>
                             </TableRow>
                           ))}
