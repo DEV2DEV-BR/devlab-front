@@ -52,10 +52,10 @@ export default function SignUp(props) {
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
 
-  const notifySuccess = (message) => {
+  const notifySuccess = (message, time) => {
     toast.success(message, {
       position: 'top-right',
-      autoClose: 1000,
+      autoClose: time || 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -63,10 +63,10 @@ export default function SignUp(props) {
     });
   };
 
-  const notifyError = (message) => {
+  const notifyError = (message, time) => {
     toast.error(message, {
       position: 'top-right',
-      autoClose: 1000,
+      autoClose: time || 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -82,8 +82,8 @@ export default function SignUp(props) {
     const name = inputName;
 
     if (
-      inputName !== '' &&
-      inputEmail !== '' &&
+      inputName.trim() !== '' &&
+      inputEmail.trim() !== '' &&
       inputPassword !== '' &&
       inputConfirmPassword !== '' &&
       inputCellphone !== ''
@@ -91,7 +91,7 @@ export default function SignUp(props) {
       if (inputPassword === inputConfirmPassword) {
         await firebase
           .auth()
-          .createUserWithEmailAndPassword(inputEmail, inputPassword)
+          .createUserWithEmailAndPassword(inputEmail.trim(), inputPassword)
           .then(function (success) {
             const cloudFirestore = firebase.firestore();
 
@@ -120,6 +120,8 @@ export default function SignUp(props) {
           .catch(function (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
+            notifyError(error.message, 4000);
+            setProgress(false);
             console.log(errorCode, errorMessage);
           });
       } else {
