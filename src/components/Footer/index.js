@@ -17,12 +17,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#ceccce',
     opacity: '0.9',
   },
-  top: {
+  middle: {
     display: 'flex',
     width: '100%',
     padding: '0px 50px 0px 50px',
     alignItems: 'center',
     justifyContent: 'space-between',
+
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
   },
   contact: {
     display: 'flex',
@@ -36,7 +41,7 @@ function Footer() {
 
   return (
     <div className={classes.container}>
-      <div className={classes.top}>
+      <div className={classes.middle}>
         <div>
           <b>{`<JACODE/> XD`}</b>
         </div>
