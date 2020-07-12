@@ -12,9 +12,9 @@ import { Link } from 'react-router-dom';
 import Background from '../../assets/background-default.jpg';
 import BlogIcon from '../../assets/blog.png';
 import DiscordIcon from '../../assets/discord.png';
-import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
-import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
+import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
@@ -50,10 +50,6 @@ const useStyles = makeStyles((theme) => ({
   cardContent: {
     flexGrow: 1,
   },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
-  },
 }));
 
 export default function Main(props) {
@@ -77,9 +73,9 @@ export default function Main(props) {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
-      <Navbar />
+      <ResponsiveNavbar />
 
       <main>
         {/* Hero unit */}
@@ -243,35 +239,7 @@ export default function Main(props) {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
-      <footer className={classe.footer}>
-        {/* <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography> */}
-        {/* <div>
-          Ícones feitos por{" "}
-          <a
-            href="https://www.flaticon.com/br/autores/pixelmeetup"
-            title="Pixelmeetup"
-          >
-            Pixelmeetup
-          </a>{" "}
-          from{" "}
-          <a href="https://www.flaticon.com/br/" title="Flaticon">
-            www.flaticon.com
-          </a>
-        </div> */}
-        <Copyright />
-      </footer>
-      {/* End footer */}
-    </React.Fragment>
+      <Footer />
+    </>
   );
 }

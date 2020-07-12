@@ -23,7 +23,7 @@ import {
 import { BigPlayButton, ControlBar, Player } from 'video-react';
 import Background from '../../assets/background-default.jpg';
 import Copyright from '../../components/Copyright';
-import Navbar from '../../components/Navbar';
+import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import { format } from '../../util/format';
 import ModalWithMedia from '../../components/ModalWithMedia';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -328,7 +328,7 @@ export default function CoursesDetails(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Navbar />
+      <ResponsiveNavbar />
 
       <ModalWithMedia
         open={open}
