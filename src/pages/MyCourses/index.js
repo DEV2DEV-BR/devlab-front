@@ -16,11 +16,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import Tooltip from '@material-ui/core/Tooltip';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Tooltip from 'react-tooltip-lite';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
 
@@ -311,7 +311,7 @@ export default function Dashboard(props) {
                       </div>
                     </div>
                     <div style={{ display: 'flex' }}>
-                      <Tooltip content="Editar" direction="bottom">
+                      <Tooltip title="Editar" placement="bottom">
                         <IconButton
                           aria-label="edit"
                           onClick={() => handleClickOpen('edit', course)}
@@ -320,7 +320,7 @@ export default function Dashboard(props) {
                         </IconButton>
                       </Tooltip>
 
-                      <Tooltip content="Adicionar Aulas" direction="bottom">
+                      <Tooltip title="Adicionar Aulas" placement="bottom">
                         <IconButton
                           aria-label="add"
                           onClick={() => handleAddClasses(course.id)}
@@ -330,10 +330,10 @@ export default function Dashboard(props) {
                       </Tooltip>
 
                       <Tooltip
-                        content={
+                        placement="bottom"
+                        title={
                           course.enable ? 'Desativar Curso' : 'Ativar Curso'
                         }
-                        direction="bottom"
                       >
                         <IconButton
                           aria-label="disable"

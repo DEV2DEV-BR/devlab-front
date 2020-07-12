@@ -87,7 +87,6 @@ export default function UploadFiles(props) {
 
   const [description, setDescription] = useState('');
   const [progress, setProgress] = useState(false);
-  const [progressLoadData, setProgressLoadData] = useState(false);
 
   const [classesData, setClassesData] = useState([]);
   const [courseData, setCourseData] = useState([]);
@@ -108,8 +107,6 @@ export default function UploadFiles(props) {
   };
 
   const loadDataCourse = async () => {
-    setProgressLoadData(true);
-
     const { id } = props.history.location.state;
 
     const db = firebase.firestore();
@@ -121,7 +118,6 @@ export default function UploadFiles(props) {
       .then(function (doc) {
         if (doc.exists) {
           setCourseData(doc.data());
-          setProgressLoadData(false);
         } else {
           // doc.data() will be undefined in this case
           console.log('No such document!');
