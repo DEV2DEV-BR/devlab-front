@@ -98,26 +98,24 @@ export default function TemporaryDrawer() {
         <>
           <List>
             {['Perfil'].map((text, index) => (
-              <ListItem button key={text}>
-                <Link to={index === 0 && '/profile'} className={classes.items}>
+              <Link to={index === 0 && '/profile'} className={classes.items}>
+                <ListItem button key={text}>
                   <ListItemIcon>{index === 0 && <AccountBox />}</ListItemIcon>
                   <ListItemText primary={text} />
-                </Link>
-              </ListItem>
+                </ListItem>
+              </Link>
             ))}
           </List>
           <Divider />
           <List>
             {['Meus Cursos'].map((text, index) => (
-              <ListItem button key={text}>
-                <Link
-                  to={
-                    index === 0
-                      ? '/dashboard'
-                      : index === 1 && 'my-certificates'
-                  }
-                  className={classes.items}
-                >
+              <Link
+                to={
+                  index === 0 ? '/dashboard' : index === 1 && 'my-certificates'
+                }
+                className={classes.items}
+              >
+                <ListItem button key={text}>
                   <ListItemIcon>
                     <ListItemIcon>
                       {index === 0 ? (
@@ -128,8 +126,8 @@ export default function TemporaryDrawer() {
                     </ListItemIcon>
                   </ListItemIcon>
                   <ListItemText primary={text} />
-                </Link>
-              </ListItem>
+                </ListItem>
+              </Link>
             ))}
           </List>
         </>
@@ -139,15 +137,15 @@ export default function TemporaryDrawer() {
         <>
           <List>
             {['Criar Curso', 'Cursos'].map((text, index) => (
-              <ListItem button key={text}>
-                <Link
-                  to={
-                    index === 0
-                      ? '/create-course'
-                      : index === 1 && '/list-my-courses'
-                  }
-                  className={classes.items}
-                >
+              <Link
+                to={
+                  index === 0
+                    ? '/create-course'
+                    : index === 1 && '/list-my-courses'
+                }
+                className={classes.items}
+              >
+                <ListItem button key={text}>
                   <ListItemIcon>
                     {index === 0 ? (
                       <AddToQueue />
@@ -156,18 +154,18 @@ export default function TemporaryDrawer() {
                     )}
                   </ListItemIcon>
                   <ListItemText primary={text} />
-                </Link>
-              </ListItem>
+                </ListItem>
+              </Link>
             ))}
           </List>
           <Divider />
           <List>
             {['Alunos'].map((text, index) => (
-              <ListItem button key={text}>
-                <Link
-                  to={index === 0 && '/list-my-students'}
-                  className={classes.items}
-                >
+              <Link
+                to={index === 0 && '/list-my-students'}
+                className={classes.items}
+              >
+                <ListItem button key={text}>
                   <ListItemIcon>
                     <ListItemIcon>
                       {index === 0 ? (
@@ -178,8 +176,8 @@ export default function TemporaryDrawer() {
                     </ListItemIcon>
                   </ListItemIcon>
                   <ListItemText primary={text} />
-                </Link>
-              </ListItem>
+                </ListItem>
+              </Link>
             ))}
           </List>
         </>

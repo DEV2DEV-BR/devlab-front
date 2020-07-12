@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
+import Reports from '../../components/Reports';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,6 +46,12 @@ export default function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
+          {localStorage?.getItem('userType') == 'teacher' && (
+            <Grid container spacing={3}>
+              <Reports />
+            </Grid>
+          )}
+
           <Grid container spacing={3}>
             <CoursesList buy={false} history={history} />
           </Grid>
