@@ -39,7 +39,6 @@ const Routes = () => (
       <Route path="/sign-in" component={SignIn} />
       <Route path="/sign-up" component={SignUp} />
       <Route path="/course-details" component={CoursesDetails} />
-
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-course" component={CreateCourse} />
       <PrivateRoute path="/add-classes" component={UploadClasses} />
@@ -47,7 +46,7 @@ const Routes = () => (
       <PrivateRoute path="/watch-classe" component={WatchClasse} />
       <PrivateRoute path="/register-course" component={RegisterCourse} />
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
-      <PrivateRoute path="/list-my-students" component={MyStudents} />      
+      <PrivateRoute path="/list-my-students" component={MyStudents} />
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   </BrowserRouter>
