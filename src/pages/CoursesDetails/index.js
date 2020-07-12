@@ -15,13 +15,19 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase';
 import React, { useEffect, useRef, useState } from 'react';
-import { MdAddShoppingCart } from 'react-icons/md';
+import {
+  MdAddShoppingCart,
+  MdShoppingCart,
+  MdPlayCircleFilled,
+} from 'react-icons/md';
 import { BigPlayButton, ControlBar, Player } from 'video-react';
 import Background from '../../assets/background-default.jpg';
 import Copyright from '../../components/Copyright';
 import Navbar from '../../components/Navbar';
 import { format } from '../../util/format';
 import ModalWithMedia from '../../components/ModalWithMedia';
+import Tooltip from '@material-ui/core/Tooltip';
+import { istAuthenticated } from '../../services/auth';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -235,6 +241,14 @@ export default function CoursesDetails(props) {
   const [titleClasse, setTitleClasse] = useState('');
   const playerRef = useRef();
 
+  const handleStartFreeCourse = (idCourseFree) => {
+    if (!istAuthenticated()) {
+      props.history.push('/sign-in', { idCourseFree });
+      return;
+    }
+    props.history.push('/register-course', { idCourseFree });
+  };
+
   const handleClickOpen = (urlVideo, titleClasse) => {
     setUrlClasse(urlVideo);
     setTitleClasse(titleClasse);
@@ -446,6 +460,7 @@ export default function CoursesDetails(props) {
                         fullWidth
                         variant="contained"
                         className={classes.button}
+                        onClick={() => handleStartFreeCourse(courseData.id)}
                       >
                         <p
                           style={{
@@ -496,7 +511,7 @@ export default function CoursesDetails(props) {
                               <b>Duração</b>
                             </TableCell>
                             <TableCell align="right">
-                              <b>Assistir</b>
+                              <b></b>
                             </TableCell>
                           </TableRow>
                         </TableHead>
@@ -522,28 +537,40 @@ export default function CoursesDetails(props) {
                               >
                                 {classe.duration} Min.
                               </TableCell>
-                              <TableCell
-                                align="center"
-                                style={{ textAlign: 'right' }}
+                              <Tooltip
+                                title={
+                                  classe?.open
+                                    ? 'Assista gratuitamente'
+                                    : 'Aula privada'
+                                }
                               >
-                                {classe?.open ? (
-                                  <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() =>
-                                      handleClickOpen(
-                                        classe?.url_video,
-                                        classe?.title
-                                      )
-                                    }
-                                  >
-                                    Ver
-                                  </Button>
-                                ) : (
-                                  'Aula privada'
-                                )}
-                              </TableCell>
+                                <TableCell
+                                  align="center"
+                                  style={{
+                                    textAlign: 'center',
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  {classe?.open ? (
+                                    <MdPlayCircleFilled
+                                      size={25}
+                                      onClick={() =>
+                                        handleClickOpen(
+                                          classe?.url_video,
+                                          classe?.title
+                                        )
+                                      }
+                                    ></MdPlayCircleFilled>
+                                  ) : (
+                                    <MdShoppingCart
+                                      size={25}
+                                      onClick={() =>
+                                        handleStartFreeCourse(courseData.id)
+                                      }
+                                    />
+                                  )}
+                                </TableCell>
+                              </Tooltip>
                             </TableRow>
                           ))}
                         </TableBody>

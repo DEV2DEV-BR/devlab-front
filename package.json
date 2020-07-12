@@ -26,7 +26,6 @@
     "react-scripts": "3.4.0",
     "react-to-pdf": "^0.0.11",
     "react-toastify": "^5.5.0",
-    "react-tooltip-lite": "^1.12.0",
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",

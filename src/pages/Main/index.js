@@ -131,22 +131,32 @@ export default function Main(props) {
                 justifyContent: 'center',
               }}
             >
-              <a href="https://www.facebook.com/danieljacode" target="_blank">
+              <a
+                href="https://www.facebook.com/danieljacode"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <FacebookIcon className={classe.icon} />
               </a>
               <a
                 href="https://www.instagram.com/danieldeandradelopes/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <InstagramIcon className={classe.icon} />
               </a>
               <a
                 href="https://www.linkedin.com/in/daniel-de-andrade-lopes-5242b4b1/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <LinkedInIcon className={classe.icon} />
               </a>
-              <a href="http://blog.jacode.com.br/" target="_blank">
+              <a
+                href="http://blog.jacode.com.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img
                   src={BlogIcon}
                   alt="blog"
@@ -157,6 +167,7 @@ export default function Main(props) {
               <a
                 href="https://discord.gg/3Wmcp86"
                 target="_blank"
+                rel="noopener noreferrer"
                 style={{ marginTop: 3 }}
               >
                 <img
