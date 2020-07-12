@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import JoditEditor from 'jodit-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, createRef } from 'react';
 import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
 
@@ -89,11 +89,6 @@ export default function CreateCourse(props) {
   const [image, setImage] = useState(null);
 
   const [position, setPosition] = useState('');
-  const [inputName, setInputName] = useState('');
-  const [inputDuration, setInputDuration] = useState('');
-  const [inputPrice, setInputPrice] = useState('');
-  const [inputCodePayment, setInputCodePayment] = useState('');
-  const [inputShortDescription, setInputShortDescription] = useState('');
 
   const [progress, setProgress] = useState(false);
 
@@ -103,6 +98,19 @@ export default function CreateCourse(props) {
   const editorDescription = useRef(null);
   const [description, setDescription] = useState('Aqui vai a descrição');
 
+  const name = useRef(null);
+  const [inputName, setInputName] = useState('');
+
+  const duration = useRef(null);
+  const [inputDuration, setInputDuration] = useState('');
+
+  const price = useRef(null);
+  const [inputPrice, setInputPrice] = useState('');
+
+  const shortDescription = useRef(null);
+  const [inputShortDescription, setInputShortDescription] = useState('');
+  const payment = useRef(null);
+  const [inputCodePayment, setInputCodePayment] = useState('');
   const config = {
     readonly: false, // all options from https://xdsoft.net/jodit/doc/
   };
@@ -367,11 +375,8 @@ export default function CreateCourse(props) {
                       required
                       fullWidth
                       id="fullName"
-                      value={inputName}
-                      onChange={(event) => {
-                        event.preventDefault();
-                        setInputName(event.target.value);
-                      }}
+                      ref={name}
+                      onBlur={(newContent) => setInputName(newContent)}
                       label="Nome do Curso"
                       autoFocus
                     />
@@ -394,8 +399,8 @@ export default function CreateCourse(props) {
                       fullWidth
                       id="duration"
                       type="number"
-                      value={inputDuration}
-                      onChange={(event) => setInputDuration(event.target.value)}
+                      ref={duration}
+                      onBlur={(newContent) => setInputDuration(newContent)}
                       label="Duração em horas"
                     />
                   </Grid>
@@ -418,8 +423,8 @@ export default function CreateCourse(props) {
                       fullWidth
                       type="number"
                       id="price"
-                      value={inputPrice}
-                      onChange={(event) => setInputPrice(event.target.value)}
+                      ref={price}
+                      onBlur={(newContent) => setInputPrice(newContent)}
                       label="Preço"
                     />
                   </Grid>
@@ -441,10 +446,8 @@ export default function CreateCourse(props) {
                       required
                       fullWidth
                       id="codePayment"
-                      value={inputCodePayment}
-                      onChange={(event) =>
-                        setInputCodePayment(event.target.value)
-                      }
+                      ref={payment}
+                      onBlur={(newContent) => setInputCodePayment(newContent)}
                       label="Código pagamento pagamento pagseguro"
                     />
                   </Grid>
@@ -467,9 +470,9 @@ export default function CreateCourse(props) {
                         required
                         fullWidth
                         id="shortDescription"
-                        value={inputShortDescription}
-                        onChange={(event) =>
-                          setInputShortDescription(event.target.value)
+                        ref={shortDescription}
+                        onBlur={(newContent) =>
+                          setInputShortDescription(newContent)
                         }
                         label="Descrição Curta"
                       />
