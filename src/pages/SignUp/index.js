@@ -77,6 +77,8 @@ export default function SignUp(props) {
   const handleRegister = async (event) => {
     event.preventDefault();
 
+    let date = new Date();
+
     setProgress(true);
 
     const name = inputName;
@@ -103,6 +105,7 @@ export default function SignUp(props) {
                 cellphone: inputCellphone,
                 uid: success.user.uid,
                 userType: 'student',
+                createdAt: date,
                 id: '',
               })
               .then(function (doc) {

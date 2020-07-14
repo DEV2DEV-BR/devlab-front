@@ -9,6 +9,7 @@ import firebase from 'firebase';
 import MaterialTable from 'material-table';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,7 @@ export default function Dashboard(props) {
 
   const [state, setState] = React.useState({
     columns: [
+      { title: 'Data', field: 'createdAt' },
       { title: 'Nome', field: 'name' },
       { title: 'Celular', field: 'cellphone' },
       { title: 'E-mail', field: 'email' },
@@ -66,7 +68,13 @@ export default function Dashboard(props) {
           querySnapshot.forEach((doc) => {
             const { name, cellphone, email } = doc.data();
 
+            const date = moment
+              .unix(doc.data()?.createdAt)
+              .locale('pt-br')
+              .format('DD/MM/YYYY - hh:mm');
+
             const studentObject = {
+              createdAt: date != 'Invalid date' ? date : 'Data não informada',
               name,
               cellphone,
               email,
