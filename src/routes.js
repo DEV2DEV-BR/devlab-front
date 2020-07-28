@@ -7,6 +7,7 @@ import CreateCourse from './pages/CreateCourse';
 import Dashboard from './pages/Dashboard';
 import Main from './pages/Main';
 import MyCourses from './pages/MyCourses';
+import Cart from './pages/Cart';
 import MyStudents from './pages/MyStudents';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
@@ -26,8 +27,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           <Component {...props} />
         </>
       ) : (
-        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-      )
+          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+        )
     }
   />
 );
@@ -47,6 +48,7 @@ const Routes = () => (
       <PrivateRoute path="/register-course" component={RegisterCourse} />
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
       <PrivateRoute path="/list-my-students" component={MyStudents} />
+      <PrivateRoute path="/cart" component={Cart} />
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   </BrowserRouter>
