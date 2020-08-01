@@ -55,7 +55,6 @@ export default function ClassesByCourse(props) {
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
-
   const handleWatchClasse = (idClasse, idCourse) => {
     props.history.push('/watch-classe', { idClasse, idCourse });
   };
@@ -224,8 +223,8 @@ export default function ClassesByCourse(props) {
                   </TableContainer>
                 </>
               ) : (
-                  ''
-                )}
+                ''
+              )}
             </Grid>
           </Container>
           {!progress && (

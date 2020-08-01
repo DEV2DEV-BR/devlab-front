@@ -82,7 +82,7 @@ export default function Main(props) {
   return (
     <>
       <CssBaseline />
-      <ResponsiveNavbar />
+      <ResponsiveNavbar history={props?.history} />
 
       <main>
         {/* Hero unit */}

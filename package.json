@@ -37,6 +37,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "format": "prettier --write \"{,!(node_modules)/**/}*.{js,jsx}\"",
     "build": "react-scripts build",
     "staging": "firebase deploy",
     "deploy": "firebase deploy",

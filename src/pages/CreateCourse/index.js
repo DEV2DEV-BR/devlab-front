@@ -12,7 +12,7 @@ import firebase from 'firebase';
 import JoditEditor from 'jodit-react';
 import React, { useEffect, useRef, useState, createRef } from 'react';
 import Copyright from '../../components/Copyright';
-import { notify } from '../../util/toast'
+import { notify } from '../../util/toast';
 
 const styles = {
   editor: {
@@ -166,7 +166,7 @@ export default function CreateCourse(props) {
             .put(image);
           uploadTask.on(
             'state_changed',
-            (snapshot) => { },
+            (snapshot) => {},
             (error) => {
               // Error function ...
               console.log(error);
@@ -183,13 +183,13 @@ export default function CreateCourse(props) {
             }
           );
         } else {
-          notify('Esse tipo de arquivo não é permitido!', 1000, "danger");
+          notify('Esse tipo de arquivo não é permitido!', 1000, 'danger');
         }
       } else {
         addedInfoCollectionCourse('', false);
       }
     } else {
-      notify('Preencha todos os campos!', 1000, "danger");
+      notify('Preencha todos os campos!', 1000, 'danger');
     }
   };
 
@@ -233,11 +233,11 @@ export default function CreateCourse(props) {
         } else {
           loadDataCourse();
         }
-        notify('Curso atualizado com sucesso!', 1000, "success");
+        notify('Curso atualizado com sucesso!', 1000, 'success');
       })
       .catch(function (error) {
         console.error('Error adding domcument', error);
-        notify('Falha ao atualizar o curso!', 1000, "danger");
+        notify('Falha ao atualizar o curso!', 1000, 'danger');
       });
   };
 
@@ -264,7 +264,7 @@ export default function CreateCourse(props) {
             .put(image);
           uploadTask.on(
             'state_changed',
-            (snapshot) => { },
+            (snapshot) => {},
             (error) => {
               // Error function ...
               console.log(error);
@@ -281,13 +281,13 @@ export default function CreateCourse(props) {
             }
           );
         } else {
-          notify('Preencha todos os campos!', 1000, "danger");
+          notify('Preencha todos os campos!', 1000, 'danger');
         }
       } else {
-        notify('Esse tipo de arquivo não é permitido!', 1000, "danger");
+        notify('Esse tipo de arquivo não é permitido!', 1000, 'danger');
       }
     } else {
-      notify('Selecione um arquivo para enviar!', 1000, "danger");
+      notify('Selecione um arquivo para enviar!', 1000, 'danger');
     }
   };
 
@@ -471,7 +471,7 @@ export default function CreateCourse(props) {
                       config={config}
                       tabIndex={1} // tabIndex of textarea
                       onBlur={(newContent) => setDescription(newContent)} // preferred to use only this option to update the content for performance reasons
-                      onChange={(newContent) => { }}
+                      onChange={(newContent) => {}}
                     />
                   </Grid>
                 </FormControl>
@@ -489,7 +489,7 @@ export default function CreateCourse(props) {
                       config={config}
                       tabIndex={1} // tabIndex of textarea
                       onBlur={(newContent) => setRequirements(newContent)} // preferred to use only this option to update the content for performance reasons
-                      onChange={(newContent) => { }}
+                      onChange={(newContent) => {}}
                     />
                   </Grid>
                 </FormControl>
@@ -533,38 +533,38 @@ export default function CreateCourse(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                  <div style={{ display: 'flex', width: '100%' }}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      disabled={!!progress}
-                      style={{
-                        backgroundColor: '#318F6B',
-                        color: '#fff',
-                      }}
-                      onClick={
-                        props.history.location.state
-                          ? handleEditCourse
-                          : handleRegister
-                      }
-                      className={classes.submitLeft}
-                    >
-                      CADASTRAR
+                <div style={{ display: 'flex', width: '100%' }}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    disabled={!!progress}
+                    style={{
+                      backgroundColor: '#318F6B',
+                      color: '#fff',
+                    }}
+                    onClick={
+                      props.history.location.state
+                        ? handleEditCourse
+                        : handleRegister
+                    }
+                    className={classes.submitLeft}
+                  >
+                    CADASTRAR
                   </Button>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      style={{
-                        backgroundColor: 'rgba(126,64,144,1)',
-                        color: '#fff',
-                      }}
-                      onClick={handleClear}
-                      className={classes.submitRight}
-                    >
-                      LIMPAR
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'rgba(126,64,144,1)',
+                      color: '#fff',
+                    }}
+                    onClick={handleClear}
+                    className={classes.submitRight}
+                  >
+                    LIMPAR
                   </Button>
-                  </div>
-                )}
+                </div>
+              )}
             </form>
           </Grid>
         </Container>

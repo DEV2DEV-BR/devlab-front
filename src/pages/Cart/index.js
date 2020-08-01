@@ -1,42 +1,33 @@
-import Backdrop from '@material-ui/core/Backdrop';
-import Box from '@material-ui/core/Box';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  Backdrop,
+  Badge,
+  Box,
+  CircularProgress,
+  CssBaseline,
+  FormControl,
+  Grid,
+  IconButton,
+  Tooltip,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
-import ResponsiveNavbar from '../../components/ResponsiveNavbar'
-import { notify } from '../../util/toast'
+import ResponsiveNavbar from '../../components/ResponsiveNavbar';
+import { format } from '../../util/format';
+import {
+  StyledContainer,
+  Main,
+  InternalContainer,
+  StyledGrid,
+  StyledFormControl,
+} from './styles';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    width: '100%',
-  },
   appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: theme.spacing(2),
-    // paddingBottom: theme.spacing(4),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
@@ -46,78 +37,12 @@ const useStyles = makeStyles((theme) => ({
 export default function Cart(props) {
   const classes = useStyles();
 
-  const history = useState(props.history);
   const [progress, setProgress] = useState(false);
   const [coursesData, setCoursesData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [messageBody, setMessageBody] = useState('');
-  const [title, setTitle] = useState('');
-  const [action, setAction] = useState('');
-  const [textButton, setTextButton] = useState('');
 
-
-
-  const handleClickOpen = (action, course) => {
-    if (action === 'toggle') {
-      setTitle(
-        `Você deseja ${course.enable ? 'desativar' : 'ativar'} o curso:  ${
-        course.name
-        } ?`
-      );
-      setMessageBody(
-        `Você poderá ${course.enable ? 'desativa-lo' : 'ativa-lo'} no futuro.`
-      );
-      setAction('toggle');
-      setTextButton(course.enable ? 'desativar' : 'ativar');
-    } else {
-      setTitle(`Desejar editar o curso: ${course.name}?`);
-      setMessageBody('Você será redirecionado para uma outra página!');
-      setAction('edit');
-      setTextButton('Editar');
-    }
-
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const toggleStateCourse = (course) => {
-    const status = course.enable;
-
-    const db = firebase.firestore();
-    var courseRef = db.collection('courses').doc(course.id);
-
-    courseRef
-      .update({
-        enable: !status,
-      })
-      .then(function () {
-        notify('Dados atualizados com sucesso!', 1000, "success");
-        setProgress(false);
-        loadDataCourses();
-        handleClose();
-      })
-      .catch(function (error) {
-        // The document probably doesn't exist.
-        console.error('Error updating document: ', error);
-        setProgress(false);
-      });
-  };
-
-  const handleEdit = (id) => {
-    props.history.push('/create-course', { id });
-  };
-
-  const handleAddClasses = (id) => {
-    props.history.push('/add-classes', { id });
-  };
-
-  const loadDataCourses = () => {
-    setProgress(true);
-
-    async function fetchData() {
+  useEffect(() => {
+    async function loadDataCourses() {
+      setProgress(true);
       const db = firebase.firestore();
 
       const coursesRef = db.collection('courses');
@@ -138,21 +63,15 @@ export default function Cart(props) {
         });
     }
 
-    fetchData();
-  };
-
-  useEffect(() => {
     loadDataCourses();
-  }, []);
 
-  useEffect(() => {
     return () => {
       setCoursesData('');
     };
   }, []);
 
   return (
-    <div className={classes.root}>
+    <StyledContainer>
       {progress && (
         <Backdrop className={classes.backdrop} open={progress}>
           <CircularProgress color="inherit" />
@@ -161,43 +80,14 @@ export default function Cart(props) {
       )}
 
       <CssBaseline />
-      <div>
-        <div className={classes.appBarSpacer} />
-      </div>
 
-      <main className={classes.content}>
-        <ResponsiveNavbar />
+      <Main>
+        <ResponsiveNavbar history={props?.history} />
         <div className={classes.appBarSpacer} />
         {coursesData.length === 0 && (
-          <Container
-            maxWidth="lg"
-            className={classes.container}
-            style={{ height: '80%' }}
-          >
-            <Grid
-              container
-              spacing={3}
-              style={{
-                display: 'flex',
-                width: '80%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <FormControl
-                variant="outlined"
-                fullWidth
-                className={classes.formControl}
-                style={{
-                  display: 'flex',
-                  borderWidth: '1px',
-                  borderColor: '#c6b3b3',
-                  borderStyle: 'solid',
-                  borderRadius: 4,
-                  margin: 10,
-                  padding: 5,
-                }}
-              >
+          <InternalContainer maxWidth="lg">
+            <StyledGrid container spacing={3}>
+              <FormControl variant="outlined" fullWidth>
                 <Grid
                   container
                   spacing={2}
@@ -207,60 +97,26 @@ export default function Cart(props) {
                     height: '100px',
                     justifyContent: 'center',
                     backgroundColor: '#c8a2d3',
+                    borderRadius: 4,
                   }}
                 >
                   <p style={{ fontSize: 14 }}>Seu carrinho ainda está vazio.</p>
                 </Grid>
               </FormControl>
-            </Grid>
-          </Container>
+            </StyledGrid>
+          </InternalContainer>
         )}
         {coursesData.map((course) => (
-          <Container
-            maxWidth="lg"
-            className={classes.container}
-            key={course.id}
-          >
-            <Grid
-              container
-              spacing={3}
-              style={{
-                display: 'flex',
-                width: '80%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <FormControl
-                variant="outlined"
-                fullWidth
-                className={classes.formControl}
-                style={{
-                  display: 'flex',
-                  borderWidth: '1px',
-                  borderColor: '#c6b3b3',
-                  borderStyle: 'solid',
-                  borderRadius: 4,
-                  margin: 10,
-                  padding: 5,
-                }}
-              >
+          <InternalContainer maxWidth="lg" key={course.id}>
+            <StyledGrid container spacing={3}>
+              <StyledFormControl variant="outlined" fullWidth>
                 <Grid container spacing={2}>
-                  <Grid
+                  <StyledGrid
                     item
                     xs={12}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
+                    style={{ justifyContent: 'space-between' }}
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                      }}
-                    >
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
                       <img
                         src={course.image || LoadingImage}
                         alt="course"
@@ -278,7 +134,14 @@ export default function Cart(props) {
                           marginLeft: 12,
                         }}
                       >
-                        <p style={{ color: '#7a7171', margin: 0, padding: 0, fontSize: 17 }}>
+                        <p
+                          style={{
+                            color: '#7a7171',
+                            margin: 0,
+                            padding: 0,
+                            fontSize: 17,
+                          }}
+                        >
                           {course.name}
                         </p>
                         <p style={{ color: '#918787', margin: 0, padding: 0 }}>
@@ -286,30 +149,42 @@ export default function Cart(props) {
                         </p>
                       </div>
                     </div>
-                    <div style={{ display: 'flex' }}>
-
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
                       <Tooltip title="Retirar do carrinho" placement="bottom">
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => handleAddClasses(course.id)}
-                        >
+                        <IconButton aria-label="delete" onClick={() => {}}>
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
 
-
+                      <Badge
+                        style={{
+                          alignItems: 'center',
+                          fontSize: 18,
+                          color: '#ec5252',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {format(course.price)}
+                        <LoyaltyIcon style={{ marginTop: 10 }} />
+                      </Badge>
                     </div>
-                  </Grid>
+                  </StyledGrid>
                 </Grid>
-              </FormControl>
-            </Grid>
-
-          </Container>
+              </StyledFormControl>
+            </StyledGrid>
+          </InternalContainer>
         ))}
         <Box pt={4}>
           <Copyright />
         </Box>
-      </main>
-    </div>
+      </Main>
+    </StyledContainer>
   );
 }

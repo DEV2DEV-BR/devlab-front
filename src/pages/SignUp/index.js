@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from 'firebase';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { notify } from '../../util/toast'
+import { notify } from '../../util/toast';
 import Copyright from '../../components/Copyright';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,6 @@ export default function SignUp(props) {
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
 
-
   const handleRegister = async (event) => {
     event.preventDefault();
 
@@ -91,13 +90,13 @@ export default function SignUp(props) {
                 cloudFirestore.collection('users').doc(doc.id).update({
                   id: doc.id,
                 });
-                notify('Parabéns!', 1000, "success");
+                notify('Parabéns!', 1000, 'success');
                 props.history.push('/sign-in');
                 setProgress(false);
               })
               .catch(function (error) {
                 console.error('Error adding domcument', error);
-                notify('Falha no seu cadastro!', 1000, "danger");
+                notify('Falha no seu cadastro!', 1000, 'danger');
               });
           })
           .catch(function (error) {
@@ -105,14 +104,14 @@ export default function SignUp(props) {
             const errorMessage = error.message;
             setProgress(false);
             console.log(errorCode, errorMessage);
-            notify((error.message, 4000), 1000, "danger");
+            notify((error.message, 4000), 1000, 'danger');
           });
       } else {
-        notify('As senhas digitadas são diferentes!', 1000, "danger");
+        notify('As senhas digitadas são diferentes!', 1000, 'danger');
         setProgress(false);
       }
     } else {
-      notify('Preencha todos os campos!', 1000, "danger");
+      notify('Preencha todos os campos!', 1000, 'danger');
       setProgress(false);
     }
   };
@@ -215,16 +214,16 @@ export default function SignUp(props) {
               <p style={{ margin: 10 }}>Aguarde...</p>
             </div>
           ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
-                className={classes.submit}
-              >
-                Cadastrar
-              </Button>
-            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
+              className={classes.submit}
+            >
+              Cadastrar
+            </Button>
+          )}
           <Grid container justify="flex-end">
             <Grid item xs>
               <Link to="/">Voltar para o início</Link>

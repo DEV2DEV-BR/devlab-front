@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BackgroundSignIn from '../../assets/background-signIn.jpg';
 import { email, login } from '../../services/auth';
-import { notify } from '../../util/toast'
+import { notify } from '../../util/toast';
 
 function Copyright() {
   return (
@@ -72,7 +72,6 @@ export default function SignIn(props) {
   const [inputPassword, setInputPassword] = useState('');
   const [progress, setProgress] = useState(false);
   const [idCourseFree, setIdCourseFree] = useState('');
-
 
   useEffect(() => {
     if (props.history.location.state) {
@@ -129,14 +128,14 @@ export default function SignIn(props) {
               });
           }
         });
-        notify('Seja bem-vindo!', 1000, "success");
+        notify('Seja bem-vindo!', 1000, 'success');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         setProgress(false);
         console.log(errorCode, errorMessage);
-        notify('E-mail ou senha incorretos!', 1000, "error");
+        notify('E-mail ou senha incorretos!', 1000, 'error');
       });
   };
 
@@ -198,16 +197,16 @@ export default function SignIn(props) {
                 <p style={{ margin: 10 }}>Aguarde...</p>
               </div>
             ) : (
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
-                  className={classes.submit}
-                >
-                  LOGIN
-                </Button>
-              )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
+                className={classes.submit}
+              >
+                LOGIN
+              </Button>
+            )}
             <Grid container>
               <Grid item xs>
                 <Link to="/">Voltar para o início</Link>

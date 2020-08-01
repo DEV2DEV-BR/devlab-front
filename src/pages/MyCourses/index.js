@@ -22,7 +22,7 @@ import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
-import { notify } from '../../util/toast'
+import { notify } from '../../util/toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +64,7 @@ export default function Dashboard(props) {
     if (action === 'toggle') {
       setTitle(
         `Você deseja ${course.enable ? 'desativar' : 'ativar'} o curso:  ${
-        course.name
+          course.name
         } ?`
       );
       setMessageBody(
@@ -97,7 +97,7 @@ export default function Dashboard(props) {
         enable: !status,
       })
       .then(function () {
-        notify('Dados atualizados com sucesso!', 1000, "success");
+        notify('Dados atualizados com sucesso!', 1000, 'success');
         setProgress(false);
         loadDataCourses();
         handleClose();
@@ -105,7 +105,7 @@ export default function Dashboard(props) {
       .catch(function (error) {
         // The document probably doesn't exist.
         console.error('Error updating document: ', error);
-        notify('Falha ao atualizar os dados!', 1000, "danger");
+        notify('Falha ao atualizar os dados!', 1000, 'danger');
         setProgress(false);
       });
   };
@@ -321,8 +321,8 @@ export default function Dashboard(props) {
                           {course.enable ? (
                             <VisibilityIcon />
                           ) : (
-                              <VisibilityOffIcon />
-                            )}
+                            <VisibilityOffIcon />
+                          )}
                         </IconButton>
                       </Tooltip>
                     </div>

@@ -6,11 +6,11 @@ import StorefrontIcon from '@material-ui/icons/Storefront';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { Form, Nav, Navbar } from 'react-bootstrap';
-import { notify } from '../../util/toast'
+import { notify } from '../../util/toast';
 import Menu from '../../components/Menu';
 import { logout } from '../../services/auth';
-import { Container, IconContainerButton } from './styles'
-import { Link } from 'react-router-dom'
+import { Container, IconContainerButton } from './styles';
+import { Link } from 'react-router-dom';
 export default function NavBarDashboard(props) {
   const [userData, setuserData] = useState([]);
 
@@ -39,13 +39,11 @@ export default function NavBarDashboard(props) {
     };
   }, []);
 
-
-
   const handleLogout = () => {
     logout();
     firebase.auth().signOut();
     localStorage.clear();
-    notify('Até logo, já estamos com saudades!', 2000, "info");
+    notify('Até logo, já estamos com saudades!', 2000, 'info');
     props.history.push('/');
   };
 
@@ -58,7 +56,7 @@ export default function NavBarDashboard(props) {
   };
 
   return (
-    <Navbar expand="lg" style={{ backgroundColor: 'rgba(126,64,144,0.9)' }}>
+    <Navbar expand="lg" style={{ backgroundColor: '#318F6B' }}>
       <Menu history={props.history} />
       <Link to="/dashboard">
         <Navbar.Brand style={{ color: '#fff' }}>
@@ -70,7 +68,9 @@ export default function NavBarDashboard(props) {
         <Nav className="mr-auto"></Nav>
         <Form inline>
           <Container>
-
+            <p style={{ padding: 0, margin: '0px 10px 0px 0px' }}>
+              <b>Bem vindo:</b> {userData.name}
+            </p>
             <IconContainerButton>
               <IconButton
                 color="inherit"
@@ -80,7 +80,7 @@ export default function NavBarDashboard(props) {
                 <Badge color="secondary">
                   <StorefrontIcon />
                 </Badge>
-                <p style={{ fontSize: 12, margin: 2 }}>Loja</p>
+                <p style={{ fontSize: 12, margin: 2 }}>Voltar para Loja</p>
               </IconButton>
               <IconButton
                 color="inherit"
@@ -103,10 +103,6 @@ export default function NavBarDashboard(props) {
                 <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
               </IconButton>
             </IconContainerButton>
-
-            <p style={{ padding: 0, margin: '10px 0px 0px 6px' }}>
-              <b>Bem vindo:</b> {userData.name}
-            </p>
           </Container>
         </Form>
       </Navbar.Collapse>

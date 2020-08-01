@@ -12,7 +12,7 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
-import { notify } from '../../util/toast'
+import { notify } from '../../util/toast';
 import { format } from '../../util/format';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +49,6 @@ const CoursesList = (props) => {
   const [courseData, setCourseData] = useState([]);
   const [myCourses, setMyCourses] = useState([]);
   const [progress, setProgress] = useState(false);
-
 
   const handleBuyCourse = () => {
     props.history.push('/dashboard');
@@ -100,7 +99,7 @@ const CoursesList = (props) => {
             console.log('No such document!');
           }
           setProgress(false);
-          notify('Agora você já pode estudar!', 1000, "success");
+          notify('Agora você já pode estudar!', 1000, 'success');
           props.history.push('/dashboard');
         })
         .catch(function (error) {
@@ -265,38 +264,38 @@ const CoursesList = (props) => {
                 </Button>
               </form>
             ) : (
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  onClick={() => handleEnrrol(courseData.id)}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={() => handleEnrrol(courseData.id)}
+                style={{
+                  backgroundColor: '#318F6B',
+                  position: 'relative',
+                }}
+              >
+                <div
                   style={{
-                    backgroundColor: '#318F6B',
-                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
                   }}
                 >
-                  <div
+                  <MdMovie size={18} color="#fff" />
+                  <p
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
+                      margin: '0px 0px 0px 10px',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#fff',
                     }}
                   >
-                    <MdMovie size={18} color="#fff" />
-                    <p
-                      style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
-                      MATRICULAR
+                    MATRICULAR
                   </p>
-                  </div>
-                </Button>
-              )}
+                </div>
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
