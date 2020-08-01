@@ -13,16 +13,16 @@ import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import Tooltip from '@material-ui/core/Tooltip';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
+import { notify } from '../../util/toast'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,33 +60,11 @@ export default function Dashboard(props) {
   const [action, setAction] = useState('');
   const [textButton, setTextButton] = useState('');
 
-  const notifySuccess = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
   const handleClickOpen = (action, course) => {
     if (action === 'toggle') {
       setTitle(
         `Você deseja ${course.enable ? 'desativar' : 'ativar'} o curso:  ${
-          course.name
+        course.name
         } ?`
       );
       setMessageBody(
@@ -119,7 +97,7 @@ export default function Dashboard(props) {
         enable: !status,
       })
       .then(function () {
-        notifySuccess('Dados atualizados com sucesso!');
+        notify('Dados atualizados com sucesso!', 1000, "success");
         setProgress(false);
         loadDataCourses();
         handleClose();
@@ -127,6 +105,7 @@ export default function Dashboard(props) {
       .catch(function (error) {
         // The document probably doesn't exist.
         console.error('Error updating document: ', error);
+        notify('Falha ao atualizar os dados!', 1000, "danger");
         setProgress(false);
       });
   };
@@ -342,8 +321,8 @@ export default function Dashboard(props) {
                           {course.enable ? (
                             <VisibilityIcon />
                           ) : (
-                            <VisibilityOffIcon />
-                          )}
+                              <VisibilityOffIcon />
+                            )}
                         </IconButton>
                       </Tooltip>
                     </div>

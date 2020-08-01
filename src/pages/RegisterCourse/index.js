@@ -3,11 +3,10 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import pagarme from 'pagarme';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
 import Course from '../../components/Course';
-import pagarme from 'pagarme'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,27 +29,7 @@ export default function RegisterCourse(props) {
   const classes = useStyles();
   const [history, setHistory] = useState(props.history);
 
-  const notifySuccess = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
 
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
 
   useEffect(() => {
 

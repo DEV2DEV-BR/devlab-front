@@ -15,6 +15,8 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
+import ResponsiveNavbar from '../../components/ResponsiveNavbar'
+import { notify } from '../../util/toast'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,27 +55,7 @@ export default function Cart(props) {
   const [action, setAction] = useState('');
   const [textButton, setTextButton] = useState('');
 
-  const notifySuccess = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
 
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
 
   const handleClickOpen = (action, course) => {
     if (action === 'toggle') {
@@ -112,7 +94,7 @@ export default function Cart(props) {
         enable: !status,
       })
       .then(function () {
-        notifySuccess('Dados atualizados com sucesso!');
+        notify('Dados atualizados com sucesso!', 1000, "success");
         setProgress(false);
         loadDataCourses();
         handleClose();
@@ -184,6 +166,7 @@ export default function Cart(props) {
       </div>
 
       <main className={classes.content}>
+        <ResponsiveNavbar />
         <div className={classes.appBarSpacer} />
         {coursesData.length === 0 && (
           <Container

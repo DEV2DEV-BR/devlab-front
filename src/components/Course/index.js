@@ -12,7 +12,7 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
-import { toast } from 'react-toastify';
+import { notify } from '../../util/toast'
 import { format } from '../../util/format';
 
 const useStyles = makeStyles((theme) => ({
@@ -50,27 +50,6 @@ const CoursesList = (props) => {
   const [myCourses, setMyCourses] = useState([]);
   const [progress, setProgress] = useState(false);
 
-  const notifySuccess = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
 
   const handleBuyCourse = () => {
     props.history.push('/dashboard');
@@ -121,7 +100,7 @@ const CoursesList = (props) => {
             console.log('No such document!');
           }
           setProgress(false);
-          notifySuccess('Agora você já pode estudar!');
+          notify('Agora você já pode estudar!', 1000, "success");
           props.history.push('/dashboard');
         })
         .catch(function (error) {
@@ -286,38 +265,38 @@ const CoursesList = (props) => {
                 </Button>
               </form>
             ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={() => handleEnrrol(courseData.id)}
-                style={{
-                  backgroundColor: '#318F6B',
-                  position: 'relative',
-                }}
-              >
-                <div
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  onClick={() => handleEnrrol(courseData.id)}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
+                    backgroundColor: '#318F6B',
+                    position: 'relative',
                   }}
                 >
-                  <MdMovie size={18} color="#fff" />
-                  <p
+                  <div
                     style={{
-                      margin: '0px 0px 0px 10px',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      color: '#fff',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
                     }}
                   >
-                    MATRICULAR
+                    <MdMovie size={18} color="#fff" />
+                    <p
+                      style={{
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
+                      }}
+                    >
+                      MATRICULAR
                   </p>
-                </div>
-              </Button>
-            )}
+                  </div>
+                </Button>
+              )}
           </div>
         </CardContent>
       </Card>

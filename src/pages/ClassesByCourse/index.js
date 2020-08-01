@@ -55,43 +55,6 @@ export default function ClassesByCourse(props) {
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
-  const loadData = async () => {
-    const { id } = props.history.location.state;
-    const db = firebase.firestore();
-    const coursesRef = db.collection('courses').doc(id);
-
-    await coursesRef
-      .get()
-      .then(function (doc) {
-        if (doc.exists) {
-          setCourseData(doc.data());
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!');
-        }
-      })
-      .catch(function (error) {
-        console.log('Error getting documents: ', error);
-      });
-
-    const classesRef = db
-      .collection(`courses/${id}/classes`)
-      .orderBy('position');
-
-    await classesRef
-      .get()
-      .then((querySnapshot) => {
-        const classes = [];
-        querySnapshot.forEach((doc) => {
-          classes.push(doc.data());
-        });
-        setClassesData(classes);
-        setProgress(false);
-      })
-      .catch(function (error) {
-        console.log('Error getting documents: ', error);
-      });
-  };
 
   const handleWatchClasse = (idClasse, idCourse) => {
     props.history.push('/watch-classe', { idClasse, idCourse });
@@ -99,6 +62,45 @@ export default function ClassesByCourse(props) {
 
   useEffect(() => {
     setProgress(true);
+
+    const loadData = async () => {
+      const { id } = props.history.location.state;
+      const db = firebase.firestore();
+      const coursesRef = db.collection('courses').doc(id);
+
+      await coursesRef
+        .get()
+        .then(function (doc) {
+          if (doc.exists) {
+            setCourseData(doc.data());
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!');
+          }
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error);
+        });
+
+      const classesRef = db
+        .collection(`courses/${id}/classes`)
+        .orderBy('position');
+
+      await classesRef
+        .get()
+        .then((querySnapshot) => {
+          const classes = [];
+          querySnapshot.forEach((doc) => {
+            classes.push(doc.data());
+          });
+          setClassesData(classes);
+          setProgress(false);
+        })
+        .catch(function (error) {
+          console.log('Error getting documents: ', error);
+        });
+    };
+
     loadData();
   }, []);
 
@@ -222,8 +224,8 @@ export default function ClassesByCourse(props) {
                   </TableContainer>
                 </>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </Grid>
           </Container>
           {!progress && (

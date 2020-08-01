@@ -6,7 +6,7 @@ import StorefrontIcon from '@material-ui/icons/Storefront';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { Form, Nav, Navbar } from 'react-bootstrap';
-import { toast } from 'react-toastify';
+import { notify } from '../../util/toast'
 import Menu from '../../components/Menu';
 import { logout } from '../../services/auth';
 import { Container, IconContainerButton } from './styles'
@@ -39,22 +39,13 @@ export default function NavBarDashboard(props) {
     };
   }, []);
 
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
+
 
   const handleLogout = () => {
     logout();
     firebase.auth().signOut();
     localStorage.clear();
-    notifyError('Até logo!');
+    notify('Até logo, já estamos com saudades!', 2000, "info");
     props.history.push('/');
   };
 

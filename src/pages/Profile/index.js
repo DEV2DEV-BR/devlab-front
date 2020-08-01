@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { notify } from '../../util/toast'
 import Copyright from '../../components/Copyright';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,27 +64,6 @@ export default function Activitys(props) {
   const [progress, setProgress] = useState(false);
   const [progressLoad, setProgressLoad] = useState(false);
 
-  const notifySuccess = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
 
   const loadData = () => {
     setProgressLoad(true);
@@ -134,12 +113,13 @@ export default function Activitys(props) {
                   cellphone: inputCellphone,
                 })
                 .then(function () {
-                  notifySuccess('Dados atualizados com sucesso!');
+                  notify('Dados atualizados com sucesso!', 1000, "success");
                   setProgress(false);
                 })
                 .catch(function (error) {
                   // The document probably doesn't exist.
                   console.error('Error updating document: ', error);
+                  notify('Falha ao atualizar os dados!', 1000, "danger");
                   setProgress(false);
                 });
             })
@@ -148,7 +128,7 @@ export default function Activitys(props) {
               setProgress(false);
             });
         } else {
-          notifyError('As senhas não conferem!');
+          notify('As senhas não conferem!', 1000, "danger");
           setProgress(false);
         }
       } else {
@@ -159,16 +139,17 @@ export default function Activitys(props) {
           })
           .then(function () {
             setProgress(false);
-            notifySuccess('Dados atualizados com sucesso!');
+            notify('Dados atualizados com sucesso!', 1000, "success");
           })
           .catch(function (error) {
             // The document probably doesn't exist.
             setProgress(false);
             console.error('Error updating document: ', error);
+            notify('Falha ao atualizar os dados!', 1000, "danger");
           });
       }
     } else {
-      notifyError('Preencha todos os campos!');
+      notify('Preencha todos os campos!', 1000, "danger");
       setProgress(false);
     }
   };
@@ -209,8 +190,8 @@ export default function Activitys(props) {
                   <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
                 </Backdrop>
               ) : (
-                <>
-                  {/* <Avatar
+                  <>
+                    {/* <Avatar
                     style={{ width: '150px', height: '150px' }}
                     className={classes.avatar}
                     src={ProfilePicture}
@@ -218,112 +199,112 @@ export default function Activitys(props) {
 
                   <input type="file" onChange={() => {}} /> */}
 
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        autoComplete="fname"
-                        name="fullName"
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="fullName"
-                        value={inputName}
-                        onChange={(event) => setInputName(event.target.value)}
-                        label="Nome Completo"
-                        autoFocus
-                      />
-                    </Grid>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        disabled
-                        id="email"
-                        value={inputEmail}
-                        onChange={(event) => setInputEmail(event.target.value)}
-                        label="E-mail"
-                        name="email"
-                        autoComplete="email"
-                      />
-                    </Grid>
-                  </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          autoComplete="fname"
+                          name="fullName"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="fullName"
+                          value={inputName}
+                          onChange={(event) => setInputName(event.target.value)}
+                          label="Nome Completo"
+                          autoFocus
+                        />
+                      </Grid>
+                    </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          disabled
+                          id="email"
+                          value={inputEmail}
+                          onChange={(event) => setInputEmail(event.target.value)}
+                          label="E-mail"
+                          name="email"
+                          autoComplete="email"
+                        />
+                      </Grid>
+                    </FormControl>
 
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        disabled
-                        id="cellphone"
-                        value={inputCellphone}
-                        onChange={(event) =>
-                          setInputCellphone(event.target.value)
-                        }
-                        label="Celular"
-                        name="cellphone"
-                        autoComplete="cellphone"
-                      />
-                    </Grid>
-                  </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          disabled
+                          id="cellphone"
+                          value={inputCellphone}
+                          onChange={(event) =>
+                            setInputCellphone(event.target.value)
+                          }
+                          label="Celular"
+                          name="cellphone"
+                          autoComplete="cellphone"
+                        />
+                      </Grid>
+                    </FormControl>
 
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        name="password"
-                        label="Senha"
-                        value={inputPassword}
-                        onChange={(event) =>
-                          setInputPassword(event.target.value)
-                        }
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                      />
-                    </Grid>
-                  </FormControl>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    className={classes.formControl}
-                  >
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        fullWidth
-                        name="confirm-password"
-                        label="Confirmação de senha"
-                        type="password"
-                        value={inputConfirmPassword}
-                        onChange={(event) =>
-                          setInputConfirmPassword(event.target.value)
-                        }
-                        id="confirm-password"
-                        autoComplete="current-password"
-                      />
-                    </Grid>
-                  </FormControl>
-                </>
-              )}
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          name="password"
+                          label="Senha"
+                          value={inputPassword}
+                          onChange={(event) =>
+                            setInputPassword(event.target.value)
+                          }
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                        />
+                      </Grid>
+                    </FormControl>
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      className={classes.formControl}
+                    >
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          name="confirm-password"
+                          label="Confirmação de senha"
+                          type="password"
+                          value={inputConfirmPassword}
+                          onChange={(event) =>
+                            setInputConfirmPassword(event.target.value)
+                          }
+                          id="confirm-password"
+                          autoComplete="current-password"
+                        />
+                      </Grid>
+                    </FormControl>
+                  </>
+                )}
 
               {progress ? (
                 <div
@@ -339,41 +320,41 @@ export default function Activitys(props) {
                   <p style={{ margin: 10 }}>Atualizando...</p>
                 </div>
               ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    width: '100%',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    onClick={handleRegister}
+                  <div
                     style={{
-                      backgroundColor: '#318F6B',
-                      color: '#fff',
-                      marginRight: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                      justifyContent: 'space-between',
                     }}
-                    className={classes.submit}
                   >
-                    ATUALIZAR
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      onClick={handleRegister}
+                      style={{
+                        backgroundColor: '#318F6B',
+                        color: '#fff',
+                        marginRight: 10,
+                      }}
+                      className={classes.submit}
+                    >
+                      ATUALIZAR
                   </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
-                      color: '#fff',
-                    }}
-                    className={classes.submitRight}
-                  >
-                    Cancelar
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: 'rgba(126,64,144,1)',
+                        color: '#fff',
+                      }}
+                      className={classes.submitRight}
+                    >
+                      Cancelar
                   </Button>
-                </div>
-              )}
+                  </div>
+                )}
             </div>
           </Grid>
         </Container>

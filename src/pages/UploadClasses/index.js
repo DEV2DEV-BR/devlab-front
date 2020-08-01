@@ -10,9 +10,9 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
+import { notify } from '../../util/toast'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,28 +55,6 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
   },
 }));
-
-const notifySuccess = (message) => {
-  toast.success(message, {
-    position: 'top-right',
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-  });
-};
-
-const notifyError = (message) => {
-  toast.error(message, {
-    position: 'top-right',
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-  });
-};
 
 export default function UploadFiles(props) {
   const classes = useStyles();
@@ -177,20 +155,20 @@ export default function UploadFiles(props) {
 
           console.log(
             `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-              image.name
+            image.name
             }`
           );
 
           const uploadClasse = storage
             .ref(
               `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-                image.name
+              image.name
               }`
             )
             .put(image);
           uploadClasse.on(
             'state_changed',
-            (snapshot) => {},
+            (snapshot) => { },
             (error) => {
               // Error function ...
               console.log(error);
@@ -226,7 +204,7 @@ export default function UploadFiles(props) {
                       });
                       setProgress(false);
                       handleClear();
-                      notifySuccess('Atividade enviada');
+                      notify('Aula enviada com sucesso!', 1000, "success");
                     })
                     .catch(function (error) {
                       console.error('Error adding domcument', error);
@@ -235,13 +213,13 @@ export default function UploadFiles(props) {
             }
           );
         } else {
-          notifyError('Preencha todos os campos');
+          notify('Preencha todos os campos!', 1000, "danger");
         }
       } else {
-        notifyError('Esse tipo de arquivo não é permitido!');
+        notify('Esse tipo de arquivo não é permitido!', 1000, "danger");
       }
     } else {
-      notifyError('Selecione um arquivo para enviar!');
+      notify('Selecione um arquivo para enviar!', 1000, "danger");
     }
   };
 
@@ -370,34 +348,34 @@ export default function UploadFiles(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                <div style={{ display: 'flex', width: '100%' }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    disabled={!!progress}
-                    style={{
-                      backgroundColor: '#318F6B',
-                      color: '#fff',
-                    }}
-                    onClick={() => handleRegister(courseData.name)}
-                    className={classes.submitLeft}
-                  >
-                    CADASTRAR
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      disabled={!!progress}
+                      style={{
+                        backgroundColor: '#318F6B',
+                        color: '#fff',
+                      }}
+                      onClick={() => handleRegister(courseData.name)}
+                      className={classes.submitLeft}
+                    >
+                      CADASTRAR
                   </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
-                      color: '#fff',
-                    }}
-                    onClick={handleClear}
-                    className={classes.submitRight}
-                  >
-                    LIMPAR
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: 'rgba(126,64,144,1)',
+                        color: '#fff',
+                      }}
+                      onClick={handleClear}
+                      className={classes.submitRight}
+                    >
+                      LIMPAR
                   </Button>
-                </div>
-              )}
+                  </div>
+                )}
             </form>
           </Grid>
         </Container>
