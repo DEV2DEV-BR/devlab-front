@@ -24,6 +24,9 @@ import {
   InternalContainer,
   StyledGrid,
   StyledFormControl,
+  StyledImage,
+  StyledItem,
+  StyledBadge,
 } from './styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -117,63 +120,26 @@ export default function Cart(props) {
                     style={{ justifyContent: 'space-between' }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                      <img
+                      <StyledImage
                         src={course.image || LoadingImage}
                         alt="course"
-                        style={{
-                          width: '100px',
-                          height: '60px',
-                          borderRadius: 5,
-                        }}
                       />
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          marginLeft: 12,
-                        }}
-                      >
-                        <p
-                          style={{
-                            color: '#7a7171',
-                            margin: 0,
-                            padding: 0,
-                            fontSize: 17,
-                          }}
-                        >
-                          {course.name}
-                        </p>
-                        <p style={{ color: '#918787', margin: 0, padding: 0 }}>
-                          {course.duration} Horas
-                        </p>
-                      </div>
+                      <StyledItem>
+                        <p>{course.name}</p>
+                        <p>{course.duration} Horas</p>
+                      </StyledItem>
                     </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
+                    <div>
                       <Tooltip title="Retirar do carrinho" placement="bottom">
                         <IconButton aria-label="delete" onClick={() => {}}>
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
 
-                      <Badge
-                        style={{
-                          alignItems: 'center',
-                          fontSize: 18,
-                          color: '#ec5252',
-                          fontWeight: 'bold',
-                        }}
-                      >
+                      <StyledBadge>
                         {format(course.price)}
                         <LoyaltyIcon style={{ marginTop: 10 }} />
-                      </Badge>
+                      </StyledBadge>
                     </div>
                   </StyledGrid>
                 </Grid>
