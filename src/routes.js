@@ -40,6 +40,7 @@ const Routes = () => (
       <Route path="/sign-in" component={SignIn} />
       <Route path="/sign-up" component={SignUp} />
       <Route path="/course-details" component={CoursesDetails} />
+      <Route path="/cart" component={Cart} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-course" component={CreateCourse} />
       <PrivateRoute path="/add-classes" component={UploadClasses} />
@@ -48,7 +49,6 @@ const Routes = () => (
       <PrivateRoute path="/register-course" component={RegisterCourse} />
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
       <PrivateRoute path="/list-my-students" component={MyStudents} />
-      <PrivateRoute path="/cart" component={Cart} />
       <PrivateRoute path="/profile" component={Profile} />
     </Switch>
   </BrowserRouter>
