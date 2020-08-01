@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from 'firebase';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { notify } from '../../util/toast';
 import Copyright from '../../components/Copyright';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,28 +52,6 @@ export default function SignUp(props) {
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
 
-  const notifySuccess = (message, time) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: time || 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  const notifyError = (message, time) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: time || 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
   const handleRegister = async (event) => {
     event.preventDefault();
 
@@ -112,27 +90,28 @@ export default function SignUp(props) {
                 cloudFirestore.collection('users').doc(doc.id).update({
                   id: doc.id,
                 });
-                notifySuccess('Parabéns!');
+                notify('Parabéns!', 1000, 'success');
                 props.history.push('/sign-in');
                 setProgress(false);
               })
               .catch(function (error) {
                 console.error('Error adding domcument', error);
+                notify('Falha no seu cadastro!', 1000, 'error');
               });
           })
           .catch(function (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
-            notifyError(error.message, 4000);
             setProgress(false);
             console.log(errorCode, errorMessage);
+            notify((error.message, 4000), 1000, 'error');
           });
       } else {
-        notifyError('Password does not match!');
+        notify('As senhas digitadas são diferentes!', 1000, 'error');
         setProgress(false);
       }
     } else {
-      notifyError('Preencha todos os campos');
+      notify('Preencha todos os campos!', 1000, 'error');
       setProgress(false);
     }
   };

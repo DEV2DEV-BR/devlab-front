@@ -13,10 +13,10 @@ import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
+import { MdAddShoppingCart, MdMovie, MdShoppingBasket } from 'react-icons/md';
 import { istAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
-
+import { addToCart } from '../../util/utils';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -123,6 +123,10 @@ const CoursesList = (props) => {
     props.history.push('/course-details', { id });
   };
 
+  const handleAddToCart = (course) => {
+    addToCart(course);
+  };
+
   useEffect(() => {
     setProgress(true);
 
@@ -158,10 +162,10 @@ const CoursesList = (props) => {
   return (
     <>
       {progress && (
-        <Backdrop className={classes.backdrop} open={progress}>
+        <>
           <CircularProgress color="inherit" />
           <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
-        </Backdrop>
+        </>
       )}
       {coursesData.map((m) => (
         <Card
@@ -202,11 +206,6 @@ const CoursesList = (props) => {
               margin: 0,
             }}
           >
-            {/* <Typography variant="body2" color="textSecondary" component="p">
-              <b>Requisitos: </b>
-              {m.requirements}
-            </Typography> */}
-
             {!props.buy ? (
               <div>
                 <Button
@@ -261,13 +260,79 @@ const CoursesList = (props) => {
                     target="_blank"
                     style={{ width: '100%' }}
                   >
-                    {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                    <input type="hidden" name="code" value={m.codePayment} />
-                    <input type="hidden" name="iot" value="button" />
+                    <div style={{ display: 'flex' }}>
+                      {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                      <input type="hidden" name="code" value={m.codePayment} />
+                      <input type="hidden" name="iot" value="button" />
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#318F6B',
+                          margin: 5,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <MdShoppingBasket size={18} color="#fff" />
+                          <p
+                            style={{
+                              margin: '0px 0px 0px 10px',
+                              fontSize: 16,
+                              fontWeight: 'bold',
+                              color: '#fff',
+                            }}
+                          >
+                            {format(m.price)}
+                          </p>
+                        </div>
+                      </Button>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#318F6B',
+                          margin: 5,
+                        }}
+                        onClick={() => handleAddToCart(m)}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <MdAddShoppingCart size={18} color="#fff" />
+                          <p
+                            style={{
+                              margin: '0px 0px 0px 10px',
+                              fontSize: 10,
+                              fontWeight: 'bold',
+                              color: '#fff',
+                            }}
+                          >
+                            Carrinho
+                          </p>
+                        </div>
+                      </Button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
                     <Button
                       type="submit"
                       fullWidth
                       variant="contained"
+                      onClick={() => handleBuyCourseDisconnected(m.id)}
                       style={{
                         backgroundColor: '#318F6B',
                       }}
@@ -293,38 +358,37 @@ const CoursesList = (props) => {
                         </p>
                       </div>
                     </Button>
-                  </form>
-                ) : (
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    onClick={() => handleBuyCourseDisconnected(m.id)}
-                    style={{
-                      backgroundColor: '#318F6B',
-                    }}
-                  >
-                    <div
+                    <Button
+                      fullWidth
+                      variant="contained"
                       style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
+                        backgroundColor: '#318F6B',
+                        margin: 5,
                       }}
+                      onClick={() => handleAddToCart(m.id)}
                     >
-                      <MdAddShoppingCart size={18} color="#fff" />
-                      <p
+                      <div
                         style={{
-                          margin: '0px 0px 0px 10px',
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          color: '#fff',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
                         }}
                       >
-                        {format(m.price)}
-                      </p>
-                    </div>
-                  </Button>
+                        <MdAddShoppingCart size={18} color="#fff" />
+                        <p
+                          style={{
+                            margin: '0px 0px 0px 10px',
+                            fontSize: 10,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                          }}
+                        >
+                          Carrinho
+                        </p>
+                      </div>
+                    </Button>
+                  </>
                 )
               ) : (
                 <Button

@@ -11,12 +11,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   BigPlayButton,
   ControlBar,
-
   ForwardControl,
-  PlaybackRateMenuButton, Player,
-
-
-  ReplayControl
+  PlaybackRateMenuButton,
+  Player,
+  ReplayControl,
 } from 'video-react';
 import Copyright from '../../components/Copyright';
 

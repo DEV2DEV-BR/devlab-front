@@ -98,7 +98,11 @@ export default function TemporaryDrawer() {
         <>
           <List>
             {['Perfil'].map((text, index) => (
-              <Link to={index === 0 && '/profile'} className={classes.items}>
+              <Link
+                to={index === 0 && '/profile'}
+                className={classes.items}
+                key={index}
+              >
                 <ListItem button key={text}>
                   <ListItemIcon>{index === 0 && <AccountBox />}</ListItemIcon>
                   <ListItemText primary={text} />
@@ -114,6 +118,7 @@ export default function TemporaryDrawer() {
                   index === 0 ? '/dashboard' : index === 1 && 'my-certificates'
                 }
                 className={classes.items}
+                key={index}
               >
                 <ListItem button key={text}>
                   <ListItemIcon>
@@ -144,6 +149,7 @@ export default function TemporaryDrawer() {
                     : index === 1 && '/list-my-courses'
                 }
                 className={classes.items}
+                key={index}
               >
                 <ListItem button key={text}>
                   <ListItemIcon>
@@ -164,6 +170,7 @@ export default function TemporaryDrawer() {
               <Link
                 to={index === 0 && '/list-my-students'}
                 className={classes.items}
+                key={index}
               >
                 <ListItem button key={text}>
                   <ListItemIcon>

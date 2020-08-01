@@ -7,6 +7,7 @@ import CreateCourse from './pages/CreateCourse';
 import Dashboard from './pages/Dashboard';
 import Main from './pages/Main';
 import MyCourses from './pages/MyCourses';
+import Cart from './pages/Cart';
 import MyStudents from './pages/MyStudents';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
@@ -39,6 +40,7 @@ const Routes = () => (
       <Route path="/sign-in" component={SignIn} />
       <Route path="/sign-up" component={SignUp} />
       <Route path="/course-details" component={CoursesDetails} />
+      <Route path="/cart" component={Cart} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-course" component={CreateCourse} />
       <PrivateRoute path="/add-classes" component={UploadClasses} />

@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { notify } from '../../util/toast';
 import Copyright from '../../components/Copyright';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,28 +64,6 @@ export default function Activitys(props) {
   const [progress, setProgress] = useState(false);
   const [progressLoad, setProgressLoad] = useState(false);
 
-  const notifySuccess = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
   const loadData = () => {
     setProgressLoad(true);
     const db = firebase.firestore();
@@ -134,12 +112,13 @@ export default function Activitys(props) {
                   cellphone: inputCellphone,
                 })
                 .then(function () {
-                  notifySuccess('Dados atualizados com sucesso!');
+                  notify('Dados atualizados com sucesso!', 1000, 'success');
                   setProgress(false);
                 })
                 .catch(function (error) {
                   // The document probably doesn't exist.
                   console.error('Error updating document: ', error);
+                  notify('Falha ao atualizar os dados!', 1000, 'error');
                   setProgress(false);
                 });
             })
@@ -148,7 +127,7 @@ export default function Activitys(props) {
               setProgress(false);
             });
         } else {
-          notifyError('As senhas não conferem!');
+          notify('As senhas não conferem!', 1000, 'error');
           setProgress(false);
         }
       } else {
@@ -159,16 +138,17 @@ export default function Activitys(props) {
           })
           .then(function () {
             setProgress(false);
-            notifySuccess('Dados atualizados com sucesso!');
+            notify('Dados atualizados com sucesso!', 1000, 'success');
           })
           .catch(function (error) {
             // The document probably doesn't exist.
             setProgress(false);
             console.error('Error updating document: ', error);
+            notify('Falha ao atualizar os dados!', 1000, 'error');
           });
       }
     } else {
-      notifyError('Preencha todos os campos!');
+      notify('Preencha todos os campos!', 1000, 'error');
       setProgress(false);
     }
   };

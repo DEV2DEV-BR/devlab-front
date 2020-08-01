@@ -15,9 +15,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import BackgroundSignIn from '../../assets/background-signIn.jpg';
 import { email, login } from '../../services/auth';
+import { notify } from '../../util/toast';
 
 function Copyright() {
   return (
@@ -72,28 +72,6 @@ export default function SignIn(props) {
   const [inputPassword, setInputPassword] = useState('');
   const [progress, setProgress] = useState(false);
   const [idCourseFree, setIdCourseFree] = useState('');
-
-  const notifySuccess = (message) => {
-    toast.success(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
 
   useEffect(() => {
     if (props.history.location.state) {
@@ -150,14 +128,14 @@ export default function SignIn(props) {
               });
           }
         });
-        notifySuccess('Seja bem-vindo!');
+        notify('Seja bem-vindo!', 1000, 'success');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         setProgress(false);
         console.log(errorCode, errorMessage);
-        notifyError('E-mail ou senha incorretos!');
+        notify('E-mail ou senha incorretos!', 1000, 'error');
       });
   };
 

@@ -11,8 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import JoditEditor from 'jodit-react';
 import React, { useEffect, useRef, useState, createRef } from 'react';
-import { toast } from 'react-toastify';
 import Copyright from '../../components/Copyright';
+import { notify } from '../../util/toast';
 
 const styles = {
   editor: {
@@ -61,28 +61,6 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
   },
 }));
-
-const notifySuccess = (message) => {
-  toast.success(message, {
-    position: 'top-right',
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-  });
-};
-
-const notifyError = (message) => {
-  toast.error(message, {
-    position: 'top-right',
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-  });
-};
 
 export default function CreateCourse(props) {
   const classes = useStyles();
@@ -205,13 +183,13 @@ export default function CreateCourse(props) {
             }
           );
         } else {
-          notifyError('Esse tipo de arquivo não é permitido!');
+          notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
         }
       } else {
         addedInfoCollectionCourse('', false);
       }
     } else {
-      notifyError('Preencha todos os campos');
+      notify('Preencha todos os campos!', 1000, 'error');
     }
   };
 
@@ -255,11 +233,11 @@ export default function CreateCourse(props) {
         } else {
           loadDataCourse();
         }
-
-        notifySuccess('Curso atualizado com sucesso!');
+        notify('Curso atualizado com sucesso!', 1000, 'success');
       })
       .catch(function (error) {
         console.error('Error adding domcument', error);
+        notify('Falha ao atualizar o curso!', 1000, 'error');
       });
   };
 
@@ -303,13 +281,13 @@ export default function CreateCourse(props) {
             }
           );
         } else {
-          notifyError('Preencha todos os campos');
+          notify('Preencha todos os campos!', 1000, 'error');
         }
       } else {
-        notifyError('Esse tipo de arquivo não é permitido!');
+        notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
       }
     } else {
-      notifyError('Selecione um arquivo para enviar!');
+      notify('Selecione um arquivo para enviar!', 1000, 'error');
     }
   };
 

@@ -10,9 +10,9 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
+import { notify } from '../../util/toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,28 +55,6 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
   },
 }));
-
-const notifySuccess = (message) => {
-  toast.success(message, {
-    position: 'top-right',
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-  });
-};
-
-const notifyError = (message) => {
-  toast.error(message, {
-    position: 'top-right',
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-  });
-};
 
 export default function UploadFiles(props) {
   const classes = useStyles();
@@ -226,7 +204,7 @@ export default function UploadFiles(props) {
                       });
                       setProgress(false);
                       handleClear();
-                      notifySuccess('Atividade enviada');
+                      notify('Aula enviada com sucesso!', 1000, 'success');
                     })
                     .catch(function (error) {
                       console.error('Error adding domcument', error);
@@ -235,13 +213,13 @@ export default function UploadFiles(props) {
             }
           );
         } else {
-          notifyError('Preencha todos os campos');
+          notify('Preencha todos os campos!', 1000, 'error');
         }
       } else {
-        notifyError('Esse tipo de arquivo não é permitido!');
+        notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
       }
     } else {
-      notifyError('Selecione um arquivo para enviar!');
+      notify('Selecione um arquivo para enviar!', 1000, 'error');
     }
   };
 

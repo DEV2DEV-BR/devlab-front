@@ -2,13 +2,15 @@ import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { Form, Nav, Navbar } from 'react-bootstrap';
-import { toast } from 'react-toastify';
+import { notify } from '../../util/toast';
 import Menu from '../../components/Menu';
 import { logout } from '../../services/auth';
-
+import { Container, IconContainerButton } from './styles';
+import { Link } from 'react-router-dom';
 export default function NavBarDashboard(props) {
   const [userData, setuserData] = useState([]);
 
@@ -37,58 +39,57 @@ export default function NavBarDashboard(props) {
     };
   }, []);
 
-  const notifyError = (message) => {
-    toast.error(message, {
-      position: 'top-right',
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
   const handleLogout = () => {
     logout();
     firebase.auth().signOut();
-    localStorage.clear();
-    notifyError('Até logo!');
+    notify('Até logo, já estamos com saudades!', 2000, 'info');
     props.history.push('/');
   };
 
-  const handleShop = () => {
+  const redirectToShop = () => {
     props.history.push('/');
+  };
+
+  const redirectToCart = () => {
+    props.history.push('/cart');
   };
 
   return (
-    <Navbar expand="lg" style={{ backgroundColor: 'rgba(126,64,144,0.9)' }}>
+    <Navbar expand="lg" style={{ backgroundColor: '#318F6B' }}>
       <Menu history={props.history} />
-      <Navbar.Brand href="#home" style={{ color: '#fff' }}>
-        <b>{`<JACODE/> XD`}</b>
-      </Navbar.Brand>
+      <Link to="/dashboard">
+        <Navbar.Brand style={{ color: '#fff' }}>
+          <b>{`<JACODE/> XD`}</b>
+        </Navbar.Brand>
+      </Link>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto"></Nav>
         <Form inline>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              fontSize: 9,
-              margin: 0,
-              color: '#fff',
-            }}
-          >
-            <div>
+          <Container>
+            <p style={{ padding: 0, margin: '0px 10px 0px 0px' }}>
+              <b>Bem vindo:</b> {userData.name}
+            </p>
+            <IconContainerButton>
               <IconButton
                 color="inherit"
-                onClick={handleShop}
+                onClick={redirectToShop}
+                style={{ marginRight: 15, padding: 0 }}
+              >
+                <Badge color="secondary">
+                  <StorefrontIcon />
+                </Badge>
+                <p style={{ fontSize: 12, margin: 2 }}>Voltar para Loja</p>
+              </IconButton>
+              <IconButton
+                color="inherit"
+                onClick={redirectToCart}
                 style={{ marginRight: 15, padding: 0 }}
               >
                 <Badge color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
-                <p style={{ fontSize: 12, margin: 2 }}>Loja</p>
+                <p style={{ fontSize: 12, margin: 2 }}>Carrinho</p>
               </IconButton>
               <IconButton
                 color="inherit"
@@ -100,12 +101,8 @@ export default function NavBarDashboard(props) {
                 </Badge>
                 <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
               </IconButton>
-            </div>
-
-            <p style={{ padding: 0, margin: '10px 0px 0px 6px' }}>
-              <b>Bem vindo:</b> {userData.name}
-            </p>
-          </div>
+            </IconContainerButton>
+          </Container>
         </Form>
       </Navbar.Collapse>
     </Navbar>

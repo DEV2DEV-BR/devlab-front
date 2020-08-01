@@ -328,7 +328,7 @@ export default function CoursesDetails(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <ResponsiveNavbar />
+      <ResponsiveNavbar history={props?.history} />
 
       <ModalWithMedia
         open={open}
