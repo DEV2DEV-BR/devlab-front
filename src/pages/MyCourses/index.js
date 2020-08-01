@@ -105,7 +105,7 @@ export default function Dashboard(props) {
       .catch(function (error) {
         // The document probably doesn't exist.
         console.error('Error updating document: ', error);
-        notify('Falha ao atualizar os dados!', 1000, 'danger');
+        notify('Falha ao atualizar os dados!', 1000, 'error');
         setProgress(false);
       });
   };

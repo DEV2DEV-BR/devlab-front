@@ -183,13 +183,13 @@ export default function CreateCourse(props) {
             }
           );
         } else {
-          notify('Esse tipo de arquivo não é permitido!', 1000, 'danger');
+          notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
         }
       } else {
         addedInfoCollectionCourse('', false);
       }
     } else {
-      notify('Preencha todos os campos!', 1000, 'danger');
+      notify('Preencha todos os campos!', 1000, 'error');
     }
   };
 
@@ -237,7 +237,7 @@ export default function CreateCourse(props) {
       })
       .catch(function (error) {
         console.error('Error adding domcument', error);
-        notify('Falha ao atualizar o curso!', 1000, 'danger');
+        notify('Falha ao atualizar o curso!', 1000, 'error');
       });
   };
 
@@ -281,13 +281,13 @@ export default function CreateCourse(props) {
             }
           );
         } else {
-          notify('Preencha todos os campos!', 1000, 'danger');
+          notify('Preencha todos os campos!', 1000, 'error');
         }
       } else {
-        notify('Esse tipo de arquivo não é permitido!', 1000, 'danger');
+        notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
       }
     } else {
-      notify('Selecione um arquivo para enviar!', 1000, 'danger');
+      notify('Selecione um arquivo para enviar!', 1000, 'error');
     }
   };
 

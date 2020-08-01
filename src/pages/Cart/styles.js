@@ -1,21 +1,31 @@
 import styled from 'styled-components';
-import { Container, Grid, FormControl, Badge } from '@material-ui/core';
+import { Container, Grid, FormControl, Badge, Button } from '@material-ui/core';
 
 export const StyledContainer = styled.div`
-  display: flex;
   width: 100%;
 `;
 
 export const InternalContainer = styled(Container)`
   display: flex;
   flex-direction: column;
-  padding-top: 50px;
+  padding-top: 10px;
   align-items: center;
   justify-content: center;
 `;
+
+export const Body = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0px 12% 0px 12%;
+`;
+
 export const Main = styled.div`
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 100vh;
+  width: 85%;
   overflow: auto;
 `;
 
@@ -60,4 +70,23 @@ export const StyledBadge = styled(Badge)`
   font-size: 18;
   color: #ec5252;
   font-weight: bold;
+`;
+
+export const Checkout = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 25%;
+`;
+
+export const ContainerInformation = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+export const StyledButton = styled(Button)`
+  margin-top: 20px;
 `;

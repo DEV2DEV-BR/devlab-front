@@ -213,13 +213,13 @@ export default function UploadFiles(props) {
             }
           );
         } else {
-          notify('Preencha todos os campos!', 1000, 'danger');
+          notify('Preencha todos os campos!', 1000, 'error');
         }
       } else {
-        notify('Esse tipo de arquivo não é permitido!', 1000, 'danger');
+        notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
       }
     } else {
-      notify('Selecione um arquivo para enviar!', 1000, 'danger');
+      notify('Selecione um arquivo para enviar!', 1000, 'error');
     }
   };
 

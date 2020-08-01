@@ -1,10 +1,8 @@
 import {
   Backdrop,
-  Badge,
   Box,
   CircularProgress,
   CssBaseline,
-  FormControl,
   Grid,
   IconButton,
   Tooltip,
@@ -17,17 +15,23 @@ import React, { useEffect, useState } from 'react';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
 import ResponsiveNavbar from '../../components/ResponsiveNavbar';
+import VisualFeedback from '../../components/VisualFeedback';
 import { format } from '../../util/format';
 import {
-  StyledContainer,
-  Main,
+  Body,
+  Checkout,
   InternalContainer,
-  StyledGrid,
-  StyledFormControl,
-  StyledImage,
-  StyledItem,
+  Main,
   StyledBadge,
+  StyledButton,
+  StyledContainer,
+  StyledFormControl,
+  StyledGrid,
+  StyledImage,
+  ContainerInformation,
+  StyledItem,
 } from './styles';
+import { getCart } from '../../util/utils';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -40,117 +44,90 @@ const useStyles = makeStyles((theme) => ({
 export default function Cart(props) {
   const classes = useStyles();
 
-  const [progress, setProgress] = useState(false);
-  const [coursesData, setCoursesData] = useState([]);
+  const [coursesData, setCoursesData] = useState(getCart() || []);
 
-  useEffect(() => {
-    async function loadDataCourses() {
-      setProgress(true);
-      const db = firebase.firestore();
-
-      const coursesRef = db.collection('courses');
-
-      await coursesRef
-        .where('author', '==', localStorage.getItem('user'))
-        .get()
-        .then((querySnapshot) => {
-          const courses = [];
-          querySnapshot.forEach((doc) => {
-            courses.push(doc.data());
-          });
-          setCoursesData(courses);
-          setProgress(false);
-        })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error);
-        });
-    }
-
-    loadDataCourses();
-
-    return () => {
-      setCoursesData('');
-    };
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <StyledContainer>
-      {progress && (
-        <Backdrop className={classes.backdrop} open={progress}>
-          <CircularProgress color="inherit" />
-          <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
-        </Backdrop>
-      )}
-
       <CssBaseline />
+      <ResponsiveNavbar history={props?.history} />
+      <div className={classes.appBarSpacer} />
+      <Body>
+        <Main>
+          {coursesData.length === 0 && (
+            <VisualFeedback
+              description="seu carrinho está vazio!"
+              subDescription="volte para a loja e veja nossas opções!"
+            />
+          )}
+          {coursesData.map((course) => (
+            <InternalContainer maxWidth="lg" key={course.id}>
+              <StyledGrid container spacing={3}>
+                <StyledFormControl variant="outlined" fullWidth>
+                  <Grid container spacing={2}>
+                    <StyledGrid
+                      item
+                      xs={12}
+                      style={{ justifyContent: 'space-between' }}
+                    >
+                      <div
+                        style={{ display: 'flex', justifyContent: 'center' }}
+                      >
+                        <StyledImage
+                          src={course.image || LoadingImage}
+                          alt="course"
+                        />
+                        <StyledItem>
+                          <p>{course.name}</p>
+                          <p>{course.duration} Horas</p>
+                        </StyledItem>
+                      </div>
+                      <div>
+                        <Tooltip title="Retirar do carrinho" placement="bottom">
+                          <IconButton aria-label="delete" onClick={() => {}}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
 
-      <Main>
-        <ResponsiveNavbar history={props?.history} />
-        <div className={classes.appBarSpacer} />
-        {coursesData.length === 0 && (
-          <InternalContainer maxWidth="lg">
-            <StyledGrid container spacing={3}>
-              <FormControl variant="outlined" fullWidth>
-                <Grid
-                  container
-                  spacing={2}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    height: '100px',
-                    justifyContent: 'center',
-                    backgroundColor: '#c8a2d3',
-                    borderRadius: 4,
-                  }}
-                >
-                  <p style={{ fontSize: 14 }}>Seu carrinho ainda está vazio.</p>
-                </Grid>
-              </FormControl>
-            </StyledGrid>
-          </InternalContainer>
-        )}
-        {coursesData.map((course) => (
-          <InternalContainer maxWidth="lg" key={course.id}>
-            <StyledGrid container spacing={3}>
-              <StyledFormControl variant="outlined" fullWidth>
-                <Grid container spacing={2}>
-                  <StyledGrid
-                    item
-                    xs={12}
-                    style={{ justifyContent: 'space-between' }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                      <StyledImage
-                        src={course.image || LoadingImage}
-                        alt="course"
-                      />
-                      <StyledItem>
-                        <p>{course.name}</p>
-                        <p>{course.duration} Horas</p>
-                      </StyledItem>
-                    </div>
-                    <div>
-                      <Tooltip title="Retirar do carrinho" placement="bottom">
-                        <IconButton aria-label="delete" onClick={() => {}}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-
-                      <StyledBadge>
-                        {format(course.price)}
-                        <LoyaltyIcon style={{ marginTop: 10 }} />
-                      </StyledBadge>
-                    </div>
-                  </StyledGrid>
-                </Grid>
-              </StyledFormControl>
-            </StyledGrid>
-          </InternalContainer>
-        ))}
-        <Box pt={4}>
-          <Copyright />
-        </Box>
-      </Main>
+                        <StyledBadge>
+                          {format(course.price)}
+                          <LoyaltyIcon style={{ marginTop: 10 }} />
+                        </StyledBadge>
+                      </div>
+                    </StyledGrid>
+                  </Grid>
+                </StyledFormControl>
+              </StyledGrid>
+            </InternalContainer>
+          ))}
+        </Main>
+        <Checkout>
+          <h5 style={{ width: '100%' }}>Resumo do pedido</h5>
+          <ContainerInformation>
+            <h6>1 </h6>
+            <h6>Curso (s) adicionado(s) </h6>
+          </ContainerInformation>
+          <hr
+            style={{
+              border: 1,
+              borderColor: '#d5d5d5',
+              borderStyle: 'solid',
+              width: '100%',
+            }}
+          />
+          <ContainerInformation>
+            <h6>Total: </h6>
+            <h1>R$ 59,90</h1>
+          </ContainerInformation>
+          <StyledButton fullWidth variant="contained" color="secondary">
+            Finalizar a compra
+          </StyledButton>
+        </Checkout>
+      </Body>
+      <Box pt={4}>
+        <Copyright />
+      </Box>
     </StyledContainer>
   );
 }

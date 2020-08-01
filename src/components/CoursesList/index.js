@@ -123,8 +123,8 @@ const CoursesList = (props) => {
     props.history.push('/course-details', { id });
   };
 
-  const handleAddToCart = (id) => {
-    addToCart(id);
+  const handleAddToCart = (course) => {
+    addToCart(course);
   };
 
   useEffect(() => {
@@ -206,11 +206,6 @@ const CoursesList = (props) => {
               margin: 0,
             }}
           >
-            {/* <Typography variant="body2" color="textSecondary" component="p">
-              <b>Requisitos: </b>
-              {m.requirements}
-            </Typography> */}
-
             {!props.buy ? (
               <div>
                 <Button
@@ -306,7 +301,7 @@ const CoursesList = (props) => {
                           backgroundColor: '#318F6B',
                           margin: 5,
                         }}
-                        onClick={() => handleAddToCart(m.id)}
+                        onClick={() => handleAddToCart(m)}
                       >
                         <div
                           style={{

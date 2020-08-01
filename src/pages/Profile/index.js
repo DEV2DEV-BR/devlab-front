@@ -118,7 +118,7 @@ export default function Activitys(props) {
                 .catch(function (error) {
                   // The document probably doesn't exist.
                   console.error('Error updating document: ', error);
-                  notify('Falha ao atualizar os dados!', 1000, 'danger');
+                  notify('Falha ao atualizar os dados!', 1000, 'error');
                   setProgress(false);
                 });
             })
@@ -127,7 +127,7 @@ export default function Activitys(props) {
               setProgress(false);
             });
         } else {
-          notify('As senhas não conferem!', 1000, 'danger');
+          notify('As senhas não conferem!', 1000, 'error');
           setProgress(false);
         }
       } else {
@@ -144,11 +144,11 @@ export default function Activitys(props) {
             // The document probably doesn't exist.
             setProgress(false);
             console.error('Error updating document: ', error);
-            notify('Falha ao atualizar os dados!', 1000, 'danger');
+            notify('Falha ao atualizar os dados!', 1000, 'error');
           });
       }
     } else {
-      notify('Preencha todos os campos!', 1000, 'danger');
+      notify('Preencha todos os campos!', 1000, 'error');
       setProgress(false);
     }
   };

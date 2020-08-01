@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 export const notify = (message, autoclose, type) => {
   (type == 'success'
     ? toast.success
-    : type == 'danger'
+    : type == 'error'
     ? toast.error
     : type == 'info' && toast.info)(message, {
     position: 'top-right',

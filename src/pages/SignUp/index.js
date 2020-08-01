@@ -96,7 +96,7 @@ export default function SignUp(props) {
               })
               .catch(function (error) {
                 console.error('Error adding domcument', error);
-                notify('Falha no seu cadastro!', 1000, 'danger');
+                notify('Falha no seu cadastro!', 1000, 'error');
               });
           })
           .catch(function (error) {
@@ -104,14 +104,14 @@ export default function SignUp(props) {
             const errorMessage = error.message;
             setProgress(false);
             console.log(errorCode, errorMessage);
-            notify((error.message, 4000), 1000, 'danger');
+            notify((error.message, 4000), 1000, 'error');
           });
       } else {
-        notify('As senhas digitadas são diferentes!', 1000, 'danger');
+        notify('As senhas digitadas são diferentes!', 1000, 'error');
         setProgress(false);
       }
     } else {
-      notify('Preencha todos os campos!', 1000, 'danger');
+      notify('Preencha todos os campos!', 1000, 'error');
       setProgress(false);
     }
   };

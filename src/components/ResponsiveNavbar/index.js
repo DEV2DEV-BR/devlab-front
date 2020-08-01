@@ -17,7 +17,6 @@ function ResponsiveNavbar(props) {
   const handleLogout = () => {
     logout();
     firebase.auth().signOut();
-    localStorage.clear();
     notify('Até logo, já estamos com saudades!', 2000, 'info');
     props.history.push('/');
   };

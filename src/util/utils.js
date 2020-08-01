@@ -1,9 +1,12 @@
 export const getCart = () => {
-  return localStorage?.getItem('localCart');
+  return JSON.parse(localStorage?.getItem('localCart'));
 };
 
-export const addToCart = (id) => {
-  const cart = [localStorage?.getItem('localCart')];
-  console.log(cart);
-  localStorage.setItem('localCart', [...cart, id]);
+export const addToCart = (course) => {
+  const currentCart = JSON.parse(localStorage?.getItem('localCart')) || [];
+
+  const arr = [...currentCart];
+  arr.push(course);
+
+  localStorage.setItem('localCart', JSON.stringify(arr));
 };
