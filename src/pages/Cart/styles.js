@@ -8,9 +8,17 @@ export const StyledContainer = styled.div`
 export const InternalContainer = styled(Container)`
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
+  padding-top: 30px;
   align-items: center;
   justify-content: center;
+`;
+
+export const SpaceBar = styled.div`
+  height: 30px;
+
+  @media (max-width: 450px) {
+    height: 0px;
+  }
 `;
 
 export const Body = styled.div`
@@ -18,15 +26,33 @@ export const Body = styled.div`
   justify-content: center;
   width: 100%;
   padding: 0px 12% 0px 12%;
+
+  @media (max-width: 800px) {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px;
+    padding: 0px;
+  }
 `;
 
 export const Main = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  width: 85%;
+  justify-content: center;
+  height: 50vh;
+  width: 70%;
   overflow: auto;
+  margin: 5px;
+  border-radius: 4px;
+  background-color: #f4f4f4;
+
+  @media (max-width: 800px) {
+    width: 100%;
+    margin: 0px;
+    justify-content: flex-start;
+  }
 `;
 
 export const StyledGrid = styled(Grid)`
@@ -34,6 +60,12 @@ export const StyledGrid = styled(Grid)`
   width: 80%;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 800px) {
+    width: 100%;
+    margin: 0px;
+    justify-content: flex-start;
+  }
 `;
 export const StyledFormControl = styled(FormControl)`
   display: flex;
@@ -46,9 +78,13 @@ export const StyledFormControl = styled(FormControl)`
 `;
 
 export const StyledImage = styled.img`
-  width: 100px;
+  width: 80px;
   height: 60px;
   border-radius: 5px;
+
+  @media (max-width: 450px) {
+    display: none;
+  }
 `;
 
 export const StyledItem = styled.div`
@@ -61,7 +97,11 @@ export const StyledItem = styled.div`
     color: #7a7171;
     margin: 0px;
     padding: 0px;
-    font-size: 17px;
+    font-size: 14px;
+
+    @media (max-width: 450px) {
+      font-size: 10px;
+    }
   }
 `;
 
@@ -76,7 +116,16 @@ export const Checkout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 25%;
+  width: 30%;
+  margin: 5px 20px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f4f4f4;
+
+  @media (max-width: 800px) {
+    width: 100%;
+    margin: 0px 0px 10px 0px;
+  }
 `;
 
 export const ContainerInformation = styled.div`
@@ -88,5 +137,42 @@ export const ContainerInformation = styled.div`
 `;
 
 export const StyledButton = styled(Button)`
-  margin-top: 20px;
+  margin: 10px 0px 0px 10px;
+  color: #fff;
+`;
+
+export const ContainerDescritption = styled.div`
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 10px 0px 0px 30px;
+  }
+
+  @media (max-width: 450px) {
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0px 0px 0px 0px;
+  }
+`;
+
+export const ContainerPrice = styled.div`
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px 0px 30px;
+  }
+
+  @media (max-width: 450px) {
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 0px 0px;
+  }
 `;
