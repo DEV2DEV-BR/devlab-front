@@ -17,6 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
+import { customizations } from '../../configs/customizations';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -206,7 +207,7 @@ export default function ClassesByCourse(props) {
                                 variant="contained"
                                 size="small"
                                 style={{
-                                  backgroundColor: 'rgba(126,64,144,1)',
+                                  backgroundColor: `${customizations?.primaryColor}`,
                                   color: '#fff',
                                 }}
                                 onClick={() =>

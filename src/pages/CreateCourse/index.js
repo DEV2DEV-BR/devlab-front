@@ -10,16 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import JoditEditor from 'jodit-react';
-import React, { useEffect, useRef, useState, createRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Copyright from '../../components/Copyright';
+import { customizations } from '../../configs/customizations';
 import { notify } from '../../util/toast';
-
-const styles = {
-  editor: {
-    border: '1px solid gray',
-    minHeight: '6em',
-  },
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,8 +59,6 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateCourse(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
-
-  const [position, setPosition] = useState('');
 
   const [progress, setProgress] = useState(false);
 
@@ -197,10 +189,6 @@ export default function CreateCourse(props) {
     const cloudFirestore = firebase.firestore();
 
     let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth();
-    let fullYear = date.getFullYear();
-    let createdAt = `${day}-${month}-${fullYear}`;
 
     let payload = {
       author: localStorage.getItem('user'),
@@ -293,7 +281,6 @@ export default function CreateCourse(props) {
 
   const handleClear = () => {
     setDescription('');
-    setPosition('');
     setInputName('');
     setInputDuration('');
     setInputPrice('');
@@ -539,7 +526,7 @@ export default function CreateCourse(props) {
                     variant="contained"
                     disabled={!!progress}
                     style={{
-                      backgroundColor: '#318F6B',
+                      backgroundColor: `${customizations?.secondaryColor}`,
                       color: '#fff',
                     }}
                     onClick={
@@ -555,7 +542,7 @@ export default function CreateCourse(props) {
                     fullWidth
                     variant="contained"
                     style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
+                      backgroundColor: `${customizations?.primaryColor}`,
                       color: '#fff',
                     }}
                     onClick={handleClear}

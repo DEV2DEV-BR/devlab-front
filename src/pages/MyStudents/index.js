@@ -7,9 +7,9 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import firebase from 'firebase';
 import MaterialTable from 'material-table';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
-import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,11 +38,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(props) {
   const classes = useStyles();
 
-  const history = useState(props.history);
   const [progress, setProgress] = useState(false);
   const [allStudents, setAllStudents] = useState([]);
 
-  const [state, setState] = React.useState({
+  const [state] = React.useState({
     columns: [
       { title: 'Data', field: 'createdAt' },
       { title: 'Nome', field: 'name' },
@@ -74,7 +73,7 @@ export default function Dashboard(props) {
               .format('DD/MM/YYYY - hh:mm');
 
             const studentObject = {
-              createdAt: date != 'Invalid date' ? date : 'Data não informada',
+              createdAt: date !== 'Invalid date' ? date : 'Data não informada',
               name,
               cellphone,
               email,

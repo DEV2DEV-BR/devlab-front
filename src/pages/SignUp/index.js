@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { notify } from '../../util/toast';
 import Copyright from '../../components/Copyright';
+import { customizations } from '../../configs/customizations';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -218,7 +219,10 @@ export default function SignUp(props) {
               type="submit"
               fullWidth
               variant="contained"
-              style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
+              style={{
+                backgroundColor: `${customizations?.primaryColor}`,
+                color: '#fff',
+              }}
               className={classes.submit}
             >
               Cadastrar

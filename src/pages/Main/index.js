@@ -3,6 +3,7 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
@@ -15,8 +16,8 @@ import DiscordIcon from '../../assets/discord.png';
 import CoursesList from '../../components/CoursesList';
 import Footer from '../../components/Footer';
 import ResponsiveNavbar from '../../components/ResponsiveNavbar';
+import { customizations } from '../../configs/customizations';
 import { istAuthenticated } from '../../services/auth';
-import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Main(props) {
   const classe = useStyles();
-  const [history, setHistory] = useState(props.history);
+  const [history] = useState(props.history);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -194,7 +195,7 @@ export default function Main(props) {
                         size="large"
                         variant="contained"
                         style={{
-                          backgroundColor: 'rgba(126,64,144,1)',
+                          backgroundColor: `${customizations?.primaryColor}`,
                           color: '#fff',
                         }}
                       >
@@ -208,7 +209,7 @@ export default function Main(props) {
                         size="large"
                         variant="contained"
                         style={{
-                          backgroundColor: '#318F6B',
+                          backgroundColor: `${customizations?.secondaryColor}`,
                           color: '#fff',
                         }}
                       >

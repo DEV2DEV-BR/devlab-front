@@ -1,11 +1,11 @@
 import { toast } from 'react-toastify';
 
 export const notify = (message, autoclose, type) => {
-  (type == 'success'
+  (type === 'success'
     ? toast.success
-    : type == 'error'
+    : type === 'error'
     ? toast.error
-    : type == 'info' && toast.info)(message, {
+    : type === 'info' && toast.info)(message, {
     position: 'top-right',
     autoClose: autoclose || 1000,
     hideProgressBar: false,
