@@ -1,35 +1,37 @@
-import { Box, CssBaseline, Grid, IconButton, Tooltip } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import LoyaltyIcon from '@material-ui/icons/Loyalty';
-import React, { useEffect, useState } from 'react';
-import LoadingImage from '../../assets/loading.gif';
+import { Box, CssBaseline } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import pagarme from 'pagarme';
+import React, { useEffect, useState, useRef } from 'react';
+import { Button, Col, Form } from 'react-bootstrap';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import Copyright from '../../components/Copyright';
 import ResponsiveNavbar from '../../components/ResponsiveNavbar';
-import VisualFeedback from '../../components/VisualFeedback';
-import { customizations } from '../../configs/customizations';
 import { format } from '../../util/format';
 import { clearCart, getCart, removeItemToCart } from '../../util/utils';
-import pagarme from 'pagarme';
 import {
   Body,
-  ContainerDescritption,
   ContainerInformation,
-  ContainerPrice,
   InternalContainer,
   Main,
   Resume,
   SpaceBar,
-  StyledBadge,
-  StyledButton,
   StyledContainer,
-  StyledFormControl,
   StyledGrid,
-  StyledImage,
-  StyledItem,
 } from './styles';
 
+const useStyles = makeStyles((theme) => ({
+  appBarSpacer: {
+    height: '30px',
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
 export default function Checkout(props) {
+  useStyles();
+
   const [coursesData, setCoursesData] = useState(getCart() || []);
   const [totalPrice, setTotalPrice] = useState(0);
   const [open, setOpen] = useState(false);
@@ -37,6 +39,21 @@ export default function Checkout(props) {
   const [render, setRender] = useState(true);
   const [title, setTitle] = useState('');
   const [titleButton, setTitleButton] = useState('');
+
+  const name = useRef(null);
+  const [inputName, setInputName] = useState('');
+
+  const cpf = useRef(null);
+  const [inputCpf, setInputCpf] = useState('');
+
+  const card = useRef(null);
+  const [inputCard, setInputCard] = useState('');
+
+  const month = useRef(null);
+  const [inputMonth, setInputMonth] = useState('');
+
+  const year = useRef(null);
+  const [inputYear, setInputYear] = useState('');
 
   useEffect(() => {
     if (render) {
@@ -78,85 +95,89 @@ export default function Checkout(props) {
     setCoursesData(getCart() || []);
   };
 
-  useEffect(() => {
-    const card = {
-      card_number: '4111111111111111',
-      card_holder_name: 'abc',
-      card_expiration_date: '1225',
-      card_cvv: '123',
-    };
+  // useEffect(() => {
+  //   const card = {
+  //     card_number: '4111111111111111',
+  //     card_holder_name: 'abc',
+  //     card_expiration_date: '1225',
+  //     card_cvv: '123',
+  //   };
 
-    pagarme.client
-      .connect({ encryption_key: process.env.REACT_APP_PAGARME_STG })
-      .then((client) =>
-        client.transactions.create({
-          amount: 21000,
-          card_number: '4111111111111111',
-          card_cvv: '123',
-          card_expiration_date: '0922',
-          card_holder_name: 'Morpheus Fishburne',
-          customer: {
-            external_id: '#3311',
-            name: 'Morpheus Fishburne',
-            type: 'individual',
-            country: 'br',
-            email: 'mopheus@nabucodonozor.com',
-            documents: [
-              {
-                type: 'cpf',
-                number: '30621143049',
-              },
-            ],
-            phone_numbers: ['+5511999998888', '+5511888889999'],
-            birthday: '1965-01-01',
-          },
-          billing: {
-            name: 'Trinity Moss',
-            address: {
-              country: 'br',
-              state: 'sp',
-              city: 'Cotia',
-              neighborhood: 'Rio Cotia',
-              street: 'Rua Matrix',
-              street_number: '9999',
-              zipcode: '06714360',
-            },
-          },
-          shipping: {
-            name: 'Neo Reeves',
-            fee: 1000,
-            delivery_date: '2000-12-21',
-            expedited: true,
-            address: {
-              country: 'br',
-              state: 'sp',
-              city: 'Cotia',
-              neighborhood: 'Rio Cotia',
-              street: 'Rua Matrix',
-              street_number: '9999',
-              zipcode: '06714360',
-            },
-          },
-          items: [
-            {
-              id: 'r123',
-              title: 'Red pill',
-              unit_price: 10000,
-              quantity: 1,
-              tangible: true,
-            },
-            {
-              id: 'b123',
-              title: 'Blue pill',
-              unit_price: 10000,
-              quantity: 1,
-              tangible: true,
-            },
-          ],
-        })
-      )
-      .then((transaction) => console.log(transaction));
-  }, []);
+  //   pagarme.client
+  //     .connect({ encryption_key: process.env.REACT_APP_PAGARME_STG })
+  //     .then((client) =>
+  //       client.transactions.create({
+  //         amount: 21000,
+  //         card_number: '4111111111111111',
+  //         card_cvv: '123',
+  //         card_expiration_date: '0922',
+  //         card_holder_name: 'Morpheus Fishburne',
+  //         customer: {
+  //           external_id: '#3311',
+  //           name: 'Morpheus Fishburne',
+  //           type: 'individual',
+  //           country: 'br',
+  //           email: 'mopheus@nabucodonozor.com',
+  //           documents: [
+  //             {
+  //               type: 'cpf',
+  //               number: '30621143049',
+  //             },
+  //           ],
+  //           phone_numbers: ['+5511999998888', '+5511888889999'],
+  //           birthday: '1965-01-01',
+  //         },
+  //         billing: {
+  //           name: 'Trinity Moss',
+  //           address: {
+  //             country: 'br',
+  //             state: 'sp',
+  //             city: 'Cotia',
+  //             neighborhood: 'Rio Cotia',
+  //             street: 'Rua Matrix',
+  //             street_number: '9999',
+  //             zipcode: '06714360',
+  //           },
+  //         },
+  //         shipping: {
+  //           name: 'Neo Reeves',
+  //           fee: 1000,
+  //           delivery_date: '2000-12-21',
+  //           expedited: true,
+  //           address: {
+  //             country: 'br',
+  //             state: 'sp',
+  //             city: 'Cotia',
+  //             neighborhood: 'Rio Cotia',
+  //             street: 'Rua Matrix',
+  //             street_number: '9999',
+  //             zipcode: '06714360',
+  //           },
+  //         },
+  //         items: [
+  //           {
+  //             id: 'r123',
+  //             title: 'Red pill',
+  //             unit_price: 10000,
+  //             quantity: 1,
+  //             tangible: true,
+  //           },
+  //           {
+  //             id: 'b123',
+  //             title: 'Blue pill',
+  //             unit_price: 10000,
+  //             quantity: 1,
+  //             tangible: true,
+  //           },
+  //         ],
+  //       })
+  //     )
+  //     .then((transaction) => console.log(transaction));
+  // }, []);
+
+  const makePayment = () => {
+    console.log(inputName);
+  };
 
   return (
     <StyledContainer>
@@ -165,60 +186,100 @@ export default function Checkout(props) {
       <SpaceBar />
       <Body>
         <Main>
-          {coursesData?.length === 0 && (
-            <VisualFeedback
-              description="seu carrinho está vazio!"
-              subDescription="volte para a loja e veja nossas opções!"
-            />
-          )}
           {coursesData.map((course) => (
             <InternalContainer maxWidth="lg" key={course.id}>
-              <StyledGrid container spacing={3}>
-                <StyledFormControl variant="outlined" fullWidth>
-                  <Grid container spacing={2}>
-                    <StyledGrid
-                      item
-                      xs={12}
-                      style={{ justifyContent: 'space-between' }}
-                    >
-                      <ContainerDescritption>
-                        <StyledImage
-                          src={course.image || LoadingImage}
-                          alt="course"
-                        />
-                        <StyledItem>
-                          <p>{course.name}</p>
-                          <p>{course.duration} Horas</p>
-                        </StyledItem>
-                      </ContainerDescritption>
-                      <ContainerPrice>
-                        <Tooltip title="Retirar do carrinho" placement="bottom">
-                          <IconButton
-                            aria-label="delete"
-                            onClick={() => handleRemoveItem(course)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
+              <StyledGrid
+                container
+                spacing={3}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Form>
+                  <Form.Row>
+                    <Form.Group as={Col} controlId="formGridEmail">
+                      <Form.Label>Nome no cartão</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Insira seu nome"
+                        ref={name}
+                        onBlur={(newContent) => setInputName(newContent)}
+                      />
+                    </Form.Group>
 
-                        <StyledBadge>
-                          {format(course.price)}
-                          <LoyaltyIcon style={{ marginTop: 10 }} />
-                        </StyledBadge>
-                      </ContainerPrice>
-                    </StyledGrid>
-                  </Grid>
-                </StyledFormControl>
+                    <Form.Group as={Col} controlId="formGridPassword">
+                      <Form.Label>CPF</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Insira o cpf sem pontuação"
+                        ref={cpf}
+                        onBlur={(newContent) => setInputCpf(newContent)}
+                      />
+                    </Form.Group>
+                  </Form.Row>
+                  <Form.Group controlId="formGridAddress1">
+                    <Form.Label>Número do cartão</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Insira o número do cartão sem pontuação"
+                      ref={card}
+                      onBlur={(newContent) => setInputCard(newContent)}
+                    />
+                  </Form.Group>
+
+                  <Form.Row>
+                    <Form.Group as={Col} controlId="formGridCity">
+                      <Form.Label>Mês do vencimento</Form.Label>
+                      <Form.Control
+                        placeholder="XX"
+                        type="number"
+                        max={12}
+                        min={1}
+                        ref={month}
+                        onBlur={(newContent) => setInputMonth(newContent)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridZip">
+                      <Form.Label>Ano</Form.Label>
+                      <Form.Control
+                        placeholder="XX"
+                        type="number"
+                        max={31}
+                        min={1}
+                        ref={year}
+                        onBlur={(newContent) => setInputYear(newContent)}
+                      />
+                    </Form.Group>
+                  </Form.Row>
+
+                  <Button
+                    variant="primary"
+                    type="button"
+                    style={{ width: '100%' }}
+                    onClick={() => makePayment()}
+                  >
+                    Efetuar o pagamento
+                  </Button>
+                  <p
+                    style={{
+                      fontSize: '10px',
+                      textAlign: 'center',
+                      color: '#777171',
+                    }}
+                  >
+                    Nós não salvamos os dados do seu cartão!
+                  </p>
+                </Form>
               </StyledGrid>
             </InternalContainer>
           ))}
         </Main>
         <Resume>
           <h5 style={{ width: '100%', marginTop: '20px' }}>Resumo do pedido</h5>
-          <ContainerInformation>
-            <h6>{coursesData?.length} </h6>
-            <h6>Curso (s) adicionado(s) </h6>
-          </ContainerInformation>
           <hr
             style={{
               border: 1,
@@ -231,23 +292,6 @@ export default function Checkout(props) {
             <h6>Total: </h6>
             <h1>{format(totalPrice)}</h1>
           </ContainerInformation>
-          <StyledButton
-            fullWidth
-            variant="contained"
-            onClick={() => {}}
-            style={{ backgroundColor: `${customizations?.secondaryColor}` }}
-          >
-            Finalizar a compra
-          </StyledButton>
-
-          <StyledButton
-            fullWidth
-            variant="contained"
-            color="secondary"
-            onClick={() => handleClearCart()}
-          >
-            Esvaziar carrinho
-          </StyledButton>
         </Resume>
       </Body>
       <Box pt={4}>
