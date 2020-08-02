@@ -14,6 +14,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import UploadClasses from './pages/UploadClasses';
 import RegisterCourse from './pages/RegisterCourse';
+import Checkout from './pages/Checkout';
 import WatchClasse from './pages/WatchClasse';
 import { istAuthenticated } from './services/auth';
 
@@ -50,6 +51,7 @@ const Routes = () => (
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
       <PrivateRoute path="/list-my-students" component={MyStudents} />
       <PrivateRoute path="/profile" component={Profile} />
+      <PrivateRoute path="/checkout" component={Checkout} />
     </Switch>
   </BrowserRouter>
 );
