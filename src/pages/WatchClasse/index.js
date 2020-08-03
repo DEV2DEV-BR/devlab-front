@@ -54,9 +54,9 @@ export default function WatchClasse(props) {
   const [classesData, setClassesData] = useState([]);
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
-  const [progressClasse, setProgressClasse] = useState(0);
+  // const [progressClasse, setProgressClasse] = useState(0);
   const playerRef = useRef();
-  const userId = localStorage.getItem('user');
+  // const userId = localStorage.getItem('user');
 
   const loadData = async () => {
     if (!props.history.location.state) {
@@ -113,64 +113,64 @@ export default function WatchClasse(props) {
     props.history.goBack();
   };
 
-  const verifyActualProgress = async (idCourse, idClasse) => {
-    const db = firebase.firestore();
+  // const verifyActualProgress = async (idCourse, idClasse) => {
+  //   const db = firebase.firestore();
 
-    const progressRef = db.collection('progress');
+  //   const progressRef = db.collection('progress');
 
-    await progressRef
-      .where('userId', '==', userId)
-      .where('courseId', '==', idCourse)
-      .where('classeId', '==', idClasse)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const { currentTime } = doc.data();
-          setProgressClasse(currentTime);
-        });
-      })
-      .catch(function (error) {
-        console.log('Error getting documents: ', error);
-      });
-  };
+  //   await progressRef
+  //     .where('userId', '==', userId)
+  //     .where('courseId', '==', idCourse)
+  //     .where('classeId', '==', idClasse)
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       querySnapshot.forEach((doc) => {
+  //         const { currentTime } = doc.data();
+  //         setProgressClasse(currentTime);
+  //       });
+  //     })
+  //     .catch(function (error) {
+  //       console.log('Error getting documents: ', error);
+  //     });
+  // };
 
-  const saveProgress = () => {
-    const { currentTime } = playerRef.current.video.video;
+  // const saveProgress = () => {
+  //   const { currentTime } = playerRef.current.video.video;
 
-    const cloudFirestore = firebase.firestore();
+  //   const cloudFirestore = firebase.firestore();
 
-    console.log(courseData);
-    console.log(classesData);
-    console.log(currentTime);
+  //   console.log(courseData);
+  //   console.log(classesData);
+  //   console.log(currentTime);
 
-    const courseId = courseData.id;
-    const classeId = classesData[0].id;
+  //   const courseId = courseData.id;
+  //   const classeId = classesData[0].id;
 
-    cloudFirestore
-      .collection('progress')
-      .add({
-        courseId,
-        userId,
-        classeId,
-        currentTime,
-        id: '',
-      })
-      .then(function (doc) {
-        cloudFirestore.collection('progress').doc(doc.id).update({
-          id: doc.id,
-        });
-      })
-      .catch(function (error) {
-        console.error('Error adding domcument', error);
-      });
-  };
+  //   cloudFirestore
+  //     .collection('progress')
+  //     .add({
+  //       courseId,
+  //       userId,
+  //       classeId,
+  //       currentTime,
+  //       id: '',
+  //     })
+  //     .then(function (doc) {
+  //       cloudFirestore.collection('progress').doc(doc.id).update({
+  //         id: doc.id,
+  //       });
+  //     })
+  //     .catch(function (error) {
+  //       console.error('Error adding domcument', error);
+  //     });
+  // };
 
-  const goTo = (time) => {
-    const { seek } = playerRef.current.actions;
-    console.log(time);
+  // const goTo = (time) => {
+  //   const { seek } = playerRef.current.actions;
+  //   console.log(time);
 
-    seek(time);
-  };
+  //   seek(time);
+  // };
 
   // useEffect(() => {
   //   goTo(progressClasse);

@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(props) {
   const classes = useStyles();
 
-  const history = useState(props.history);
   const [progress, setProgress] = useState(false);
   const [coursesData, setCoursesData] = useState([]);
   const [open, setOpen] = useState(false);

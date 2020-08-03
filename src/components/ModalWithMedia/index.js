@@ -9,12 +9,13 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import React, { useRef } from 'react';
 import { BigPlayButton, ControlBar, Player } from 'video-react';
+import { customizations } from '../../configs/customizations';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     marginBottom: '20px',
     position: 'relative',
-    backgroundColor: 'rgba(126,64,144,1)',
+    backgroundColor: `${customizations?.primaryColor}`,
   },
   title: {
     marginLeft: theme.spacing(2),

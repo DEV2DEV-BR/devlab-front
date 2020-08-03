@@ -12,6 +12,7 @@ import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
+import { customizations } from '../../configs/customizations';
 import { notify } from '../../util/toast';
 
 const useStyles = makeStyles((theme) => ({
@@ -60,7 +61,6 @@ export default function UploadFiles(props) {
   const classes = useStyles();
   const [image, setImage] = useState(null);
 
-  const [position, setPosition] = useState('');
   const [inputTitleClasse, setInputTitleClasse] = useState('');
 
   const [description, setDescription] = useState('');
@@ -71,10 +71,6 @@ export default function UploadFiles(props) {
 
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
-  };
-
-  const handleChangeposition = (event) => {
-    setPosition(event.target.value);
   };
 
   const handleChange = (e) => {
@@ -226,7 +222,6 @@ export default function UploadFiles(props) {
   const handleClear = () => {
     window.location.reload();
     setDescription('');
-    setPosition('');
     setInputTitleClasse('');
   };
 
@@ -354,7 +349,7 @@ export default function UploadFiles(props) {
                     variant="contained"
                     disabled={!!progress}
                     style={{
-                      backgroundColor: '#318F6B',
+                      backgroundColor: `${customizations?.secondaryColor}`,
                       color: '#fff',
                     }}
                     onClick={() => handleRegister(courseData.name)}
@@ -366,7 +361,7 @@ export default function UploadFiles(props) {
                     fullWidth
                     variant="contained"
                     style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
+                      backgroundColor: `${customizations?.primaryColor}`,
                       color: '#fff',
                     }}
                     onClick={handleClear}

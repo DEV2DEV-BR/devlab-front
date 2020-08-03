@@ -1,16 +1,23 @@
 import Badge from '@material-ui/core/Badge';
-import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { Form, Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { notify } from '../../util/toast';
 import Menu from '../../components/Menu';
 import { logout } from '../../services/auth';
-import { Container, IconContainerButton } from './styles';
+import {
+  Container,
+  IconContainerButton,
+  Name,
+  StyledIconButton,
+  StyledForm,
+} from './styles';
 import { Link } from 'react-router-dom';
+import { customizations } from '../../configs/customizations';
+
 export default function NavBarDashboard(props) {
   const [userData, setuserData] = useState([]);
 
@@ -55,7 +62,10 @@ export default function NavBarDashboard(props) {
   };
 
   return (
-    <Navbar expand="lg" style={{ backgroundColor: '#318F6B' }}>
+    <Navbar
+      expand="lg"
+      style={{ backgroundColor: `${customizations?.secondaryColor}` }}
+    >
       <Menu history={props.history} />
       <Link to="/dashboard">
         <Navbar.Brand style={{ color: '#fff' }}>
@@ -65,45 +75,33 @@ export default function NavBarDashboard(props) {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto"></Nav>
-        <Form inline>
+        <StyledForm inline>
           <Container>
-            <p style={{ padding: 0, margin: '0px 10px 0px 0px' }}>
+            <Name>
               <b>Bem vindo:</b> {userData.name}
-            </p>
+            </Name>
             <IconContainerButton>
-              <IconButton
-                color="inherit"
-                onClick={redirectToShop}
-                style={{ marginRight: 15, padding: 0 }}
-              >
+              <StyledIconButton color="inherit" onClick={redirectToShop}>
                 <Badge color="secondary">
                   <StorefrontIcon />
                 </Badge>
                 <p style={{ fontSize: 12, margin: 2 }}>Voltar para Loja</p>
-              </IconButton>
-              <IconButton
-                color="inherit"
-                onClick={redirectToCart}
-                style={{ marginRight: 15, padding: 0 }}
-              >
+              </StyledIconButton>
+              <StyledIconButton color="inherit" onClick={redirectToCart}>
                 <Badge color="secondary">
                   <ShoppingCartIcon />
                 </Badge>
                 <p style={{ fontSize: 12, margin: 2 }}>Carrinho</p>
-              </IconButton>
-              <IconButton
-                color="inherit"
-                onClick={handleLogout}
-                style={{ margin: 0, padding: 0 }}
-              >
+              </StyledIconButton>
+              <StyledIconButton color="inherit" onClick={handleLogout}>
                 <Badge color="secondary">
                   <ExitToAppIcon />
                 </Badge>
                 <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
-              </IconButton>
+              </StyledIconButton>
             </IconContainerButton>
           </Container>
-        </Form>
+        </StyledForm>
       </Navbar.Collapse>
     </Navbar>
   );

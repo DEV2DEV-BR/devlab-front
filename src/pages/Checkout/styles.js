@@ -11,6 +11,11 @@ export const InternalContainer = styled(Container)`
   padding-top: 30px;
   align-items: center;
   justify-content: center;
+  height: 400px;
+
+  @media (max-width: 800px) {
+    height: 350px;
+  }
 `;
 
 export const SpaceBar = styled.div`
@@ -28,7 +33,7 @@ export const Body = styled.div`
   padding: 0px 12% 0px 12%;
 
   @media (max-width: 800px) {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 10px 0px;
@@ -41,7 +46,7 @@ export const Main = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  height: 100%;
   width: 70%;
   overflow: auto;
   margin: 5px;
@@ -49,6 +54,7 @@ export const Main = styled.div`
   background-color: #f4f4f4;
 
   @media (max-width: 800px) {
+    margin-bottom: 10px;
     width: 100%;
     margin: 0px;
     justify-content: flex-start;
@@ -112,7 +118,7 @@ export const StyledBadge = styled(Badge)`
   font-weight: bold;
 `;
 
-export const Checkout = styled.div`
+export const Resume = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,6 +127,11 @@ export const Checkout = styled.div`
   padding: 10px;
   border-radius: 4px;
   background-color: #f4f4f4;
+
+  @media (max-width: 900px) {
+    width: 40%;
+    margin: 0px 0px 10px 0px;
+  }
 
   @media (max-width: 800px) {
     width: 100%;

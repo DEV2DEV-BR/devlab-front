@@ -10,8 +10,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
-import { notify } from '../../util/toast';
 import Copyright from '../../components/Copyright';
+import { customizations } from '../../configs/customizations';
+import { notify } from '../../util/toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Activitys(props) {
   const classes = useStyles();
-  const [image, setImage] = useState(null);
   const [inputName, setInputName] = useState('');
   const [inputCellphone, setInputCellphone] = useState('');
   const [inputEmail, setInputEmail] = useState('');
@@ -333,7 +333,7 @@ export default function Activitys(props) {
                     variant="contained"
                     onClick={handleRegister}
                     style={{
-                      backgroundColor: '#318F6B',
+                      backgroundColor: `${customizations?.secondaryColor}`,
                       color: '#fff',
                       marginRight: 10,
                     }}
@@ -345,7 +345,7 @@ export default function Activitys(props) {
                     fullWidth
                     variant="contained"
                     style={{
-                      backgroundColor: 'rgba(126,64,144,1)',
+                      backgroundColor: `${customizations?.primaryColor}`,
                       color: '#fff',
                     }}
                     className={classes.submitRight}

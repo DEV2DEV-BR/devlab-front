@@ -1,5 +1,4 @@
 import Avatar from '@material-ui/core/Avatar';
-import Backdrop from '@material-ui/core/Backdrop';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -14,9 +13,11 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie, MdShoppingBasket } from 'react-icons/md';
+import { customizations } from '../../configs/customizations';
 import { istAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
 import { addToCart } from '../../util/utils';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -57,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 const CoursesList = (props) => {
   const classes = useStyles();
-  const [userData, setUserData] = useState([]);
   const [coursesData, setCoursesData] = useState([]);
   const [progress, setProgress] = useState(false);
 
@@ -128,32 +128,11 @@ const CoursesList = (props) => {
   };
 
   useEffect(() => {
-    setProgress(true);
-
-    const db = firebase.firestore();
-
-    const usersRef = db.collection('users');
-
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        usersRef
-          .where('uid', '==', user.uid)
-          .get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              setUserData(doc.data());
-              setProgress(false);
-            });
-          });
-      }
-    });
-
     loadDataCourses();
   }, []);
 
   useEffect(() => {
     return () => {
-      setUserData('');
       setCoursesData('');
       setProgress('');
     };
@@ -214,7 +193,7 @@ const CoursesList = (props) => {
                   variant="contained"
                   onClick={() => handleRedirectAllClasses(m.id)}
                   style={{
-                    backgroundColor: '#318F6B',
+                    backgroundColor: `${customizations?.secondaryColor}`,
                   }}
                 >
                   <div
@@ -269,7 +248,7 @@ const CoursesList = (props) => {
                         fullWidth
                         variant="contained"
                         style={{
-                          backgroundColor: '#318F6B',
+                          backgroundColor: `${customizations?.secondaryColor}`,
                           margin: 5,
                         }}
                       >
@@ -298,7 +277,7 @@ const CoursesList = (props) => {
                         fullWidth
                         variant="contained"
                         style={{
-                          backgroundColor: '#318F6B',
+                          backgroundColor: `${customizations?.secondaryColor}`,
                           margin: 5,
                         }}
                         onClick={() => handleAddToCart(m)}
@@ -334,7 +313,7 @@ const CoursesList = (props) => {
                       variant="contained"
                       onClick={() => handleBuyCourseDisconnected(m.id)}
                       style={{
-                        backgroundColor: '#318F6B',
+                        backgroundColor: `${customizations?.secondaryColor}`,
                       }}
                     >
                       <div
@@ -362,10 +341,10 @@ const CoursesList = (props) => {
                       fullWidth
                       variant="contained"
                       style={{
-                        backgroundColor: '#318F6B',
+                        backgroundColor: `${customizations?.secondaryColor}`,
                         margin: 5,
                       }}
-                      onClick={() => handleAddToCart(m.id)}
+                      onClick={() => handleAddToCart(m)}
                     >
                       <div
                         style={{
@@ -395,7 +374,9 @@ const CoursesList = (props) => {
                   fullWidth
                   variant="contained"
                   onClick={() => handleStartFreeCourse(m.id)}
-                  style={{ backgroundColor: '#318F6B' }}
+                  style={{
+                    backgroundColor: `${customizations?.secondaryColor}`,
+                  }}
                 >
                   <p
                     style={{

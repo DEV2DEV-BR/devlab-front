@@ -12,22 +12,23 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   MdAddShoppingCart,
-  MdShoppingCart,
   MdPlayCircleFilled,
+  MdShoppingCart,
 } from 'react-icons/md';
 import { BigPlayButton, ControlBar, Player } from 'video-react';
 import Background from '../../assets/background-default.jpg';
 import Copyright from '../../components/Copyright';
-import ResponsiveNavbar from '../../components/ResponsiveNavbar';
-import { format } from '../../util/format';
 import ModalWithMedia from '../../components/ModalWithMedia';
-import Tooltip from '@material-ui/core/Tooltip';
+import ResponsiveNavbar from '../../components/ResponsiveNavbar';
+import { customizations } from '../../configs/customizations';
 import { istAuthenticated } from '../../services/auth';
+import { format } from '../../util/format';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -40,11 +41,21 @@ const useStyles = makeStyles((theme) => ({
     )`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100%',
+
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      width: '100%',
+    },
+
+    [theme.breakpoints.down(450 + theme.spacing(2) * 2)]: {
+      backgroundImage: 'none',
+    },
   },
   heroButtons: {
     marginTop: theme.spacing(4),
-    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+    [theme.breakpoints.down(450 + theme.spacing(2) * 2)]: {
       width: '100%',
+      position: 'fixed',
+      bottom: '50%',
     },
   },
   cardGrid: {
@@ -111,6 +122,20 @@ const useStyles = makeStyles((theme) => ({
   },
   video: {
     width: '30%',
+
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      width: '100%',
+      height: '32%',
+      position: 'fixed',
+      marginTop: '10px',
+    },
+
+    [theme.breakpoints.down(450 + theme.spacing(2) * 2)]: {
+      width: '100%',
+      height: '32%',
+      position: 'fixed',
+      marginTop: '47px',
+    },
   },
   containerText: {
     width: '70%',
@@ -140,6 +165,8 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
       marginTop: '2px',
       fontSize: '14px',
+      position: 'fixed',
+      bottom: '45%',
     },
   },
   description: {
@@ -188,6 +215,11 @@ const useStyles = makeStyles((theme) => ({
       padding: '0px',
     },
   },
+  table: {
+    [theme.breakpoints.down(450 + theme.spacing(2) * 2)]: {
+      marginTop: '50px;',
+    },
+  },
   info: {
     color: '#fff',
     marginRight: '20px',
@@ -212,6 +244,10 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
       width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
 
     [theme.breakpoints.down(450 + theme.spacing(2) * 2)]: {
@@ -219,7 +255,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    backgroundColor: '#318F6B',
+    backgroundColor: `${customizations?.secondaryColor}`,
     marginBottom: '10px',
     [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
       width: '50%',
@@ -261,10 +297,6 @@ export default function CoursesDetails(props) {
 
   const handleBuyCourse = () => {
     'PagSeguroLightbox(this); return false;';
-  };
-
-  const handleWatchClasse = (idClasse, idCourse) => {
-    props.history.push('/watch-classe', { idClasse, idCourse });
   };
 
   const loadDataCourse = async () => {
@@ -376,15 +408,13 @@ export default function CoursesDetails(props) {
             <div className={classes.cardVideo}>
               <Player
                 key={classesData.map(
-                  (classe) => classe.position == 1 && classe.id
+                  (classe) => classe.position === 1 && classe.id
                 )}
                 src={classesData.map(
-                  (classe) => classe.position == 1 && classe.url_video
+                  (classe) => classe.position === 1 && classe.url_video
                 )}
                 playsInline
                 fluid={false}
-                width={300}
-                height={150}
                 poster={courseData.image}
                 ref={playerRef}
                 className={classes.video}

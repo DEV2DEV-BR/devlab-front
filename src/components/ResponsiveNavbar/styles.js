@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   display: flex;
@@ -31,5 +32,25 @@ export const IconContainerButton = styled.div`
     align-items: center;
     justify-content: center;
     margin: 10px 0px 0px 30px;
+  }
+
+  @media (max-width: 450px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0px 0px 30px;
+  }
+`;
+
+export const StyledLink = styled(Link)`
+  margin-left: 10px;
+  margin-right: 10px;
+  text-decoration: none;
+
+  @media (max-width: 450px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 0px 0px;
   }
 `;

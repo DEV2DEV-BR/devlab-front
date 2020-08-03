@@ -12,8 +12,9 @@ import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
-import { notify } from '../../util/toast';
+import { customizations } from '../../configs/customizations';
 import { format } from '../../util/format';
+import { notify } from '../../util/toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,9 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CoursesList = (props) => {
   const classes = useStyles();
-  const [userData, setUserData] = useState([]);
   const [courseData, setCourseData] = useState([]);
-  const [myCourses, setMyCourses] = useState([]);
   const [progress, setProgress] = useState(false);
 
   const handleBuyCourse = () => {
@@ -125,32 +124,6 @@ const CoursesList = (props) => {
   };
 
   useEffect(() => {
-    setProgress(true);
-
-    async function fetchData() {
-      const db = firebase.firestore();
-
-      const usersRef = db.collection('users');
-
-      firebase.auth().onAuthStateChanged(async function (user) {
-        if (user) {
-          await usersRef
-            .where('uid', '==', user.uid)
-            .get()
-            .then(async (querySnapshot) => {
-              const arrayMyCourses = [];
-              querySnapshot.forEach((doc) => {
-                setUserData(doc.data());
-                arrayMyCourses.push(doc.data().myCourses);
-                setProgress(false);
-              });
-              setMyCourses(arrayMyCourses);
-            });
-        }
-      });
-    }
-    fetchData();
-
     loadDataCourses();
   }, []);
 
@@ -176,7 +149,6 @@ const CoursesList = (props) => {
 
   useEffect(() => {
     return () => {
-      setUserData('');
       setCourseData('');
       setProgress('');
     };
@@ -237,7 +209,7 @@ const CoursesList = (props) => {
                   variant="contained"
                   onClick={() => handleBuyCourse}
                   style={{
-                    backgroundColor: '#318F6B',
+                    backgroundColor: `${customizations?.secondaryColor}`,
                     position: 'relative',
                   }}
                 >
@@ -270,7 +242,7 @@ const CoursesList = (props) => {
                 variant="contained"
                 onClick={() => handleEnrrol(courseData.id)}
                 style={{
-                  backgroundColor: '#318F6B',
+                  backgroundColor: `${customizations?.secondaryColor}`,
                   position: 'relative',
                 }}
               >

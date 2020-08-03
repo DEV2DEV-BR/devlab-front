@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import BackgroundSignIn from '../../assets/background-signIn.jpg';
 import { email, login } from '../../services/auth';
 import { notify } from '../../util/toast';
+import { customizations } from '../../configs/customizations';
 
 function Copyright() {
   return (
@@ -201,7 +202,10 @@ export default function SignIn(props) {
                 type="submit"
                 fullWidth
                 variant="contained"
-                style={{ backgroundColor: 'rgba(126,64,144,1)', color: '#fff' }}
+                style={{
+                  backgroundColor: `${customizations?.primaryColor}`,
+                  color: '#fff',
+                }}
                 className={classes.submit}
               >
                 LOGIN

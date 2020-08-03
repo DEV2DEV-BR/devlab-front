@@ -46,7 +46,7 @@ export default function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          {localStorage?.getItem('userType') == 'teacher' && (
+          {localStorage?.getItem('userType') === 'teacher' && (
             <Grid container spacing={3}>
               <Reports />
             </Grid>
