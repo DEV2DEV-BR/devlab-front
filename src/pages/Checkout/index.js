@@ -1,13 +1,12 @@
 import { Box, CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import pagarme from 'pagarme';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Form } from 'react-bootstrap';
 import Copyright from '../../components/Copyright';
-import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import { format } from '../../util/format';
 import { notify } from '../../util/toast';
-import { getCart } from '../../util/utils';
+import { getCart, updateLocalStorageMyCourses } from '../../util/utils';
 import {
   Body,
   ContainerInformation,
@@ -18,6 +17,7 @@ import {
   StyledContainer,
   StyledGrid,
 } from './styles';
+import firebase from 'firebase';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: {
@@ -32,20 +32,16 @@ const useStyles = makeStyles((theme) => ({
 export default function Checkout(props) {
   useStyles();
 
-  const [coursesData, setCoursesData] = useState(getCart() || []);
+  const [coursesData] = useState(getCart() || []);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [open, setOpen] = useState(false);
-  const [removeItem, setRemoveItem] = useState(null);
   const [render, setRender] = useState(true);
-  const [title, setTitle] = useState('');
-  const [titleButton, setTitleButton] = useState('');
 
-  const [inputName, setInputName] = useState('');
-  const [inputCpf, setInputCpf] = useState('');
-  const [inputCard, setInputCard] = useState('');
-  const [inputMonth, setInputMonth] = useState('');
-  const [inputYear, setInputYear] = useState('');
-  const [inputCod, setInputCod] = useState('');
+  const [inputName, setInputName] = useState('Morpheus Fishburne');
+  const [inputCpf, setInputCpf] = useState('00000000000');
+  const [inputCard, setInputCard] = useState('4111111111111111');
+  const [inputMonth, setInputMonth] = useState('09');
+  const [inputYear, setInputYear] = useState('22');
+  const [inputCod, setInputCod] = useState('123');
 
   useEffect(() => {
     if (render) {
@@ -56,24 +52,38 @@ export default function Checkout(props) {
       setTotalPrice(total);
       setRender(false);
     }
-    getAllItems();
-  }, [render]);
+  }, []);
 
   const getAllItems = () => {
-    const allItems = JSON.parse(localStorage.getItem('localCart'));
+    const array = JSON.parse(localStorage.getItem('localCart')).map((item) => [
+      {
+        id: item.id,
+        title: item.name,
+        unit_price: parseFloat(item.price),
+        quantity: 1,
+        tangible: true,
+      },
+    ]);
 
-    const formattedItems = allItems.map(
-      (item) => item.id
-      // {
-      //   id: item.id,
-      //   title: item.name,
-      //   unit_price: item.price,
-      //   quantity: 1,
-      //   tangible: true,
-      // }
+    return array[0];
+  };
+
+  const handleEnrrol = async () => {
+    const courses = getCart();
+    const db = firebase.firestore();
+
+    courses.map(
+      async (course) =>
+        await db
+          .collection('users')
+          .doc(localStorage.getItem('user'))
+          .update({
+            myCourses: firebase.firestore.FieldValue.arrayUnion(course.id),
+          })
+          .then(() => {
+            updateLocalStorageMyCourses(props);
+          })
     );
-
-    console.log(formattedItems);
   };
 
   const handleSubmit = (evt) => {
@@ -101,6 +111,7 @@ export default function Checkout(props) {
               name: `${inputName}`,
               type: 'individual',
               country: 'br',
+              // email: `${EMAIL_USER}`,
               email: 'mopheus@nabucodonozor.com',
               documents: [
                 {
@@ -111,25 +122,21 @@ export default function Checkout(props) {
               phone_numbers: [],
               birthday: '1965-01-01',
             },
-            items: [
-              {
-                id: 'r123',
-                title: 'Red pill',
-                unit_price: 10000,
-                quantity: 1,
-                tangible: true,
-              },
-              {
-                id: 'b123',
-                title: 'Blue pill',
-                unit_price: 10000,
-                quantity: 1,
-                tangible: true,
-              },
-            ],
+            items: getAllItems(),
           })
         )
-        .then((transaction) => console.log(transaction));
+        .then((transaction) => {
+          if (transaction?.status === 'authorized') {
+            notify('Pagamento efetuado com sucesso!', 2000, 'success');
+            handleEnrrol();
+          } else {
+            notify('O seu pagamento não foi aprovado!', 2000, 'error');
+            props.history.push('/cart');
+          }
+        })
+        .catch(() => {
+          notify('Verifique os dados informados!', 2000, 'error');
+        });
     } else {
       notify('Preencha todos os campos!', 1000, 'error');
     }
@@ -138,7 +145,6 @@ export default function Checkout(props) {
   return (
     <StyledContainer>
       <CssBaseline />
-      <ResponsiveNavbar history={props?.history} />
       <SpaceBar />
       <Body>
         <Main>
