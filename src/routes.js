@@ -28,7 +28,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           <Component {...props} />
         </>
       ) : (
-        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+        <Redirect
+          to={{ pathname: '/sign-in', state: { from: props.location } }}
+        />
       )
     }
   />
@@ -41,8 +43,8 @@ const Routes = () => (
       <Route path="/sign-in" component={SignIn} />
       <Route path="/sign-up" component={SignUp} />
       <Route path="/course-details" component={CoursesDetails} />
-      <Route path="/checkout" component={Checkout} />
       <Route path="/cart" component={Cart} />
+      <PrivateRoute path="/checkout" component={Checkout} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-course" component={CreateCourse} />
       <PrivateRoute path="/add-classes" component={UploadClasses} />
