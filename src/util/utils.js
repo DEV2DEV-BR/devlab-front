@@ -5,16 +5,26 @@ export const getCart = () => {
   return JSON.parse(localStorage?.getItem('localCart'));
 };
 
-export const addToCart = (course) => {
-  const currentCart = JSON.parse(localStorage?.getItem('localCart')) || [];
+export const addToCart = async (course, props, buy) => {
+  if (!verifyMyCourses(course.id)) {
+    const currentCart = JSON.parse(localStorage?.getItem('localCart')) || [];
 
-  const arr = [...currentCart];
+    const arr = [...currentCart];
 
-  if (!arr.some((c) => c?.id === course?.id)) {
-    arr.push(course);
+    if (!arr.some((c) => c?.id === course?.id)) {
+      arr.push(course);
+    }
+
+    localStorage.setItem('localCart', JSON.stringify(arr));
+
+    notify('Curso adicionado ao carrinho!', 2000, 'success');
+    if (buy) {
+      props.history.push('/cart');
+    }
+  } else {
+    notify('Você já tem esse curso!', 2000, 'success');
+    props.history.push('/dashboard');
   }
-
-  localStorage.setItem('localCart', JSON.stringify(arr));
 };
 
 export const removeItemToCart = (course) => {
@@ -60,4 +70,15 @@ export const updateLocalStorageMyCourses = (props) => {
       });
   }
   fetchData();
+};
+
+export const verifyMyCourses = (courseId) => {
+  const myCourses = JSON.parse(localStorage?.getItem('myCourses')) || [];
+
+  const arr = [...myCourses];
+
+  if (arr.includes(courseId)) {
+    return true;
+  }
+  return false;
 };

@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import { customizations } from '../../configs/customizations';
 import { format } from '../../util/format';
-import { updateLocalStorageMyCourses } from '../../util/utils';
+import { updateLocalStorageMyCourses, addToCart } from '../../util/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +49,8 @@ const CoursesList = (props) => {
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
-  const handleBuyCourse = () => {
+  const handleBuyCourse = (course) => {
+    addToCart(course, props, true);
     props.history.push('/dashboard');
   };
 
@@ -66,6 +67,7 @@ const CoursesList = (props) => {
         .then(function (doc) {
           if (doc.exists) {
             setCourseData(doc.data());
+            setProgress(false);
           } else {
             // doc.data() will be undefined in this case
             console.log('No such document!');
@@ -90,6 +92,7 @@ const CoursesList = (props) => {
         myCourses: firebase.firestore.FieldValue.arrayUnion(courseData.id),
       })
       .then(() => {
+        setProgress(false);
         updateLocalStorageMyCourses(props);
       });
   };
@@ -146,57 +149,39 @@ const CoursesList = (props) => {
             margin: 0,
           }}
         >
-          {/* <Typography variant="body2" color="textSecondary" component="p">
-              <b>Requisitos: </b>
-              {courseData.requirements}
-            </Typography> */}
           <div>
             {courseData.price > 0 ? (
-              <form
-                action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                method="post"
-                target="_blank"
-                style={{ width: '100%', marginBottom: 10 }}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={() => handleBuyCourse(courseData)}
+                style={{
+                  backgroundColor: `${customizations?.secondaryColor}`,
+                  position: 'relative',
+                }}
               >
-                {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                <input
-                  type="hidden"
-                  name="code"
-                  value={courseData.codePayment}
-                />
-                <input type="hidden" name="iot" value="button" />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  onClick={() => handleBuyCourse}
+                <div
                   style={{
-                    backgroundColor: `${customizations?.secondaryColor}`,
-                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
                   }}
                 >
-                  <div
+                  <MdAddShoppingCart size={18} color="#fff" />
+                  <p
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
+                      margin: '0px 0px 0px 10px',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#fff',
                     }}
                   >
-                    <MdAddShoppingCart size={18} color="#fff" />
-                    <p
-                      style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
-                      {format(courseData.price)}
-                    </p>
-                  </div>
-                </Button>
-              </form>
+                    {format(courseData.price)}
+                  </p>
+                </div>
+              </Button>
             ) : (
               <Button
                 type="submit"

@@ -35,7 +35,7 @@ export default function Checkout(props) {
   const [coursesData] = useState(getCart() || []);
   const [totalPrice, setTotalPrice] = useState(0);
   const [render, setRender] = useState(true);
-
+  const [disabled, setDisabled] = useState(false);
   const [inputName, setInputName] = useState('Morpheus Fishburne');
   const [inputCpf, setInputCpf] = useState('00000000000');
   const [inputCard, setInputCard] = useState('4111111111111111');
@@ -88,6 +88,7 @@ export default function Checkout(props) {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    setDisabled(true);
 
     if (
       inputName !== '' &&
@@ -136,6 +137,9 @@ export default function Checkout(props) {
         })
         .catch(() => {
           notify('Verifique os dados informados!', 2000, 'error');
+        })
+        .finally(() => {
+          setDisabled(false);
         });
     } else {
       notify('Preencha todos os campos!', 1000, 'error');
@@ -234,7 +238,7 @@ export default function Checkout(props) {
                     variant="primary"
                     type="submit"
                     style={{ width: '100%' }}
-                    // onClick={() => makePayment()}
+                    disabled={disabled}
                   >
                     Efetuar o pagamento
                   </Button>

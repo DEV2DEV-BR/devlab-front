@@ -58,6 +58,10 @@ export default function Cart(props) {
       });
       setTotalPrice(total);
       setRender(false);
+
+      if (total <= 0) {
+        setTimeout(() => props.history.push('/'), 1000);
+      }
     }
   }, [render]);
 
@@ -86,6 +90,7 @@ export default function Cart(props) {
       setRemoveItem(false);
     } else {
       clearCart();
+      setTimeout(() => props.history.push('/'), 1000);
     }
     setCoursesData(getCart() || []);
   };

@@ -73,11 +73,15 @@ export default function SignIn(props) {
   const [inputPassword, setInputPassword] = useState('');
   const [progress, setProgress] = useState(false);
   const [idCourseFree, setIdCourseFree] = useState('');
+  const [toCartRedirect, setToCartRedirect] = useState(false);
 
   useEffect(() => {
     if (props.history.location.state) {
-      const { idCourseFree } = props.history.location.state;
+      const { idCourseFree, toCart } = props.history.location.state;
 
+      if (toCart) {
+        setToCartRedirect(true);
+      }
       if (idCourseFree) {
         setIdCourseFree(idCourseFree);
       }
@@ -122,6 +126,8 @@ export default function SignIn(props) {
                   setProgress(false);
                   if (idCourseFree) {
                     props.history.push('/register-course', { idCourseFree });
+                  } else if (toCartRedirect) {
+                    props.history.push('/cart');
                   } else {
                     props.history.push('/dashboard');
                   }
