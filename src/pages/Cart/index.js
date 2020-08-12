@@ -90,7 +90,9 @@ export default function Cart(props) {
     setCoursesData(getCart() || []);
   };
 
-  const completeBuy = () => {};
+  const completeBuy = () => {
+    props.history.push('/checkout');
+  };
 
   return (
     <StyledContainer>
@@ -168,7 +170,7 @@ export default function Cart(props) {
           <StyledButton
             fullWidth
             variant="contained"
-            onClick={() => {}}
+            onClick={() => completeBuy()}
             style={{ backgroundColor: `${customizations?.secondaryColor}` }}
           >
             Finalizar a compra

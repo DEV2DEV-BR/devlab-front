@@ -1,13 +1,13 @@
 import { Box, CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import pagarme from 'pagarme';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Form } from 'react-bootstrap';
-import ConfirmDialog from '../../components/ConfirmDialog';
 import Copyright from '../../components/Copyright';
 import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import { format } from '../../util/format';
-import { clearCart, getCart, removeItemToCart } from '../../util/utils';
+import { notify } from '../../util/toast';
+import { getCart } from '../../util/utils';
 import {
   Body,
   ContainerInformation,
@@ -40,20 +40,12 @@ export default function Checkout(props) {
   const [title, setTitle] = useState('');
   const [titleButton, setTitleButton] = useState('');
 
-  const name = useRef(null);
   const [inputName, setInputName] = useState('');
-
-  const cpf = useRef(null);
   const [inputCpf, setInputCpf] = useState('');
-
-  const card = useRef(null);
   const [inputCard, setInputCard] = useState('');
-
-  const month = useRef(null);
   const [inputMonth, setInputMonth] = useState('');
-
-  const year = useRef(null);
   const [inputYear, setInputYear] = useState('');
+  const [inputCod, setInputCod] = useState('');
 
   useEffect(() => {
     if (render) {
@@ -64,119 +56,83 @@ export default function Checkout(props) {
       setTotalPrice(total);
       setRender(false);
     }
+    getAllItems();
   }, [render]);
 
-  const handleClose = () => {
-    setOpen(false);
+  const getAllItems = () => {
+    const allItems = JSON.parse(localStorage.getItem('localCart'));
+
+    const formattedItems = allItems.map(
+      (item) => item.id
+      // {
+      //   id: item.id,
+      //   title: item.name,
+      //   unit_price: item.price,
+      //   quantity: 1,
+      //   tangible: true,
+      // }
+    );
+
+    console.log(formattedItems);
   };
 
-  const handleRemoveItem = (course) => {
-    setOpen(true);
-    setRemoveItem(course);
-    setTitle(`Remover ${course.name} do carrinho?`);
-    setTitleButton('Remover');
-  };
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
 
-  const handleClearCart = () => {
-    setOpen(true);
-    setTitle('Esvaziar o carrinho?');
-    setTitleButton('Esvaziar');
-  };
-
-  const confirmClearCart = () => {
-    handleClose();
-    setRender(true);
-    if (removeItem) {
-      removeItemToCart(removeItem);
-      setRemoveItem(false);
+    if (
+      inputName !== '' &&
+      inputCpf !== '' &&
+      inputCard !== '' &&
+      inputMonth !== '' &&
+      inputYear !== '' &&
+      inputCod !== ''
+    ) {
+      pagarme.client
+        .connect({ encryption_key: process.env.REACT_APP_PAGARME_STG })
+        .then((client) =>
+          client.transactions.create({
+            amount: 21000,
+            card_number: `${inputCard}`,
+            card_holder_name: `${inputName}`,
+            card_expiration_date: `${inputMonth + inputYear}`,
+            card_cvv: `${inputCod}`,
+            customer: {
+              external_id: '#3311',
+              name: `${inputName}`,
+              type: 'individual',
+              country: 'br',
+              email: 'mopheus@nabucodonozor.com',
+              documents: [
+                {
+                  type: 'cpf',
+                  number: `${inputCpf}`,
+                },
+              ],
+              phone_numbers: [],
+              birthday: '1965-01-01',
+            },
+            items: [
+              {
+                id: 'r123',
+                title: 'Red pill',
+                unit_price: 10000,
+                quantity: 1,
+                tangible: true,
+              },
+              {
+                id: 'b123',
+                title: 'Blue pill',
+                unit_price: 10000,
+                quantity: 1,
+                tangible: true,
+              },
+            ],
+          })
+        )
+        .then((transaction) => console.log(transaction));
     } else {
-      clearCart();
+      notify('Preencha todos os campos!', 1000, 'error');
     }
-    setCoursesData(getCart() || []);
-  };
-
-  // useEffect(() => {
-  //   const card = {
-  //     card_number: '4111111111111111',
-  //     card_holder_name: 'abc',
-  //     card_expiration_date: '1225',
-  //     card_cvv: '123',
-  //   };
-
-  //   pagarme.client
-  //     .connect({ encryption_key: process.env.REACT_APP_PAGARME_STG })
-  //     .then((client) =>
-  //       client.transactions.create({
-  //         amount: 21000,
-  //         card_number: '4111111111111111',
-  //         card_cvv: '123',
-  //         card_expiration_date: '0922',
-  //         card_holder_name: 'Morpheus Fishburne',
-  //         customer: {
-  //           external_id: '#3311',
-  //           name: 'Morpheus Fishburne',
-  //           type: 'individual',
-  //           country: 'br',
-  //           email: 'mopheus@nabucodonozor.com',
-  //           documents: [
-  //             {
-  //               type: 'cpf',
-  //               number: '30621143049',
-  //             },
-  //           ],
-  //           phone_numbers: ['+5511999998888', '+5511888889999'],
-  //           birthday: '1965-01-01',
-  //         },
-  //         billing: {
-  //           name: 'Trinity Moss',
-  //           address: {
-  //             country: 'br',
-  //             state: 'sp',
-  //             city: 'Cotia',
-  //             neighborhood: 'Rio Cotia',
-  //             street: 'Rua Matrix',
-  //             street_number: '9999',
-  //             zipcode: '06714360',
-  //           },
-  //         },
-  //         shipping: {
-  //           name: 'Neo Reeves',
-  //           fee: 1000,
-  //           delivery_date: '2000-12-21',
-  //           expedited: true,
-  //           address: {
-  //             country: 'br',
-  //             state: 'sp',
-  //             city: 'Cotia',
-  //             neighborhood: 'Rio Cotia',
-  //             street: 'Rua Matrix',
-  //             street_number: '9999',
-  //             zipcode: '06714360',
-  //           },
-  //         },
-  //         items: [
-  //           {
-  //             id: 'r123',
-  //             title: 'Red pill',
-  //             unit_price: 10000,
-  //             quantity: 1,
-  //             tangible: true,
-  //           },
-  //           {
-  //             id: 'b123',
-  //             title: 'Blue pill',
-  //             unit_price: 10000,
-  //             quantity: 1,
-  //             tangible: true,
-  //           },
-  //         ],
-  //       })
-  //     )
-  //     .then((transaction) => console.log(transaction));
-  // }, []);
-
-  const makePayment = () => {
-    console.log(inputName);
   };
 
   return (
@@ -198,15 +154,15 @@ export default function Checkout(props) {
                   justifyContent: 'center',
                 }}
               >
-                <Form>
+                <Form onSubmit={handleSubmit}>
                   <Form.Row>
                     <Form.Group as={Col} controlId="formGridEmail">
                       <Form.Label>Nome no cartão</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Insira seu nome"
-                        ref={name}
-                        onBlur={(newContent) => setInputName(newContent)}
+                        value={inputName}
+                        onChange={(e) => setInputName(e.target.value)}
                       />
                     </Form.Group>
 
@@ -215,8 +171,8 @@ export default function Checkout(props) {
                       <Form.Control
                         type="text"
                         placeholder="Insira o cpf sem pontuação"
-                        ref={cpf}
-                        onBlur={(newContent) => setInputCpf(newContent)}
+                        value={inputCpf}
+                        onChange={(e) => setInputCpf(e.target.value)}
                       />
                     </Form.Group>
                   </Form.Row>
@@ -225,21 +181,21 @@ export default function Checkout(props) {
                     <Form.Control
                       type="text"
                       placeholder="Insira o número do cartão sem pontuação"
-                      ref={card}
-                      onBlur={(newContent) => setInputCard(newContent)}
+                      value={inputCard}
+                      onChange={(e) => setInputCard(e.target.value)}
                     />
                   </Form.Group>
 
                   <Form.Row>
                     <Form.Group as={Col} controlId="formGridCity">
-                      <Form.Label>Mês do vencimento</Form.Label>
+                      <Form.Label>Mês</Form.Label>
                       <Form.Control
                         placeholder="XX"
                         type="number"
                         max={12}
                         min={1}
-                        ref={month}
-                        onBlur={(newContent) => setInputMonth(newContent)}
+                        value={inputMonth}
+                        onChange={(e) => setInputMonth(e.target.value)}
                       />
                     </Form.Group>
 
@@ -250,17 +206,29 @@ export default function Checkout(props) {
                         type="number"
                         max={31}
                         min={1}
-                        ref={year}
-                        onBlur={(newContent) => setInputYear(newContent)}
+                        value={inputYear}
+                        onChange={(e) => setInputYear(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridZip">
+                      <Form.Label>Cód. Seg</Form.Label>
+                      <Form.Control
+                        placeholder="XXX"
+                        type="number"
+                        minLength={3}
+                        min={0}
+                        max={999}
+                        value={inputCod}
+                        onChange={(e) => setInputCod(e.target.value)}
                       />
                     </Form.Group>
                   </Form.Row>
 
                   <Button
                     variant="primary"
-                    type="button"
+                    type="submit"
                     style={{ width: '100%' }}
-                    onClick={() => makePayment()}
+                    // onClick={() => makePayment()}
                   >
                     Efetuar o pagamento
                   </Button>
@@ -297,14 +265,6 @@ export default function Checkout(props) {
       <Box pt={4}>
         <Copyright />
       </Box>
-
-      <ConfirmDialog
-        open={open}
-        handleClose={handleClose}
-        title={title}
-        confirm={confirmClearCart}
-        titleButton={titleButton}
-      />
     </StyledContainer>
   );
 }
