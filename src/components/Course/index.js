@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import { customizations } from '../../configs/customizations';
 import { format } from '../../util/format';
-import { notify } from '../../util/toast';
+import { updateLocalStorageMyCourses, addToCart } from '../../util/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +49,8 @@ const CoursesList = (props) => {
   const [courseData, setCourseData] = useState([]);
   const [progress, setProgress] = useState(false);
 
-  const handleBuyCourse = () => {
+  const handleBuyCourse = (course) => {
+    addToCart(course, props, true);
     props.history.push('/dashboard');
   };
 
@@ -66,6 +67,7 @@ const CoursesList = (props) => {
         .then(function (doc) {
           if (doc.exists) {
             setCourseData(doc.data());
+            setProgress(false);
           } else {
             // doc.data() will be undefined in this case
             console.log('No such document!');
@@ -76,35 +78,6 @@ const CoursesList = (props) => {
         });
     }
 
-    fetchData();
-  };
-
-  const updateLocalStorageMyCourses = () => {
-    async function fetchData() {
-      const db = firebase.firestore();
-
-      const userRef = db.collection('users').doc(localStorage.getItem('user'));
-
-      await userRef
-        .get()
-        .then(function (doc) {
-          if (doc.exists) {
-            localStorage.setItem(
-              'myCourses',
-              JSON.stringify(doc.data().myCourses)
-            );
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!');
-          }
-          setProgress(false);
-          notify('Agora você já pode estudar!', 1000, 'success');
-          props.history.push('/dashboard');
-        })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error);
-        });
-    }
     fetchData();
   };
 
@@ -119,7 +92,8 @@ const CoursesList = (props) => {
         myCourses: firebase.firestore.FieldValue.arrayUnion(courseData.id),
       })
       .then(() => {
-        updateLocalStorageMyCourses();
+        setProgress(false);
+        updateLocalStorageMyCourses(props);
       });
   };
 
@@ -127,22 +101,13 @@ const CoursesList = (props) => {
     loadDataCourses();
   }, []);
 
-  // User has switched back to the tab
-  // const onFocus = () => {
-  //   console.log('Tab is in focus');
-  // };
-
-  // User has switched away from the tab (AKA tab is hidden)
   const onBlur = () => {
     props.history.push('/dashboard');
   };
 
   useEffect(() => {
-    // window.addEventListener('focus', onFocus);
     window.addEventListener('blur', onBlur);
-    // Specify how to clean up after this effect:
     return () => {
-      // window.removeEventListener('focus', onFocus);
       window.removeEventListener('blur', onBlur);
     };
   });
@@ -184,57 +149,39 @@ const CoursesList = (props) => {
             margin: 0,
           }}
         >
-          {/* <Typography variant="body2" color="textSecondary" component="p">
-              <b>Requisitos: </b>
-              {courseData.requirements}
-            </Typography> */}
           <div>
             {courseData.price > 0 ? (
-              <form
-                action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                method="post"
-                target="_blank"
-                style={{ width: '100%', marginBottom: 10 }}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={() => handleBuyCourse(courseData)}
+                style={{
+                  backgroundColor: `${customizations?.secondaryColor}`,
+                  position: 'relative',
+                }}
               >
-                {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                <input
-                  type="hidden"
-                  name="code"
-                  value={courseData.codePayment}
-                />
-                <input type="hidden" name="iot" value="button" />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  onClick={() => handleBuyCourse}
+                <div
                   style={{
-                    backgroundColor: `${customizations?.secondaryColor}`,
-                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
                   }}
                 >
-                  <div
+                  <MdAddShoppingCart size={18} color="#fff" />
+                  <p
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
+                      margin: '0px 0px 0px 10px',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#fff',
                     }}
                   >
-                    <MdAddShoppingCart size={18} color="#fff" />
-                    <p
-                      style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
-                      {format(courseData.price)}
-                    </p>
-                  </div>
-                </Button>
-              </form>
+                    {format(courseData.price)}
+                  </p>
+                </div>
+              </Button>
             ) : (
               <Button
                 type="submit"

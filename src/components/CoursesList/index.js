@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { MdAddShoppingCart, MdMovie, MdShoppingBasket } from 'react-icons/md';
+import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import { customizations } from '../../configs/customizations';
 import { istAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
@@ -32,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    maxWidth: 250,
+    width: 250,
     margin: 5,
     padding: 0,
     boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
   },
   media: {
-    height: 0,
+    height: '100px',
     width: '100%',
     paddingTop: '46.25%', // 16:9
   },
@@ -64,7 +64,7 @@ const CoursesList = (props) => {
   const loadDataCourses = () => {
     setProgress(true);
 
-    const myCourses = JSON.parse(localStorage.getItem('myCourses'));
+    const myCourses = JSON.parse(localStorage?.getItem('myCourses'));
 
     async function fetchData() {
       const db = firebase.firestore();
@@ -99,20 +99,20 @@ const CoursesList = (props) => {
     fetchData();
   };
 
-  const handleBuyCourse = () => {
-    'PagSeguroLightbox(this); return false;';
+  const handleBuyCourse = (course) => {
+    addToCart(course, props, true);
+    if (!istAuthenticated()) {
+      props.history.push('/sign-in', { idCourseFree: 0, toCart: true });
+      return;
+    }
   };
 
   const handleStartFreeCourse = (idCourseFree) => {
     if (!istAuthenticated()) {
-      props.history.push('/sign-in', { idCourseFree });
+      props.history.push('/sign-in', { idCourseFree, toCart: false });
       return;
     }
-    props.history.push('/register-course', { idCourseFree });
-  };
-
-  const handleBuyCourseDisconnected = (idCourseFree) => {
-    props.history.push('/sign-in', { idCourseFree });
+    props.history.push('/register-course', { idCourseFree, toCart: false });
   };
 
   const handleRedirectAllClasses = (id) => {
@@ -124,7 +124,7 @@ const CoursesList = (props) => {
   };
 
   const handleAddToCart = (course) => {
-    addToCart(course);
+    addToCart(course, props, false);
   };
 
   useEffect(() => {
@@ -231,144 +231,68 @@ const CoursesList = (props) => {
             <CardActions disableSpacing>
               {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
               {m.price > 0 ? (
-                istAuthenticated() ? (
-                  <form
-                    action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                    method="post"
-                    onSubmit={() => handleBuyCourse}
-                    target="_blank"
-                    style={{ width: '100%' }}
+                <>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    onClick={() => handleBuyCourse(m)}
+                    style={{
+                      backgroundColor: `${customizations?.secondaryColor}`,
+                    }}
                   >
-                    <div style={{ display: 'flex' }}>
-                      {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
-                      <input type="hidden" name="code" value={m.codePayment} />
-                      <input type="hidden" name="iot" value="button" />
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <MdAddShoppingCart size={18} color="#fff" />
+                      <p
                         style={{
-                          backgroundColor: `${customizations?.secondaryColor}`,
-                          margin: 5,
+                          margin: '0px 0px 0px 10px',
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                          color: '#fff',
                         }}
                       >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <MdShoppingBasket size={18} color="#fff" />
-                          <p
-                            style={{
-                              margin: '0px 0px 0px 10px',
-                              fontSize: 16,
-                              fontWeight: 'bold',
-                              color: '#fff',
-                            }}
-                          >
-                            {format(m.price)}
-                          </p>
-                        </div>
-                      </Button>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        style={{
-                          backgroundColor: `${customizations?.secondaryColor}`,
-                          margin: 5,
-                        }}
-                        onClick={() => handleAddToCart(m)}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <MdAddShoppingCart size={18} color="#fff" />
-                          <p
-                            style={{
-                              margin: '0px 0px 0px 10px',
-                              fontSize: 10,
-                              fontWeight: 'bold',
-                              color: '#fff',
-                            }}
-                          >
-                            Carrinho
-                          </p>
-                        </div>
-                      </Button>
+                        {format(m.price)}
+                      </p>
                     </div>
-                  </form>
-                ) : (
-                  <>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      onClick={() => handleBuyCourseDisconnected(m.id)}
+                  </Button>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      backgroundColor: `${customizations?.secondaryColor}`,
+                      margin: 5,
+                    }}
+                    onClick={() => handleAddToCart(m)}
+                  >
+                    <div
                       style={{
-                        backgroundColor: `${customizations?.secondaryColor}`,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
                       }}
                     >
-                      <div
+                      <MdAddShoppingCart size={18} color="#fff" />
+                      <p
                         style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
+                          margin: '0px 0px 0px 10px',
+                          fontSize: 10,
+                          fontWeight: 'bold',
+                          color: '#fff',
                         }}
                       >
-                        <MdAddShoppingCart size={18} color="#fff" />
-                        <p
-                          style={{
-                            margin: '0px 0px 0px 10px',
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            color: '#fff',
-                          }}
-                        >
-                          {format(m.price)}
-                        </p>
-                      </div>
-                    </Button>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      style={{
-                        backgroundColor: `${customizations?.secondaryColor}`,
-                        margin: 5,
-                      }}
-                      onClick={() => handleAddToCart(m)}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <MdAddShoppingCart size={18} color="#fff" />
-                        <p
-                          style={{
-                            margin: '0px 0px 0px 10px',
-                            fontSize: 10,
-                            fontWeight: 'bold',
-                            color: '#fff',
-                          }}
-                        >
-                          Carrinho
-                        </p>
-                      </div>
-                    </Button>
-                  </>
-                )
+                        Carrinho
+                      </p>
+                    </div>
+                  </Button>
+                </>
               ) : (
                 <Button
                   fullWidth

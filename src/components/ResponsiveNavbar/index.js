@@ -23,7 +23,10 @@ function ResponsiveNavbar(props) {
 
   return (
     <>
-      <Navbar expand="lg" style={{ backgroundColor: 'rgba(126,64,144,0.9)' }}>
+      <Navbar
+        expand="lg"
+        style={{ backgroundColor: `${customizations?.primaryColor}` }}
+      >
         <StyledLink to="/">
           <Navbar.Brand style={{ color: '#fff' }}>
             <b>{`<JACODE/> XD`}</b>
