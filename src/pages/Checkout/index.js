@@ -68,6 +68,30 @@ export default function Checkout(props) {
     return array[0];
   };
 
+  const handleRegisterPaymentsRequested = async () => {
+    let date = new Date();
+
+    const cloudFirestore = firebase.firestore();
+
+    cloudFirestore
+      .collection('paymentsRequested')
+      .add({
+        userId: localStorage.getItem('user'),
+        totalPrice: totalPrice,
+        createdAt: date,
+        id: '',
+      })
+      .then(function (doc) {
+        cloudFirestore.collection('paymentsRequested').doc(doc.id).update({
+          id: doc.id,
+        });
+      })
+      .catch(function (error) {
+        console.error('Error adding domcument', error);
+        notify('Falha no seu cadastro!', 1000, 'error');
+      });
+  };
+
   const handleEnrrol = async () => {
     const courses = getCart();
     const db = firebase.firestore();
@@ -82,6 +106,7 @@ export default function Checkout(props) {
           })
           .then(() => {
             updateLocalStorageMyCourses(props);
+            handleRegisterPaymentsRequested();
           })
     );
   };
@@ -102,7 +127,7 @@ export default function Checkout(props) {
         .connect({ encryption_key: process.env.REACT_APP_PAGARME_STG })
         .then((client) =>
           client.transactions.create({
-            amount: 21000,
+            amount: `${totalPrice}`,
             card_number: `${inputCard}`,
             card_holder_name: `${inputName}`,
             card_expiration_date: `${inputMonth + inputYear}`,

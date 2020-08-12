@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import NavbarDashBoard from './components/NavbarDashboard';
+import PaymentRequest from './pages/PaymentRequested';
 import ClassesByCourse from './pages/ClassesByCourse';
 import CoursesDetails from './pages/CoursesDetails';
 import CreateCourse from './pages/CreateCourse';
@@ -54,6 +55,7 @@ const Routes = () => (
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
       <PrivateRoute path="/list-my-students" component={MyStudents} />
       <PrivateRoute path="/profile" component={Profile} />
+      <PrivateRoute path="/payment-requested" component={PaymentRequest} />
     </Switch>
   </BrowserRouter>
 );

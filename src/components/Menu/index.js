@@ -10,6 +10,7 @@ import AccountBox from '@material-ui/icons/AccountBox';
 import AddToQueue from '@material-ui/icons/AddToQueue';
 import CardMembership from '@material-ui/icons/CardMembership';
 import FormatListNumbered from '@material-ui/icons/FormatListNumbered';
+import Receipt from '@material-ui/icons/Receipt';
 import Functions from '@material-ui/icons/Functions';
 import MenuIcon from '@material-ui/icons/Menu';
 import PanoramaIcon from '@material-ui/icons/Panorama';
@@ -97,14 +98,18 @@ export default function TemporaryDrawer() {
       {userData.userType === 'student' && (
         <>
           <List>
-            {['Perfil'].map((text, index) => (
+            {['Perfil', 'Meus Pedidos'].map((text, index) => (
               <Link
-                to={index === 0 && '/profile'}
+                to={
+                  index === 0 ? '/profile' : index === 1 && 'payment-requested'
+                }
                 className={classes.items}
                 key={index}
               >
                 <ListItem button key={text}>
-                  <ListItemIcon>{index === 0 && <AccountBox />}</ListItemIcon>
+                  <ListItemIcon>
+                    {index === 0 ? <AccountBox /> : <FormatListNumbered />}
+                  </ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItem>
               </Link>

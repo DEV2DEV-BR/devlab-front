@@ -5,11 +5,11 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import firebase from 'firebase';
 import MaterialTable from 'material-table';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Copyright from '../../components/Copyright';
+import firebase from 'firebase';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,66 +22,77 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     overflow: 'auto',
   },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  table: {
+    minWidth: 650,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
-  container: {
-    display: 'flex',
-    paddingTop: theme.spacing(2),
-    // paddingBottom: theme.spacing(4),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 }));
 
-export default function Dashboard(props) {
+export default function PaymentRequested(props) {
   const classes = useStyles();
-
+  const [allPaymentsRequested, setAllPaymentsRequested] = useState([]);
   const [progress, setProgress] = useState(false);
-  const [allStudents, setAllStudents] = useState([]);
 
   const [state] = React.useState({
     columns: [
       { title: 'Data', field: 'createdAt' },
-      { title: 'Nome', field: 'name' },
-      { title: 'Celular', field: 'cellphone' },
-      { title: 'E-mail', field: 'email' },
+      { title: 'Preço total', field: 'totalPrice' },
     ],
-    data: allStudents,
+    data: allPaymentsRequested,
   });
 
-  const loadDataCourses = () => {
+  const loadPaymentsRequested = () => {
     setProgress(true);
 
     async function fetchData() {
       const db = firebase.firestore();
 
-      const studentsRef = db.collection('users').orderBy('name');
+      const paymentsRef = db.collection('paymentsRequested').orderBy('id');
 
-      await studentsRef
-        .where('userType', '==', 'student')
+      await paymentsRef
+        .where('userId', '==', `${localStorage.getItem('user')}`)
         .get()
         .then((querySnapshot) => {
-          const students = [];
+          const payments = [];
           querySnapshot.forEach((doc) => {
-            const { name, cellphone, email } = doc.data();
+            const { createdAt, totalPrice } = doc.data();
 
             const date = moment
-              .unix(doc.data()?.createdAt)
+              .unix(createdAt)
               .locale('pt-br')
-              .format('DD/MM/YYYY - hh:mm');
+              .format('DD/MM/YYYY');
 
-            const studentObject = {
+            const paymentObject = {
               createdAt: date !== 'Invalid date' ? date : 'Data não informada',
-              name,
-              cellphone,
-              email,
+              totalPrice,
             };
-            students.push(studentObject);
+            payments.push(paymentObject);
           });
 
-          setAllStudents(students);
+          setAllPaymentsRequested(payments);
           setProgress(false);
         })
         .catch(function (error) {
@@ -93,12 +104,10 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
-    loadDataCourses();
-  }, []);
+    loadPaymentsRequested();
 
-  useEffect(() => {
     return () => {
-      setAllStudents('');
+      setAllPaymentsRequested('');
     };
   }, []);
 
@@ -132,10 +141,10 @@ export default function Dashboard(props) {
             }}
           >
             <MaterialTable
-              title="Alunos"
+              title="Histórico de pedidos"
               columns={state.columns}
-              style={{ width: '100%' }}
-              data={allStudents}
+              style={{ width: '80%' }}
+              data={allPaymentsRequested}
               editable={{}}
             />
           </Grid>
