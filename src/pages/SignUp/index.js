@@ -105,7 +105,7 @@ export default function SignUp(props) {
             const errorMessage = error.message;
             setProgress(false);
             console.log(errorCode, errorMessage);
-            notify((error.message, 4000), 1000, 'error');
+            notify(error.message, 1000, 'error');
           });
       } else {
         notify('As senhas digitadas são diferentes!', 1000, 'error');

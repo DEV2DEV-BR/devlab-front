@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import { customizations } from '../../configs/customizations';
 import { format } from '../../util/format';
-import { notify } from '../../util/toast';
+import { updateLocalStorageMyCourses } from '../../util/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,35 +79,6 @@ const CoursesList = (props) => {
     fetchData();
   };
 
-  const updateLocalStorageMyCourses = () => {
-    async function fetchData() {
-      const db = firebase.firestore();
-
-      const userRef = db.collection('users').doc(localStorage.getItem('user'));
-
-      await userRef
-        .get()
-        .then(function (doc) {
-          if (doc.exists) {
-            localStorage.setItem(
-              'myCourses',
-              JSON.stringify(doc.data().myCourses)
-            );
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!');
-          }
-          setProgress(false);
-          notify('Agora você já pode estudar!', 1000, 'success');
-          props.history.push('/dashboard');
-        })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error);
-        });
-    }
-    fetchData();
-  };
-
   const handleEnrrol = async () => {
     setProgress(true);
     const db = firebase.firestore();
@@ -119,7 +90,7 @@ const CoursesList = (props) => {
         myCourses: firebase.firestore.FieldValue.arrayUnion(courseData.id),
       })
       .then(() => {
-        updateLocalStorageMyCourses();
+        updateLocalStorageMyCourses(props);
       });
   };
 
@@ -127,22 +98,13 @@ const CoursesList = (props) => {
     loadDataCourses();
   }, []);
 
-  // User has switched back to the tab
-  // const onFocus = () => {
-  //   console.log('Tab is in focus');
-  // };
-
-  // User has switched away from the tab (AKA tab is hidden)
   const onBlur = () => {
     props.history.push('/dashboard');
   };
 
   useEffect(() => {
-    // window.addEventListener('focus', onFocus);
     window.addEventListener('blur', onBlur);
-    // Specify how to clean up after this effect:
     return () => {
-      // window.removeEventListener('focus', onFocus);
       window.removeEventListener('blur', onBlur);
     };
   });

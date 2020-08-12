@@ -32,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    maxWidth: 250,
+    width: 250,
     margin: 5,
     padding: 0,
     boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
   },
   media: {
-    height: 0,
+    height: '100px',
     width: '100%',
     paddingTop: '46.25%', // 16:9
   },
@@ -64,7 +64,7 @@ const CoursesList = (props) => {
   const loadDataCourses = () => {
     setProgress(true);
 
-    const myCourses = JSON.parse(localStorage.getItem('myCourses'));
+    const myCourses = JSON.parse(localStorage?.getItem('myCourses'));
 
     async function fetchData() {
       const db = firebase.firestore();

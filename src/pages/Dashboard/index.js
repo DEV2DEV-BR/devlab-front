@@ -23,6 +23,15 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
+  courseList: {
+    display: 'flex',
+    justifyContent: 'center',
+
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+  },
 }));
 
 export default function Dashboard(props) {
@@ -52,7 +61,7 @@ export default function Dashboard(props) {
             </Grid>
           )}
 
-          <Grid container spacing={3}>
+          <Grid container spacing={3} className={classes.courseList}>
             <CoursesList buy={false} history={history} />
           </Grid>
         </Container>
