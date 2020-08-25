@@ -36,12 +36,18 @@ export default function Checkout(props) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [render, setRender] = useState(true);
   const [disabled, setDisabled] = useState(false);
-  const [inputName, setInputName] = useState('Morpheus Fishburne');
-  const [inputCpf, setInputCpf] = useState('00000000000');
-  const [inputCard, setInputCard] = useState('4111111111111111');
-  const [inputMonth, setInputMonth] = useState('09');
-  const [inputYear, setInputYear] = useState('22');
-  const [inputCod, setInputCod] = useState('123');
+  // const [inputName, setInputName] = useState('Morpheus Fishburne');
+  // const [inputCpf, setInputCpf] = useState('00000000000');
+  // const [inputCard, setInputCard] = useState('4111111111111111');
+  // const [inputMonth, setInputMonth] = useState('09');
+  // const [inputYear, setInputYear] = useState('22');
+  // const [inputCod, setInputCod] = useState('123');
+  const [inputName, setInputName] = useState('');
+  const [inputCpf, setInputCpf] = useState('');
+  const [inputCard, setInputCard] = useState('');
+  const [inputMonth, setInputMonth] = useState('');
+  const [inputYear, setInputYear] = useState('');
+  const [inputCod, setInputCod] = useState('');
 
   useEffect(() => {
     if (render) {
@@ -115,6 +121,8 @@ export default function Checkout(props) {
     evt.preventDefault();
     setDisabled(true);
 
+    console.log(parseFloat(totalPrice))
+
     if (
       inputName !== '' &&
       inputCpf !== '' &&
@@ -127,7 +135,7 @@ export default function Checkout(props) {
         .connect({ encryption_key: process.env.REACT_APP_PAGARME_STG })
         .then((client) =>
           client.transactions.create({
-            amount: `${totalPrice}`,
+            amount: `${totalPrice * 100}`,
             card_number: `${inputCard}`,
             card_holder_name: `${inputName}`,
             card_expiration_date: `${inputMonth + inputYear}`,
@@ -137,16 +145,28 @@ export default function Checkout(props) {
               name: `${inputName}`,
               type: 'individual',
               country: 'br',
-              // email: `${EMAIL_USER}`,
-              email: 'mopheus@nabucodonozor.com',
+              email: `${localStorage.getItem('@jacode-email')}`,
+              // email: 'mopheus@nabucodonozor.com',
               documents: [
                 {
                   type: 'cpf',
                   number: `${inputCpf}`,
                 },
               ],
-              phone_numbers: [],
-              birthday: '1965-01-01',
+              phone_numbers: ['+5518997455866'],
+              birthday: '1992-10-01',
+            },
+            billing: {
+              name: `${inputName}`,
+              address: {
+                country: 'br',
+                state: 'sp',
+                city: 'Presidente Prudente',
+                neighborhood: 'Jardim Cobral',
+                street: 'Avenida Antonio Marini',
+                street_number: '454',
+                zipcode: '19026750'
+              }
             },
             items: getAllItems(),
           })

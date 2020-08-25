@@ -87,13 +87,20 @@ export default function SignUp(props) {
                 createdAt: date,
                 id: '',
               })
-              .then(function (doc) {
-                cloudFirestore.collection('users').doc(doc.id).update({
-                  id: doc.id,
-                });
-                notify('Parabéns!', 1000, 'success');
-                props.history.push('/sign-in');
-                setProgress(false);
+              .then(function (docRef) {
+                cloudFirestore.collection('users').doc(`${docRef.id}`).update({
+                  id: docRef.id,
+                }).then(() => {
+                  notify('Parabéns!', 1000, 'success');
+                  props.history.push('/sign-in');
+                  setProgress(false);
+                }).catch((error) => {
+                  console.error('Error adding domcument', error);
+                  notify('Falha no seu cadastro!', 1000, 'error');
+
+                })
+                  ;
+
               })
               .catch(function (error) {
                 console.error('Error adding domcument', error);
@@ -215,19 +222,19 @@ export default function SignUp(props) {
               <p style={{ margin: 10 }}>Aguarde...</p>
             </div>
           ) : (
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              style={{
-                backgroundColor: `${customizations?.primaryColor}`,
-                color: '#fff',
-              }}
-              className={classes.submit}
-            >
-              Cadastrar
-            </Button>
-          )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                style={{
+                  backgroundColor: `${customizations?.primaryColor}`,
+                  color: '#fff',
+                }}
+                className={classes.submit}
+              >
+                Cadastrar
+              </Button>
+            )}
           <Grid container justify="flex-end">
             <Grid item xs>
               <Link to="/">Voltar para o início</Link>
