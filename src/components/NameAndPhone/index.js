@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp({ handleNext, completData }) {
+export default function SignUp({ handleNext, completData, changeState }) {
   const classes = useStyles();
   const [inputName, setInputName] = useState('');
   const [inputCellphone, setInputCellphone] = useState('');
@@ -77,6 +77,9 @@ export default function SignUp({ handleNext, completData }) {
           .then(() => {
             notify('Parabéns!', 1000, 'success');
             setProgress(false);
+            if (completData) {
+              changeState();
+            }
             handleNext && handleNext(2);
           })
           .catch((error) => {
