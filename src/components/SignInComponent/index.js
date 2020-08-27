@@ -97,10 +97,9 @@ export default function SignInComponent({ props }) {
                   }
                   localStorage.setItem('user', id);
                   props.history.push('/dashboard');
+                  notify('Seja bem-vindo!', 1000, 'success');
                 });
               });
-
-            notify('Seja bem-vindo!', 1000, 'success');
           }
         });
       })

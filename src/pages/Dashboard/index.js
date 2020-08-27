@@ -8,7 +8,7 @@ import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
 import Reports from '../../components/Reports';
 import NameAndPhone from '../../components/NameAndPhone';
-import { verifyProfileCompleted } from '../../util/utils';
+import firebase from 'firebase';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,14 +34,51 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
     },
   },
+
+  messageCompletData: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 export default function Dashboard(props) {
   const classes = useStyles();
 
   const [history, setHistory] = useState(props.history);
+  const [completedData, setCompletedData] = useState(null);
+
+  const changeState = () => {
+    setCompletedData(!completedData);
+  };
+
+  const validData = async () => {
+    const db = firebase.firestore();
+
+    const usersRef = db.collection('users');
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        usersRef
+          .where('uid', '==', user.uid)
+          .get()
+          .then((querySnapshot) => {
+            if (querySnapshot.docs.length > 0) {
+              setCompletedData(true);
+            } else {
+              setCompletedData(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  };
 
   useEffect(() => {
+    validData();
     return () => {
       setHistory('');
     };
@@ -63,15 +100,21 @@ export default function Dashboard(props) {
             </Grid>
           )}
 
-          {verifyProfileCompleted() ? (
+          {completedData && localStorage?.getItem('userType') === 'student' ? (
             <Grid container spacing={3} className={classes.courseList}>
               <CoursesList buy={false} history={history} />
             </Grid>
           ) : (
-            <Grid container spacing={3} className={classes.courseList}>
-              <h3>Para continuar complete seus dados</h3>
-              <NameAndPhone completData={true} />
-            </Grid>
+            completedData == false && (
+              <Grid
+                container
+                spacing={3}
+                className={classes.messageCompletData}
+              >
+                <h3>Para continuar complete seus dados</h3>
+                <NameAndPhone completData={true} changeState={changeState} />
+              </Grid>
+            )
           )}
         </Container>
         <Box pt={4}>

@@ -83,7 +83,7 @@ export const verifyMyCourses = (courseId) => {
   return false;
 };
 
-export const verifyProfileCompleted = () => {
+export const verifyProfileCompleted = async () => {
   const db = firebase.firestore();
 
   const usersRef = db.collection('users');

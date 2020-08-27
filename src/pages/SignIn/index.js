@@ -131,10 +131,11 @@ export default function SignIn(props) {
                       props.history.push('/cart');
                     } else {
                       props.history.push('/dashboard');
+                      notify('Seja bem-vindo!', 1000, 'success');
                     }
                   });
-                  notify('Seja bem-vindo!', 1000, 'success');
                 } else {
+                  notify('Seja bem-vindo!', 1000, 'success');
                   props.history.push('/dashboard');
                 }
               })
