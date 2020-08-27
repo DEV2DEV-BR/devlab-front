@@ -13,6 +13,7 @@ import MyStudents from './pages/MyStudents';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import SignUpSteps from './pages/SignUpSteps';
 import UploadClasses from './pages/UploadClasses';
 import RegisterCourse from './pages/RegisterCourse';
 import Checkout from './pages/Checkout';
@@ -42,7 +43,7 @@ const Routes = () => (
     <Switch>
       <Route path="/" exact component={Main} />
       <Route path="/sign-in" component={SignIn} />
-      <Route path="/sign-up" component={SignUp} />
+      <Route path="/sign-up" component={SignUpSteps} />
       <Route path="/course-details" component={CoursesDetails} />
       <Route path="/cart" component={Cart} />
       <PrivateRoute path="/checkout" component={Checkout} />
