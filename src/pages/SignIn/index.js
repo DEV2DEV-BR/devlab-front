@@ -109,33 +109,41 @@ export default function SignIn(props) {
               .where('uid', '==', user.uid)
               .get()
               .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                  const { id, myCourses, userType } = doc.data();
+                if (querySnapshot.docs.length > 0) {
+                  querySnapshot.forEach((doc) => {
+                    const { id, myCourses, userType } = doc.data();
 
-                  localStorage.setItem('userType', userType);
+                    localStorage.setItem('userType', userType);
 
-                  if (myCourses) {
-                    localStorage.setItem(
-                      'myCourses',
-                      JSON.stringify(myCourses)
-                    );
-                  }
+                    if (myCourses) {
+                      localStorage.setItem(
+                        'myCourses',
+                        JSON.stringify(myCourses)
+                      );
+                    }
 
-                  localStorage.setItem('user', id);
+                    localStorage.setItem('user', id);
 
-                  setProgress(false);
-                  if (idCourseFree) {
-                    props.history.push('/register-course', { idCourseFree });
-                  } else if (toCartRedirect) {
-                    props.history.push('/cart');
-                  } else {
-                    props.history.push('/dashboard');
-                  }
-                });
+                    setProgress(false);
+                    if (idCourseFree) {
+                      props.history.push('/register-course', { idCourseFree });
+                    } else if (toCartRedirect) {
+                      props.history.push('/cart');
+                    } else {
+                      props.history.push('/dashboard');
+                    }
+                  });
+                  notify('Seja bem-vindo!', 1000, 'success');
+                } else {
+                  props.history.push('/dashboard');
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                notify(error, 1000, 'error');
               });
           }
         });
-        notify('Seja bem-vindo!', 1000, 'success');
       })
       .catch((error) => {
         const errorCode = error.code;

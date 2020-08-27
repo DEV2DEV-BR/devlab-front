@@ -82,3 +82,28 @@ export const verifyMyCourses = (courseId) => {
   }
   return false;
 };
+
+export const verifyProfileCompleted = () => {
+  const db = firebase.firestore();
+
+  const usersRef = db.collection('users');
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      usersRef
+        .where('uid', '==', user.uid)
+        .get()
+        .then((querySnapshot) => {
+          if (querySnapshot.docs.length > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          notify(error, 1000, 'error');
+        });
+    }
+  });
+};

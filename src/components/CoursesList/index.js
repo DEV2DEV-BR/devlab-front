@@ -17,6 +17,7 @@ import { customizations } from '../../configs/customizations';
 import { istAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
 import { addToCart } from '../../util/utils';
+import VisualFeedback from '../../components/VisualFeedback';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -140,103 +141,58 @@ const CoursesList = (props) => {
 
   return (
     <>
-      {progress && (
+      {progress ? (
         <>
           <CircularProgress color="inherit" />
           <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
         </>
-      )}
-      {coursesData.map((m) => (
-        <Card
-          className={props.buy ? classes.root : classes.rootMyCourses}
-          key={m.id}
-          style={{ cursor: 'pointer' }}
-        >
-          {props.buy ? (
-            <CardMedia
-              className={classes.media}
-              image={m.image}
-              title={m.title}
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleOpenCourseDetail(m.id)}
-            />
-          ) : (
-            <CardMedia
-              className={classes.media}
-              image={m.image}
-              title={m.title}
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleRedirectAllClasses(m.id)}
-            />
-          )}
-
-          <CardHeader
-            avatar={
-              <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
-            }
-            title={m.name}
-          />
-
-          <CardContent
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              margin: 0,
-            }}
+      ) : coursesData?.length > 0 ? (
+        coursesData.map((m) => (
+          <Card
+            className={props.buy ? classes.root : classes.rootMyCourses}
+            key={m.id}
+            style={{ cursor: 'pointer' }}
           >
-            {!props.buy ? (
-              <div>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  onClick={() => handleRedirectAllClasses(m.id)}
-                  style={{
-                    backgroundColor: `${customizations?.secondaryColor}`,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <MdMovie size={18} color="#fff" />
-                    <p
-                      style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-                      }}
-                    >
-                      Assistir
-                    </p>
-                  </div>
-                </Button>
-              </div>
+            {props.buy ? (
+              <CardMedia
+                className={classes.media}
+                image={m.image}
+                title={m.title}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleOpenCourseDetail(m.id)}
+              />
             ) : (
-              <>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  <b>Descrição: </b>
-                  {m.shortDescription}
-                </Typography>
-              </>
+              <CardMedia
+                className={classes.media}
+                image={m.image}
+                title={m.title}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRedirectAllClasses(m.id)}
+              />
             )}
-          </CardContent>
-          {props.buy && (
-            <CardActions disableSpacing>
-              {/* <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> */}
-              {m.price > 0 ? (
-                <>
+
+            <CardHeader
+              avatar={
+                <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
+              }
+              title={m.name}
+            />
+
+            <CardContent
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                margin: 0,
+              }}
+            >
+              {!props.buy ? (
+                <div>
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
-                    onClick={() => handleBuyCourse(m)}
+                    onClick={() => handleRedirectAllClasses(m.id)}
                     style={{
                       backgroundColor: `${customizations?.secondaryColor}`,
                     }}
@@ -249,7 +205,7 @@ const CoursesList = (props) => {
                         alignItems: 'center',
                       }}
                     >
-                      <MdAddShoppingCart size={18} color="#fff" />
+                      <MdMovie size={18} color="#fff" />
                       <p
                         style={{
                           margin: '0px 0px 0px 10px',
@@ -258,66 +214,120 @@ const CoursesList = (props) => {
                           color: '#fff',
                         }}
                       >
-                        {format(m.price)}
+                        Assistir
                       </p>
                     </div>
                   </Button>
+                </div>
+              ) : (
+                <>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <b>Descrição: </b>
+                    {m.shortDescription}
+                  </Typography>
+                </>
+              )}
+            </CardContent>
+            {props.buy && (
+              <CardActions disableSpacing>
+                {m.price > 0 ? (
+                  <>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      onClick={() => handleBuyCourse(m)}
+                      style={{
+                        backgroundColor: `${customizations?.secondaryColor}`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <MdAddShoppingCart size={18} color="#fff" />
+                        <p
+                          style={{
+                            margin: '0px 0px 0px 10px',
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                          }}
+                        >
+                          {format(m.price)}
+                        </p>
+                      </div>
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: `${customizations?.secondaryColor}`,
+                        margin: 5,
+                      }}
+                      onClick={() => handleAddToCart(m)}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <MdAddShoppingCart size={18} color="#fff" />
+                        <p
+                          style={{
+                            margin: '0px 0px 0px 10px',
+                            fontSize: 10,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                          }}
+                        >
+                          Carrinho
+                        </p>
+                      </div>
+                    </Button>
+                  </>
+                ) : (
                   <Button
                     fullWidth
                     variant="contained"
+                    onClick={() => handleStartFreeCourse(m.id)}
                     style={{
                       backgroundColor: `${customizations?.secondaryColor}`,
-                      margin: 5,
                     }}
-                    onClick={() => handleAddToCart(m)}
                   >
-                    <div
+                    <p
                       style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
                       }}
                     >
-                      <MdAddShoppingCart size={18} color="#fff" />
-                      <p
-                        style={{
-                          margin: '0px 0px 0px 10px',
-                          fontSize: 10,
-                          fontWeight: 'bold',
-                          color: '#fff',
-                        }}
-                      >
-                        Carrinho
-                      </p>
-                    </div>
+                      CURSO GRÁTIS
+                    </p>
                   </Button>
-                </>
-              ) : (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  onClick={() => handleStartFreeCourse(m.id)}
-                  style={{
-                    backgroundColor: `${customizations?.secondaryColor}`,
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: '0px 0px 0px 10px',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      color: '#fff',
-                    }}
-                  >
-                    CURSO GRÁTIS
-                  </p>
-                </Button>
-              )}
-            </CardActions>
-          )}
-        </Card>
-      ))}
+                )}
+              </CardActions>
+            )}
+          </Card>
+        ))
+      ) : (
+        <VisualFeedback
+          description="Você ainda não tem cursos!"
+          subDescription="volte para a loja e veja nossas opções!"
+        />
+      )}
     </>
   );
 };

@@ -36,7 +36,7 @@
     "video-react": "^0.14.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
     "format": "prettier --write \"{,!(node_modules)/**/}*.{js,jsx}\"",
     "build": "react-scripts build",
     "staging": "firebase deploy",

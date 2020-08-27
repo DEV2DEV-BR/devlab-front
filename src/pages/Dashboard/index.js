@@ -7,6 +7,8 @@ import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
 import Reports from '../../components/Reports';
+import NameAndPhone from '../../components/NameAndPhone';
+import { verifyProfileCompleted } from '../../util/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,9 +63,16 @@ export default function Dashboard(props) {
             </Grid>
           )}
 
-          <Grid container spacing={3} className={classes.courseList}>
-            <CoursesList buy={false} history={history} />
-          </Grid>
+          {verifyProfileCompleted() ? (
+            <Grid container spacing={3} className={classes.courseList}>
+              <CoursesList buy={false} history={history} />
+            </Grid>
+          ) : (
+            <Grid container spacing={3} className={classes.courseList}>
+              <h3>Para continuar complete seus dados</h3>
+              <NameAndPhone completData={true} />
+            </Grid>
+          )}
         </Container>
         <Box pt={4}>
           <Copyright />
