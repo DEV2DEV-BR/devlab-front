@@ -29,6 +29,7 @@ import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import { customizations } from '../../configs/customizations';
 import { istAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
+import { addToCart } from '../../util/utils';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -295,8 +296,16 @@ export default function CoursesDetails(props) {
     setOpen(false);
   };
 
-  const handleBuyCourse = () => {
-    'PagSeguroLightbox(this); return false;';
+  const handleBuyCourse = (course) => {
+    addToCart(course, props, true);
+    if (!istAuthenticated()) {
+      props.history.push('/sign-in', { idCourseFree: 0, toCart: true });
+      return;
+    }
+  };
+
+  const handleAddToCart = (course) => {
+    addToCart(course, props, false);
   };
 
   const loadDataCourse = async () => {
@@ -443,14 +452,7 @@ export default function CoursesDetails(props) {
                     justify="center"
                   >
                     {courseData.price > 0 ? (
-                      <form
-                        action="https://pagseguro.uol.com.br/checkout/v2/payment.html"
-                        method="post"
-                        onSubmit={() => handleBuyCourse}
-                        target="_blank"
-                        className={classes.containerButton}
-                      >
-                        {/* <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> */}
+                      <>
                         <input
                           type="hidden"
                           name="code"
@@ -461,6 +463,7 @@ export default function CoursesDetails(props) {
                           type="submit"
                           fullWidth
                           variant="contained"
+                          onClick={() => handleBuyCourse(courseData)}
                           className={classes.button}
                         >
                           <div
@@ -484,7 +487,7 @@ export default function CoursesDetails(props) {
                             </p>
                           </div>
                         </Button>
-                      </form>
+                      </>
                     ) : (
                       <Button
                         fullWidth
