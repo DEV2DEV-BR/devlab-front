@@ -121,7 +121,7 @@ export default function Checkout(props) {
     evt.preventDefault();
     setDisabled(true);
 
-    console.log(parseFloat(totalPrice))
+    console.log(parseFloat(totalPrice));
 
     if (
       inputName !== '' &&
@@ -165,8 +165,8 @@ export default function Checkout(props) {
                 neighborhood: 'Jardim Cobral',
                 street: 'Avenida Antonio Marini',
                 street_number: '454',
-                zipcode: '19026750'
-              }
+                zipcode: '19026750',
+              },
             },
             items: getAllItems(),
           })
