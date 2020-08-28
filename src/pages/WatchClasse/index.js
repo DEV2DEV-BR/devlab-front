@@ -21,9 +21,10 @@ import Copyright from '../../components/Copyright';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    width: '80%',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -193,7 +194,14 @@ export default function WatchClasse(props) {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <div>
         <div className={classes.appBarSpacer} />
       </div>
