@@ -10,7 +10,6 @@ import AccountBox from '@material-ui/icons/AccountBox';
 import AddToQueue from '@material-ui/icons/AddToQueue';
 import CardMembership from '@material-ui/icons/CardMembership';
 import FormatListNumbered from '@material-ui/icons/FormatListNumbered';
-import Receipt from '@material-ui/icons/Receipt';
 import Functions from '@material-ui/icons/Functions';
 import MenuIcon from '@material-ui/icons/Menu';
 import PanoramaIcon from '@material-ui/icons/Panorama';

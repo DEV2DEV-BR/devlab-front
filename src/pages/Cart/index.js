@@ -63,6 +63,7 @@ export default function Cart(props) {
         setTimeout(() => props.history.push('/'), 1000);
       }
     }
+    //eslint-disable-next-line
   }, [render]);
 
   const handleClose = () => {

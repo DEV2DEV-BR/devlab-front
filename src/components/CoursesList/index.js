@@ -134,13 +134,12 @@ const CoursesList = (props) => {
 
   useEffect(() => {
     loadDataCourses();
-  }, []);
 
-  useEffect(() => {
     return () => {
       setCoursesData('');
       setProgress('');
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
