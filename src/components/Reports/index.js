@@ -9,7 +9,17 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: '1px',
     borderRadius: '4px',
     borderColor: '#dedede',
-    maxWidth: '80%',
+    width: '100%',
+  },
+
+  contentTitle: {
+    display: 'flex',
+    flexDirection: 'row',
+
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      padding: '10px',
+      flexDirection: 'column',
+    },
   },
 
   card: {
@@ -19,6 +29,12 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: '#e5e0e0',
       borderRadius: '4px',
+    },
+  },
+
+  customChart: {
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      margin: '10px',
     },
   },
 }));
@@ -37,12 +53,7 @@ function Reports() {
           justifyContent: 'center',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
+        <div className={classes.contentTitle}>
           <div className={classes.card}>
             <h4>Total de Alunos: 15 </h4>
           </div>

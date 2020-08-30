@@ -16,9 +16,9 @@ import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BackgroundSignIn from '../../assets/background-signIn.jpg';
+import { customizations } from '../../configs/customizations';
 import { email, login } from '../../services/auth';
 import { notify } from '../../util/toast';
-import { customizations } from '../../configs/customizations';
 
 function Copyright() {
   return (
@@ -86,6 +86,7 @@ export default function SignIn(props) {
         setIdCourseFree(idCourseFree);
       }
     }
+    //eslint-disable-next-line
   }, []);
 
   const handleLogin = async (event) => {
