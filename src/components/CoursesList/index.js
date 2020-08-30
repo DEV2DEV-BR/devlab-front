@@ -287,9 +287,9 @@ const CoursesList = (props) => {
                         <p
                           style={{
                             margin: '0px 0px 0px 10px',
-                            fontSize: 10,
                             fontWeight: 'bold',
                             color: '#fff',
+                            fontSize: 16,
                           }}
                         >
                           Carrinho

@@ -149,12 +149,6 @@ export default function UploadFiles(props) {
 
           setProgress(true);
 
-          console.log(
-            `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-              image.name
-            }`
-          );
-
           const uploadClasse = storage
             .ref(
               `courses/${localStorage.getItem('@jacode-email')}/${name}/${
