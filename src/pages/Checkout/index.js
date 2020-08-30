@@ -58,6 +58,7 @@ export default function Checkout(props) {
       setTotalPrice(total);
       setRender(false);
     }
+    //eslint-disable-next-line
   }, []);
 
   const getAllItems = () => {

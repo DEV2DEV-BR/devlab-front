@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import { customizations } from '../../configs/customizations';
 import { format } from '../../util/format';
-import { updateLocalStorageMyCourses, addToCart } from '../../util/utils';
+import { addToCart, updateLocalStorageMyCourses } from '../../util/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,6 +99,7 @@ const CoursesList = (props) => {
 
   useEffect(() => {
     loadDataCourses();
+    // eslint-disable-next-line
   }, []);
 
   const onBlur = () => {
@@ -109,15 +110,11 @@ const CoursesList = (props) => {
     window.addEventListener('blur', onBlur);
     return () => {
       window.removeEventListener('blur', onBlur);
-    };
-  });
-
-  useEffect(() => {
-    return () => {
       setCourseData('');
       setProgress('');
     };
-  }, []);
+    // eslint-disable-next-line
+  });
 
   return (
     <>

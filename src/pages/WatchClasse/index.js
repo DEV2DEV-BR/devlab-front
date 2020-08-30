@@ -183,13 +183,13 @@ export default function WatchClasse(props) {
     }
 
     fetchData();
-  }, []);
 
-  useEffect(() => {
     return () => {
       // saveProgress();
       setClassesData([]);
     };
+
+    //eslint-disable-next-line
   }, []);
 
   return (

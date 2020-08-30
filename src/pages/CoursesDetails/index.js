@@ -304,9 +304,9 @@ export default function CoursesDetails(props) {
     }
   };
 
-  const handleAddToCart = (course) => {
-    addToCart(course, props, false);
-  };
+  // const handleAddToCart = (course) => {
+  //   addToCart(course, props, false);
+  // };
 
   const loadDataCourse = async () => {
     setProgress(true);
@@ -357,13 +357,12 @@ export default function CoursesDetails(props) {
 
   useEffect(() => {
     loadDataCourse();
-  }, []);
-
-  useEffect(() => {
     return () => {
       setCourseData([]);
       setClassesData([]);
     };
+
+    //eslint-disable-next-line
   }, []);
 
   return (
