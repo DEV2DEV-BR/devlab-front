@@ -1,22 +1,21 @@
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import NavbarDashBoard from './components/NavbarDashboard';
-import PaymentRequest from './pages/PaymentRequested';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import ClassesByCourse from './pages/ClassesByCourse';
 import CoursesDetails from './pages/CoursesDetails';
 import CreateCourse from './pages/CreateCourse';
 import Dashboard from './pages/Dashboard';
 import Main from './pages/Main';
 import MyCourses from './pages/MyCourses';
-import Cart from './pages/Cart';
 import MyStudents from './pages/MyStudents';
+import PaymentRequest from './pages/PaymentRequested';
 import Profile from './pages/Profile';
+import RegisterCourse from './pages/RegisterCourse';
 import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
 import SignUpSteps from './pages/SignUpSteps';
 import UploadClasses from './pages/UploadClasses';
-import RegisterCourse from './pages/RegisterCourse';
-import Checkout from './pages/Checkout';
 import WatchClasse from './pages/WatchClasse';
 import { istAuthenticated } from './services/auth';
 
