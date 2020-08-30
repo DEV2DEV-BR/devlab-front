@@ -9,10 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Copyright from '../../components/Copyright';
 import { customizations } from '../../configs/customizations';
 import { notify } from '../../util/toast';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
     overflow: 'auto',
   },
   container: {
@@ -47,6 +47,17 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+    width: '150px',
+    height: '150px',
+    backgroundColor: '#d5d5d5',
+    borderWidth: '5px',
+    borderStyle: 'solid',
+    borderColor: '#45c',
+
+    [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
+      width: '120px',
+      height: '120px',
+    },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -54,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Activitys(props) {
+export default function Profile(props) {
   const classes = useStyles();
   const [inputName, setInputName] = useState('');
   const [inputCellphone, setInputCellphone] = useState('');
@@ -63,6 +74,9 @@ export default function Activitys(props) {
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
   const [progress, setProgress] = useState(false);
   const [progressLoad, setProgressLoad] = useState(false);
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const fileRef = useRef();
 
   const loadData = () => {
     setProgressLoad(true);
@@ -77,6 +91,7 @@ export default function Activitys(props) {
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
+              setPreviewImage(doc.data().profileImage);
               setInputName(doc.data().name);
               setInputEmail(doc.data().email);
               setInputCellphone(doc.data().cellphone);
@@ -90,6 +105,23 @@ export default function Activitys(props) {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleChangeImageCourse = (e) => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+
+      if (image) {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+          setPreviewImage(reader.result);
+        };
+
+        reader.readAsDataURL(image);
+      }
+      setImage(image);
+    }
+  };
 
   const handleRegister = () => {
     setProgress(true);
@@ -112,8 +144,11 @@ export default function Activitys(props) {
                   cellphone: inputCellphone,
                 })
                 .then(function () {
+                  // upload image
                   notify('Dados atualizados com sucesso!', 1000, 'success');
+
                   setProgress(false);
+                  // end upload
                 })
                 .catch(function (error) {
                   // The document probably doesn't exist.
@@ -138,7 +173,6 @@ export default function Activitys(props) {
           })
           .then(function () {
             setProgress(false);
-            notify('Dados atualizados com sucesso!', 1000, 'success');
           })
           .catch(function (error) {
             // The document probably doesn't exist.
@@ -146,6 +180,47 @@ export default function Activitys(props) {
             console.error('Error updating document: ', error);
             notify('Falha ao atualizar os dados!', 1000, 'error');
           });
+      }
+
+      if (image !== null) {
+        const storage = firebase.storage();
+
+        const uploadTask = storage
+          .ref(
+            `profiles/${localStorage.getItem('@jacode-email')}/${image.name}`
+          )
+          .put(image);
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {},
+          (error) => {
+            // Error function ...
+            console.log(error);
+          },
+          () => {
+            // complete function ...
+            storage
+              .ref(`profiles/${localStorage.getItem('@jacode-email')}`)
+              .child(image.name)
+              .getDownloadURL()
+              .then((url) => {
+                userRef
+                  .update({
+                    profileImage: url,
+                  })
+                  .then(function () {
+                    setProgress(false);
+                    notify('Dados atualizados com sucesso!', 1000, 'success');
+                  })
+                  .catch(function (error) {
+                    // The document probably doesn't exist.
+                    setProgress(false);
+                    console.error('Error updating document: ', error);
+                    notify('Falha ao atualizar os dados!', 1000, 'error');
+                  });
+              });
+          }
+        );
       }
     } else {
       notify('Preencha todos os campos!', 1000, 'error');
@@ -157,12 +232,7 @@ export default function Activitys(props) {
     <div className={classes.root}>
       <CssBaseline />
 
-      <div>
-        <div className={classes.appBarSpacer} />
-      </div>
-
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid
             container
@@ -178,11 +248,9 @@ export default function Activitys(props) {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                margin: 10,
+                margin: 5,
               }}
             >
-              <h1>Meu Perfil</h1>
-
               {progressLoad ? (
                 <Backdrop className={classes.backdrop} open={progressLoad}>
                   <CircularProgress color="inherit" />
@@ -190,18 +258,22 @@ export default function Activitys(props) {
                 </Backdrop>
               ) : (
                 <>
-                  {/* <Avatar
-                    style={{ width: '150px', height: '150px' }}
+                  <Avatar
                     className={classes.avatar}
-                    src={ProfilePicture}
+                    src={previewImage}
                   ></Avatar>
 
-                  <input type="file" onChange={() => {}} /> */}
+                  <input
+                    type="file"
+                    onChange={handleChangeImageCourse}
+                    ref={fileRef}
+                  />
 
                   <FormControl
                     variant="outlined"
                     fullWidth
                     className={classes.formControl}
+                    style={{ marginTop: 40 }}
                   >
                     <Grid item xs={12}>
                       <TextField
