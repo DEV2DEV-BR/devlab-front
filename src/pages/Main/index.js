@@ -188,7 +188,7 @@ export default function Main(props) {
 
             {!istAuthenticated() ? (
               <div className={classe.heroButtons}>
-                <Grid container spacing={2} justify="center">
+                <Grid container spacing={3} justify="center">
                   <Grid item>
                     <Link to="/sign-in" style={{ textDecoration: 'none' }}>
                       <Button
@@ -199,7 +199,21 @@ export default function Main(props) {
                           color: '#fff',
                         }}
                       >
-                        Fazer Login
+                        Login
+                      </Button>
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link to="/recruiter" style={{ textDecoration: 'none' }}>
+                      <Button
+                        size="large"
+                        variant="contained"
+                        style={{
+                          backgroundColor: `${customizations?.secondaryColor}`,
+                          color: '#fff',
+                        }}
+                      >
+                        RECRUTADOR
                       </Button>
                     </Link>
                   </Grid>
@@ -209,11 +223,11 @@ export default function Main(props) {
                         size="large"
                         variant="contained"
                         style={{
-                          backgroundColor: `${customizations?.secondaryColor}`,
+                          backgroundColor: `${customizations?.primaryColor}`,
                           color: '#fff',
                         }}
                       >
-                        Cadastre-se
+                        CADASTRO
                       </Button>
                     </Link>
                   </Grid>
