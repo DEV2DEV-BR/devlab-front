@@ -10,8 +10,10 @@ import Dashboard from './pages/Dashboard';
 import Main from './pages/Main';
 import MyCourses from './pages/MyCourses';
 import MyStudents from './pages/MyStudents';
+import Workers from './pages/Workers';
 import PaymentRequest from './pages/PaymentRequested';
 import Profile from './pages/Profile';
+import PublicProfile from './pages/PublicProfile';
 import RegisterCourse from './pages/RegisterCourse';
 import SignIn from './pages/SignIn';
 import SignUpSteps from './pages/SignUpSteps';
@@ -45,6 +47,7 @@ const Routes = () => (
       <Route path="/sign-up" component={SignUpSteps} />
       <Route path="/course-details" component={CoursesDetails} />
       <Route path="/cart" component={Cart} />
+      <Route path="/public-profile" component={PublicProfile} />
       <PrivateRoute path="/checkout" component={Checkout} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-course" component={CreateCourse} />
@@ -54,6 +57,7 @@ const Routes = () => (
       <PrivateRoute path="/register-course" component={RegisterCourse} />
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
       <PrivateRoute path="/list-my-students" component={MyStudents} />
+      <PrivateRoute path="/workers" component={Workers} />
       <PrivateRoute path="/profile" component={Profile} />
       <PrivateRoute path="/payment-requested" component={PaymentRequest} />
     </Switch>

@@ -112,9 +112,10 @@ export default function SignIn(props) {
               .then((querySnapshot) => {
                 if (querySnapshot.docs.length > 0) {
                   querySnapshot.forEach((doc) => {
-                    const { id, myCourses, userType } = doc.data();
+                    const { id, myCourses, userType, isRecruiter } = doc.data();
 
                     localStorage.setItem('userType', userType);
+                    localStorage.setItem('isRecruiter', isRecruiter);
 
                     if (myCourses) {
                       localStorage.setItem(

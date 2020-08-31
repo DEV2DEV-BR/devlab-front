@@ -51,7 +51,7 @@ export default function Dashboard(props) {
     data: allStudents,
   });
 
-  const loadDataCourses = () => {
+  const loadMyStudents = () => {
     setProgress(true);
 
     async function fetchData() {
@@ -93,10 +93,7 @@ export default function Dashboard(props) {
   };
 
   useEffect(() => {
-    loadDataCourses();
-  }, []);
-
-  useEffect(() => {
+    loadMyStudents();
     return () => {
       setAllStudents('');
     };

@@ -69,9 +69,10 @@ export default function SignInComponent({ props }) {
               .get()
               .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                  const { id, myCourses, userType } = doc.data();
+                  const { id, myCourses, userType, isRecruiter } = doc.data();
 
                   localStorage.setItem('userType', userType);
+                  localStorage.setItem('isRecruiter', isRecruiter);
 
                   if (myCourses) {
                     localStorage.setItem(

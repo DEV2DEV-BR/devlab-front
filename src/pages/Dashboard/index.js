@@ -9,6 +9,7 @@ import CoursesList from '../../components/CoursesList';
 import Reports from '../../components/Reports';
 import NameAndPhone from '../../components/NameAndPhone';
 import firebase from 'firebase';
+import MenuIcons from '../../components/MenuIcons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,11 +88,9 @@ export default function Dashboard(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <div>
-        <div className={classes.appBarSpacer} />
-      </div>
 
       <main className={classes.content}>
+        {localStorage?.getItem('isRecruiter') === 'true' && <MenuIcons />}
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           {localStorage?.getItem('userType') === 'teacher' && (
@@ -117,7 +116,7 @@ export default function Dashboard(props) {
             )
           )}
         </Container>
-        <Box pt={4}>
+        <Box pt={4} style={{ position: 'absolute', bottom: 0, width: '100%' }}>
           <Copyright />
         </Box>
       </main>

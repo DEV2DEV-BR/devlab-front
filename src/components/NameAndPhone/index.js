@@ -9,6 +9,8 @@ import firebase from 'firebase';
 import React, { useState } from 'react';
 import { customizations } from '../../configs/customizations';
 import { notify } from '../../util/toast';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -43,6 +45,11 @@ export default function SignUp({ handleNext, completData, changeState }) {
   const [inputName, setInputName] = useState('');
   const [inputCellphone, setInputCellphone] = useState('');
   const [progress, setProgress] = useState(false);
+  const [recruiterCheck, setRecruiterCheck] = useState(false);
+
+  const handleChange = () => {
+    setRecruiterCheck(!recruiterCheck);
+  };
 
   const handleCreateUser = async () => {
     setProgress(true);
@@ -65,6 +72,11 @@ export default function SignUp({ handleNext, completData, changeState }) {
         uid: completData ? user.uid : localStorage.getItem('register-uid'),
         userType: 'student',
         createdAt: new Date(),
+        isRecruiter: recruiterCheck,
+        city: '',
+        state: '',
+        jobRole: '',
+        profileImage: '',
         id: '',
       })
       .then(function (docRef) {
@@ -124,6 +136,19 @@ export default function SignUp({ handleNext, completData, changeState }) {
                 label="Celular"
                 name="cellphone"
                 autoComplete="cellphone"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={recruiterCheck}
+                    onChange={handleChange}
+                    name="checkedB"
+                    color="primary"
+                  />
+                }
+                label="Sou Recrutador"
               />
             </Grid>
           </Grid>
