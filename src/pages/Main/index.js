@@ -204,7 +204,7 @@ export default function Main(props) {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link to="/recruiter" style={{ textDecoration: 'none' }}>
+                    <Link to="/workers" style={{ textDecoration: 'none' }}>
                       <Button
                         size="large"
                         variant="contained"
@@ -231,17 +231,6 @@ export default function Main(props) {
                       </Button>
                     </Link>
                   </Grid>
-                  {/* <Grid item>
-                    <Button
-                      href="https://jacode.coursify.me/"
-                      target="_blank"
-                      size="large"
-                      variant="contained"
-                      style={{ backgroundColor: '#f27676', color: '#fff' }}
-                    >
-                      Acessar Site Antigo
-                    </Button>
-                  </Grid> */}
                 </Grid>
               </div>
             ) : (
