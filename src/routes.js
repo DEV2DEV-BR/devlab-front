@@ -10,7 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Main from './pages/Main';
 import MyCourses from './pages/MyCourses';
 import MyStudents from './pages/MyStudents';
-import RecruiterArea from './pages/RecruiterArea';
+import Workers from './pages/Workers';
 import PaymentRequest from './pages/PaymentRequested';
 import Profile from './pages/Profile';
 import PublicProfile from './pages/PublicProfile';
@@ -57,7 +57,7 @@ const Routes = () => (
       <PrivateRoute path="/register-course" component={RegisterCourse} />
       <PrivateRoute path="/list-my-courses" component={MyCourses} />
       <PrivateRoute path="/list-my-students" component={MyStudents} />
-      <PrivateRoute path="/recruiter" component={RecruiterArea} />
+      <PrivateRoute path="/workers" component={Workers} />
       <PrivateRoute path="/profile" component={Profile} />
       <PrivateRoute path="/payment-requested" component={PaymentRequest} />
     </Switch>
