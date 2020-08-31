@@ -13,6 +13,7 @@ export const LeftBar = styled(Container)`
   display: flex;
   flex-direction: column;
   padding-top: 30px;
+  height: 100%;
   align-items: center;
   justify-content: flex-start;
   width: 28%;

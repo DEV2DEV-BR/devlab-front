@@ -1,11 +1,12 @@
-import { Container, Tabs, Chip } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
+import { Container, Button } from '@material-ui/core';
 import styled from 'styled-components';
+import { customizations } from '../../configs/customizations';
 
 export const StyledContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
 `;
 
@@ -18,10 +19,15 @@ export const LeftBar = styled(Container)`
   display: flex;
   flex-direction: column;
   padding-top: 30px;
+  height: 100vh;
   align-items: center;
   justify-content: flex-start;
   width: 28%;
   background-color: #f7f2f2;
+
+  span {
+    margin-bottom: 12px;
+  }
 
   h5 {
     text-align: center;
@@ -41,7 +47,15 @@ export const LeftBar = styled(Container)`
   }
 `;
 
-export const ContentTypes = styled.div``;
+export const ContentTypes = styled.div`
+  display: flex;
+  flex-direction: row;
+  span {
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 export const SpaceBar = styled.div`
   height: 30px;
@@ -58,30 +72,19 @@ export const Body = styled.div`
   justify-content: space-between;
   width: 100%;
   padding-bottom: 10px;
-
-  @media (max-width: 800px) {
-    flex-direction: column-reverse;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0px;
-    padding: 0px;
-  }
 `;
 
 export const StyledContentTop = styled.div`
   width: 100%;
 `;
 
-export const StyledTabs = styled(Tabs)`
-  width: 100%;
-  margin: 0px;
+export const StyledButton = styled(Button)`
+  color: #fff;
+  background-color: ${customizations?.primaryColor};
+  text-align: center;
 `;
 
 export const StyledBanner = styled.img`
   width: 100%;
   margin: 0px;
-`;
-
-export const StyledChip = styled(Chip)`
-  margin: 10px;
 `;
