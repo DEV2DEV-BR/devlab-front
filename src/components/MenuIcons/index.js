@@ -5,7 +5,7 @@ import DeveloperIcon from '../../assets/developer.svg';
 function MenuIcons(props) {
   return (
     <Container>
-      <ContentItem to="/recruiter">
+      <ContentItem to="/workers">
         <img src={DeveloperIcon} alt="developers" />
         Encontrar programadores
       </ContentItem>
