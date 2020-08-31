@@ -70,6 +70,7 @@ export default function Workers(props) {
                 jobRole={student?.jobRole}
                 state={student?.state}
                 city={student?.city}
+                history={props.history}
               />
             ))}
           </Body>

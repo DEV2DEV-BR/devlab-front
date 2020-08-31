@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import FaceIcon from '@material-ui/icons/Face';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import Copyright from '../../components/Copyright';
 import ResponsiveNavbar from '../../components/NavbarDashboard';
@@ -55,7 +55,24 @@ function a11yProps(index) {
 
 export default function PublicProfile(props) {
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [stateName, setName] = useState('');
+  const [stateProfileImage, setProfileImage] = useState('');
+  const [stateJobRole, setJobRole] = useState('');
+  const [stateCity, setCity] = useState('');
+  const [stateState, setState] = useState('');
+
+  useEffect(() => {
+    if (props.location) {
+      const { name, profileImage, jobRole, city, state } = props.location.state;
+      setName(name);
+      setProfileImage(profileImage);
+      setJobRole(jobRole);
+      setCity(city)
+      setState(state)
+    }
+    console.log()
+  }, [])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -70,10 +87,9 @@ export default function PublicProfile(props) {
       <ResponsiveNavbar />
       <StyledContainer>
         <LeftBar>
-          <StyledAvatar src="https://avatars0.githubusercontent.com/u/11825532?s=460&u=3c1c36dee0c91de191a65427a48cd38ef156b30d&v=4" />
-          <h5>Daniel de Andrade Lopes</h5>
-          <b>Frontend Developer at Fix</b>
-          <p>@danieldeandradelopes</p>
+          <StyledAvatar src={stateProfileImage} />
+          <h5>{stateName}</h5>
+          <b>{stateJobRole || 'Desenvolvedor'}</b>
           <p style={{ color: '#000000' }}>
             Developer: Mobile Android, React Native, React JS, NodeJS,
             Javascript, PHP, Bootstrap, HTML5 e CSS3 and NOW Flutter Dev. ;)
@@ -83,7 +99,7 @@ export default function PublicProfile(props) {
           <ul>
             <li>danieldeandradelopes@gmail.com</li>
             <li>(018) 99745-5866</li>
-            <li>www.jacode.com.br</li>
+            <li>{stateState}, {stateCity}</li>
           </ul>
         </LeftBar>
         <Body>
