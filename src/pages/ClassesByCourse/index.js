@@ -102,12 +102,11 @@ export default function ClassesByCourse(props) {
     };
 
     loadData();
-  }, []);
 
-  useEffect(() => {
     return () => {
       setClassesData([]);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

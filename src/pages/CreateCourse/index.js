@@ -86,10 +86,8 @@ export default function CreateCourse(props) {
   };
 
   useEffect(() => {
-    if (props.history.location.state) {
-      loadDataCourse();
-      setProgress(true);
-    }
+    loadDataCourse();
+    //eslint-disable-next-line
   }, []);
 
   const handleChangeImageCourse = (e) => {
@@ -101,34 +99,36 @@ export default function CreateCourse(props) {
 
   const loadDataCourse = () => {
     async function fetchData() {
-      const db = firebase.firestore();
+      if (props.history.location.state) {
+        setProgress(true);
+        const db = firebase.firestore();
 
-      const coursesRef = db
-        .collection('courses')
-        .doc(`${props.history.location.state.id}`);
+        const coursesRef = db
+          .collection('courses')
+          .doc(`${props.history.location.state.id}`);
 
-      await coursesRef
-        .get()
-        .then(function (doc) {
-          if (doc.exists) {
-            setInputName(doc.data().name);
-            setInputDuration(doc.data().duration);
-            setInputPrice(doc.data().price);
-            setInputCodePayment(doc.data().codePayment);
-            setInputShortDescription(doc.data().shortDescription);
-            setDescription(doc.data().description);
-            setRequirements(doc.data().requirements);
-            setProgress(false);
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!');
-          }
-        })
-        .catch(function (error) {
-          console.log('Error getting documents: ', error);
-        });
+        await coursesRef
+          .get()
+          .then(function (doc) {
+            if (doc.exists) {
+              setInputName(doc.data().name);
+              setInputDuration(doc.data().duration);
+              setInputPrice(doc.data().price);
+              setInputCodePayment(doc.data().codePayment);
+              setInputShortDescription(doc.data().shortDescription);
+              setDescription(doc.data().description);
+              setRequirements(doc.data().requirements);
+              setProgress(false);
+            } else {
+              // doc.data() will be undefined in this case
+              console.log('No such document!');
+            }
+          })
+          .catch(function (error) {
+            console.log('Error getting documents: ', error);
+          });
+      }
     }
-
     fetchData();
     setProgress(false);
   };

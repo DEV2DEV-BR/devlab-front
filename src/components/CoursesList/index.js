@@ -18,6 +18,7 @@ import { istAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
 import { addToCart } from '../../util/utils';
 import VisualFeedback from '../../components/VisualFeedback';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
+  },
+  skeleton: {
+    margin: '10px',
   },
 }));
 
@@ -130,21 +134,42 @@ const CoursesList = (props) => {
 
   useEffect(() => {
     loadDataCourses();
-  }, []);
 
-  useEffect(() => {
     return () => {
       setCoursesData('');
       setProgress('');
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
     <>
       {progress ? (
         <>
-          <CircularProgress color="inherit" />
-          <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
+          <div className={classes.skeleton}>
+            <Skeleton variant="rect" width={250} height={50} />
+            <Skeleton variant="text" />
+            <Skeleton variant="rect" width={250} height={250} />
+            <Skeleton variant="text" height={50} />
+          </div>
+          <div className={classes.skeleton}>
+            <Skeleton variant="rect" width={250} height={50} />
+            <Skeleton variant="text" />
+            <Skeleton variant="rect" width={250} height={250} />
+            <Skeleton variant="text" height={50} />
+          </div>
+          <div className={classes.skeleton}>
+            <Skeleton variant="rect" width={250} height={50} />
+            <Skeleton variant="text" />
+            <Skeleton variant="rect" width={250} height={250} />
+            <Skeleton variant="text" height={50} />
+          </div>
+          <div className={classes.skeleton}>
+            <Skeleton variant="rect" width={250} height={50} />
+            <Skeleton variant="text" />
+            <Skeleton variant="rect" width={250} height={250} />
+            <Skeleton variant="text" height={50} />
+          </div>
         </>
       ) : coursesData?.length > 0 ? (
         coursesData.map((m) => (

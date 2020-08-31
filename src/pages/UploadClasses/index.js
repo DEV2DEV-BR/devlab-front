@@ -120,13 +120,12 @@ export default function UploadFiles(props) {
 
   useEffect(() => {
     loadDataCourse();
-  }, []);
 
-  useEffect(() => {
     return () => {
       setCourseData([]);
       setClassesData([]);
     };
+    // eslint-disable-next-line
   }, []);
 
   const extensionsPermitted = ['mp3', 'mp4', 'avi'];

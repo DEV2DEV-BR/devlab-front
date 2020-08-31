@@ -144,10 +144,6 @@ export default function SignUpSteps(props) {
     setActiveStep(step);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
   const handleReset = () => {
     setActiveStep(0);
   };
@@ -184,34 +180,9 @@ export default function SignUpSteps(props) {
           </div>
         ) : (
           <div>
-            {/* <Typography className={classes.instructions}> */}
             <div className={classes.instructions}>
               {getStepContent(activeStep, props)}
             </div>
-            {/* </Typography> */}
-            {/* <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-              }}
-            >
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
-              >
-                Voltar
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? 'Fim' : 'Próximo'}
-              </Button>
-            </div> */}
           </div>
         )}
       </div>

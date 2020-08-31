@@ -60,7 +60,7 @@ export default class CustomChart extends PureComponent {
   render() {
     return (
       <BarChart
-        width={500}
+        width={350}
         height={300}
         data={data}
         margin={{

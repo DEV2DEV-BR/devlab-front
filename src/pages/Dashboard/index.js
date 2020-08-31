@@ -104,7 +104,7 @@ export default function Dashboard(props) {
               <CoursesList buy={false} history={history} />
             </Grid>
           ) : (
-            completedData == false && (
+            completedData === false && (
               <Grid
                 container
                 spacing={3}
