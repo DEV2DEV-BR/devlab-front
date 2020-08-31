@@ -29,6 +29,10 @@ const firebaseConfig = {
     process.env.NODE_ENV === 'production'
       ? `${process.env.REACT_APP_APP_ID}`
       : `${process.env.REACT_APP_APP_ID_STG}`,
+  measurementId:
+    process.env.NODE_ENV === 'production'
+      ? `${process.env.REACT_APP_MEASUREDMENT_ID}`
+      : `${process.env.REACT_APP_MEASUREDMENT_ID_STG}`,
 };
 
 // Initialize Firebase
