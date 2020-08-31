@@ -90,7 +90,7 @@ export default function Dashboard(props) {
       <CssBaseline />
 
       <main className={classes.content}>
-        <MenuIcons />
+        {localStorage?.getItem('isRecruiter') === 'true' && <MenuIcons />}
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           {localStorage?.getItem('userType') === 'teacher' && (
