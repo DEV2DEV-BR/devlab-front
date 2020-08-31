@@ -73,6 +73,10 @@ export default function SignUp({ handleNext, completData, changeState }) {
         userType: 'student',
         createdAt: new Date(),
         isRecruiter: recruiterCheck,
+        city: '',
+        state: '',
+        jobRole: '',
+        profileImage: '',
         id: '',
       })
       .then(function (docRef) {
