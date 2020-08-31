@@ -14,6 +14,11 @@ import Copyright from '../../components/Copyright';
 import { customizations } from '../../configs/customizations';
 import { notify } from '../../util/toast';
 import Avatar from '@material-ui/core/Avatar';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,14 +74,21 @@ export default function Profile(props) {
   const classes = useStyles();
   const [inputName, setInputName] = useState('');
   const [inputCellphone, setInputCellphone] = useState('');
+  const [inputCity, setInputCity] = useState('');
+  const [inputJobRole, setInputJobRole] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
   const [inputConfirmPassword, setInputConfirmPassword] = useState('');
-  const [progress, setProgress] = useState(false);
   const [progressLoad, setProgressLoad] = useState(false);
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [inputState, setInputState] = useState('');
   const fileRef = useRef();
+  const [recruiterCheck, setRecruiterCheck] = useState(false);
+
+  const handleChangeRecruiter = () => {
+    setRecruiterCheck(!recruiterCheck);
+  };
 
   const loadData = () => {
     setProgressLoad(true);
@@ -91,10 +103,14 @@ export default function Profile(props) {
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-              setPreviewImage(doc.data().profileImage);
-              setInputName(doc.data().name);
-              setInputEmail(doc.data().email);
-              setInputCellphone(doc.data().cellphone);
+              setPreviewImage(doc.data()?.profileImage);
+              setInputName(doc.data()?.name || '');
+              setInputEmail(doc.data()?.email || '');
+              setInputCity(doc.data()?.city || '');
+              setInputState(doc.data()?.state || '');
+              setInputCellphone(doc.data()?.cellphone || '');
+              setInputJobRole(doc.data()?.function || '');
+              setRecruiterCheck(doc.data()?.isRecruiter || false);
               setProgressLoad(false);
             });
           });
@@ -105,6 +121,13 @@ export default function Profile(props) {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleChange = (event) => {
+    setInputState(event.target.value);
+  };
+  const handleChangeFunction = (event) => {
+    setInputJobRole(event.target.value);
+  };
 
   const handleChangeImageCourse = (e) => {
     if (e.target.files[0]) {
@@ -124,12 +147,25 @@ export default function Profile(props) {
   };
 
   const handleRegister = () => {
-    setProgress(true);
+    setProgressLoad(true);
     const db = firebase.firestore();
 
     var userRef = db.collection('users').doc(localStorage.getItem('user'));
 
-    if (inputName !== '' && inputCellphone !== '') {
+    if (
+      inputName !== '' &&
+      inputCellphone !== '' &&
+      inputCity !== '' &&
+      inputState !== ''
+    ) {
+      if (!recruiterCheck) {
+        if (inputJobRole == '') {
+          notify('Preencha todos os campos!', 1000, 'error');
+          setProgressLoad(false);
+          return;
+        }
+      }
+
       if (inputPassword !== '' && inputConfirmPassword !== '') {
         if (inputPassword === inputConfirmPassword) {
           var user = firebase.auth().currentUser;
@@ -142,41 +178,50 @@ export default function Profile(props) {
                 .update({
                   name: inputName,
                   cellphone: inputCellphone,
+                  city: inputCity,
+                  state: inputState,
+                  isRecruiter: recruiterCheck,
+                  jobRole: inputJobRole,
                 })
                 .then(function () {
                   // upload image
                   notify('Dados atualizados com sucesso!', 1000, 'success');
 
-                  setProgress(false);
+                  setProgressLoad(false);
                   // end upload
                 })
                 .catch(function (error) {
                   // The document probably doesn't exist.
                   console.error('Error updating document: ', error);
                   notify('Falha ao atualizar os dados!', 1000, 'error');
-                  setProgress(false);
+                  setProgressLoad(false);
                 });
             })
             .catch(function (error) {
               // An error happened.
-              setProgress(false);
+              setProgressLoad(false);
             });
         } else {
           notify('As senhas não conferem!', 1000, 'error');
-          setProgress(false);
+          setProgressLoad(false);
         }
       } else {
         userRef
           .update({
             name: inputName,
             cellphone: inputCellphone,
+            city: inputCity,
+            state: inputState,
+            isRecruiter: recruiterCheck,
+            jobRole: inputJobRole,
           })
           .then(function () {
-            setProgress(false);
+            notify('Dados atualizados com sucesso!', 1000, 'success');
+            setProgressLoad(false);
           })
           .catch(function (error) {
             // The document probably doesn't exist.
-            setProgress(false);
+            setProgressLoad(false);
             console.error('Error updating document: ', error);
             notify('Falha ao atualizar os dados!', 1000, 'error');
           });
@@ -209,12 +254,12 @@ export default function Profile(props) {
                     profileImage: url,
                   })
                   .then(function () {
-                    setProgress(false);
-                    notify('Dados atualizados com sucesso!', 1000, 'success');
+                    setProgressLoad(false);
+                    notify('Imagem atualizada!', 1000, 'success');
                   })
                   .catch(function (error) {
                     // The document probably doesn't exist.
-                    setProgress(false);
+                    setProgressLoad(false);
                     console.error('Error updating document: ', error);
                     notify('Falha ao atualizar os dados!', 1000, 'error');
                   });
@@ -224,7 +269,7 @@ export default function Profile(props) {
       }
     } else {
       notify('Preencha todos os campos!', 1000, 'error');
-      setProgress(false);
+      setProgressLoad(false);
     }
   };
 
@@ -267,6 +312,19 @@ export default function Profile(props) {
                     type="file"
                     onChange={handleChangeImageCourse}
                     ref={fileRef}
+                  />
+
+                  <FormControlLabel
+                    style={{ marginTop: 20 }}
+                    control={
+                      <Checkbox
+                        checked={recruiterCheck}
+                        onChange={handleChangeRecruiter}
+                        name="checkedB"
+                        color="primary"
+                      />
+                    }
+                    label="Sou Recrutador"
                   />
 
                   <FormControl
@@ -319,7 +377,6 @@ export default function Profile(props) {
                       <TextField
                         variant="outlined"
                         fullWidth
-                        disabled
                         id="cellphone"
                         value={inputCellphone}
                         onChange={(event) =>
@@ -330,6 +387,97 @@ export default function Profile(props) {
                         autoComplete="cellphone"
                       />
                     </Grid>
+                  </FormControl>
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="city"
+                        value={inputCity}
+                        onChange={(event) => setInputCity(event.target.value)}
+                        label="Cidade"
+                        name="city"
+                        autoComplete="city"
+                      />
+                    </Grid>
+                  </FormControl>
+
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      Estado
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={inputState}
+                      onChange={handleChange}
+                      label="Estado"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={'AC'}>AC</MenuItem>
+                      <MenuItem value={'AL'}>AL</MenuItem>
+                      <MenuItem value={'AP'}>AP</MenuItem>
+                      <MenuItem value={'AM'}>AM</MenuItem>
+                      <MenuItem value={'BA'}>BA</MenuItem>
+                      <MenuItem value={'CE'}>CE</MenuItem>
+                      <MenuItem value={'DF'}>DF</MenuItem>
+                      <MenuItem value={'ES'}>ES</MenuItem>
+                      <MenuItem value={'GO'}>GO</MenuItem>
+                      <MenuItem value={'MA'}>MA</MenuItem>
+                      <MenuItem value={'MT'}>MT</MenuItem>
+                      <MenuItem value={'MS'}>MS</MenuItem>
+                      <MenuItem value={'MG'}>MG</MenuItem>
+                      <MenuItem value={'PA'}>PA</MenuItem>
+                      <MenuItem value={'PB'}>PB</MenuItem>
+                      <MenuItem value={'PR'}>PR</MenuItem>
+                      <MenuItem value={'PE'}>PE</MenuItem>
+                      <MenuItem value={'PI'}>PI</MenuItem>
+                      <MenuItem value={'RJ'}>RJ</MenuItem>
+                      <MenuItem value={'RN'}>RN</MenuItem>
+                      <MenuItem value={'RS'}>RS</MenuItem>
+                      <MenuItem value={'RO'}>RO</MenuItem>
+                      <MenuItem value={'RR'}>RR</MenuItem>
+                      <MenuItem value={'SC'}>SC</MenuItem>
+                      <MenuItem value={'SP'}>SP</MenuItem>
+                      <MenuItem value={'SE'}>SE</MenuItem>
+                      <MenuItem value={'TO'}>TO</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      Função
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={inputJobRole}
+                      onChange={handleChangeFunction}
+                      label="Função"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={'Frontend Developer'}>Frontend</MenuItem>
+                      <MenuItem value={'Backend Developer'}>Backend</MenuItem>
+                      <MenuItem value={'Fullstack Developer'}>
+                        Fullstack
+                      </MenuItem>
+                    </Select>
                   </FormControl>
 
                   <FormControl
@@ -374,57 +522,42 @@ export default function Profile(props) {
                       />
                     </Grid>
                   </FormControl>
-                </>
-              )}
 
-              {progress ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    width: '100%',
-                    justifyContent: 'center',
-                    padding: 20,
-                  }}
-                >
-                  <CircularProgress />
-                  <p style={{ margin: 10 }}>Atualizando...</p>
-                </div>
-              ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    width: '100%',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    onClick={handleRegister}
+                  <div
                     style={{
-                      backgroundColor: `${customizations?.secondaryColor}`,
-                      color: '#fff',
-                      marginRight: 10,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                      justifyContent: 'space-between',
                     }}
-                    className={classes.submit}
                   >
-                    ATUALIZAR
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: `${customizations?.primaryColor}`,
-                      color: '#fff',
-                    }}
-                    className={classes.submitRight}
-                  >
-                    Cancelar
-                  </Button>
-                </div>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      onClick={handleRegister}
+                      style={{
+                        backgroundColor: `${customizations?.secondaryColor}`,
+                        color: '#fff',
+                        marginRight: 10,
+                      }}
+                      className={classes.submit}
+                    >
+                      ATUALIZAR
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: `${customizations?.primaryColor}`,
+                        color: '#fff',
+                      }}
+                      className={classes.submitRight}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </>
               )}
             </div>
           </Grid>
