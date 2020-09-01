@@ -15,7 +15,7 @@ export default function Workers(props) {
     async function fetchData() {
       const db = firebase.firestore();
 
-      const studentsRef = db.collection('users').orderBy('name').limit(20);
+      const studentsRef = db.collection('users').orderBy('name');
 
       const students = [];
 
