@@ -19,6 +19,7 @@ import {
   StyledBanner,
   StyledChip,
 } from './styles';
+import Capa from '../../assets/capa.jpg'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -104,7 +105,7 @@ export default function PublicProfile(props) {
         </LeftBar>
         <Body>
           <StyledContentTop>
-            <StyledBanner src="https://media-exp1.licdn.com/dms/image/C4D16AQG0pbkcpS2YSQ/profile-displaybackgroundimage-shrink_200_800/0?e=1604534400&v=beta&t=WAZfq-r1UFWOZdyn9WpLPV2VN1IERrZN02ezSqyw_no" />
+            <StyledBanner src={Capa} />
             <StyledTabs
               value={value}
               onChange={handleChange}

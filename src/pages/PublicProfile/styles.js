@@ -86,6 +86,7 @@ export const StyledTabs = styled(Tabs)`
 
 export const StyledBanner = styled.img`
   width: 100%;
+  height: 320px;
   margin: 0px;
 `;
 
