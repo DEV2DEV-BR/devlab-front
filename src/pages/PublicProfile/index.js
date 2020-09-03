@@ -20,6 +20,7 @@ import {
   StyledChip,
 } from './styles';
 import Capa from '../../assets/capa.jpg'
+import { email } from '../../services/auth';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -61,16 +62,21 @@ export default function PublicProfile(props) {
   const [stateProfileImage, setProfileImage] = useState('');
   const [stateJobRole, setJobRole] = useState('');
   const [stateCity, setCity] = useState('');
+  const [stateEmail, setStateEmail] = useState('');
+  const [stateCellphone, setStateCellphone] = useState('');
   const [stateState, setState] = useState('');
 
   useEffect(() => {
     if (props.location) {
-      const { name, profileImage, jobRole, city, state } = props.location.state;
+      const { name, profileImage, jobRole, city, state, email, cellphone } = props.location.state;
+      console.log(name, profileImage, jobRole, city, state)
       setName(name);
       setProfileImage(profileImage);
       setJobRole(jobRole);
       setCity(city)
       setState(state)
+      setStateEmail(email)
+      setStateCellphone(cellphone)
     }
     console.log()
   }, [])
@@ -98,8 +104,8 @@ export default function PublicProfile(props) {
           <hr />
           <h5>Contato</h5>
           <ul>
-            <li>danieldeandradelopes@gmail.com</li>
-            <li>(018) 99745-5866</li>
+            <li>{stateEmail}</li>
+            <li>{stateCellphone}</li>
             <li>{stateState}, {stateCity}</li>
           </ul>
         </LeftBar>
