@@ -20,7 +20,7 @@ import {
   StyledChip,
 } from './styles';
 import Capa from '../../assets/capa.jpg'
-import { email } from '../../services/auth';
+import JoditEditor from 'jodit-react';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,11 +65,22 @@ export default function PublicProfile(props) {
   const [stateEmail, setStateEmail] = useState('');
   const [stateCellphone, setStateCellphone] = useState('');
   const [stateState, setState] = useState('');
+  const [stateAboutMe, setStateAboutMe] = useState('');
+  const [stateProfessionalExperience, setStateProfessionalExperience] = useState('');
+  const [stateSkills, setStateSkills] = useState('');
+
+  const config = {
+    readonly: true,
+    toolbar: false,
+    // fullsize: false,
+    // disablePlugins: true,
+    // inline: true,
+    sourceEditor: 'area',
+  };
 
   useEffect(() => {
     if (props.location) {
-      const { name, profileImage, jobRole, city, state, email, cellphone } = props.location.state;
-      console.log(name, profileImage, jobRole, city, state)
+      const { name, profileImage, jobRole, city, state, email, cellphone, aboutMe, professionalExperience, skills } = props.location.state;
       setName(name);
       setProfileImage(profileImage);
       setJobRole(jobRole);
@@ -77,8 +88,12 @@ export default function PublicProfile(props) {
       setState(state)
       setStateEmail(email)
       setStateCellphone(cellphone)
+      setStateAboutMe(aboutMe)
+      setStateProfessionalExperience(professionalExperience)
+      setStateSkills(skills)
+
+      console.log(professionalExperience)
     }
-    console.log()
   }, [])
 
   const handleChange = (event, newValue) => {
@@ -97,10 +112,11 @@ export default function PublicProfile(props) {
           <StyledAvatar src={stateProfileImage} />
           <h5>{stateName}</h5>
           <b>{stateJobRole || 'Desenvolvedor'}</b>
-          <p style={{ color: '#000000' }}>
-            Developer: Mobile Android, React Native, React JS, NodeJS,
-            Javascript, PHP, Bootstrap, HTML5 e CSS3 and NOW Flutter Dev. ;)
-          </p>
+          <JoditEditor
+            value={stateSkills || 'Linguagens de programação diversas'}
+            config={config}
+          />
+
           <hr />
           <h5>Contato</h5>
           <ul>
@@ -122,8 +138,8 @@ export default function PublicProfile(props) {
             >
               <Tab label="Bio" {...a11yProps(0)} />
               <Tab label="Experiências profissionais" {...a11yProps(1)} />
-              <Tab label="Skills e Linguagens" {...a11yProps(2)} />
-              <Tab label="Cursos feitos" {...a11yProps(3)} />
+              {/* <Tab label="Skills e Linguagens" {...a11yProps(2)} /> */}
+              {/* <Tab label="Cursos feitos" {...a11yProps(3)} /> */}
             </StyledTabs>
           </StyledContentTop>
           <SwipeableViews
@@ -131,49 +147,24 @@ export default function PublicProfile(props) {
             index={value}
             onChangeIndex={handleChangeIndex}
           >
+
+
+
             <TabPanel value={value} index={0} dir={theme.direction}>
               <h4>Sobre Mim</h4>
-              <p>
-                Sempre que tenho um novo desafio é aí que estou feliz, pois,
-                quando um novo desafio é proposto, novos conhecimentos virão,
-                bem como aprendizados de forma rápida imersiva. O mais
-                interessante de ser um programador é descobrir todos os dias que
-                sabe muitas coisas e ainda existe muito mais para se aprender.
-              </p>
-              <hr />
-              <h4>Educação</h4>
-              <b>Faculdade de Tecnologia de Presidente Prudente</b>
-              <p>2013 - 2016</p>
-              <p>
-                Atualmente estou em processo de construção de um aplicativo em
-                Java, para fins de conclusão de curso, entre outros projetos
-                realizados para as demais disciplinas.
-              </p>
+              <JoditEditor
+                value={stateAboutMe || 'Sou um programador apaixonado pelas tecnologias com que trabalho!'}
+                config={config}
+
+              />
               <hr />
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
               <h4>Experiencias</h4>
-              <b>Eventials</b>
-              <p>Frontend Developer</p>
-              <p>02/2020 - 08/2020</p>
-              <p>
-                Na Eventials tive a grata oportunidade de trabalhar com muitas
-                tecnologias, algumas delas são:
-              </p>
-              <p>
-                - Javascript - React - GoLang - Python - Django - Aws - Jenkins
-                - Git Além de ter atuado de forma alternada entre a equipe como
-                Scrum Master.
-              </p>
-              <hr />
-              <b>V-Lab Health</b>
-              <p>Frontend Developer</p>
-              <p>02/2020 - 08/2020</p>
-              <p>
-                A V-Lab me proporcionou trabalhar com diversas tecnologias,
-                algumas delas são:
-              </p>
-              <p>- Javascript - React - Aws - ECS - S3</p>
+              <JoditEditor
+                value={stateProfessionalExperience || 'TESTES'}
+                config={config}
+              />
               <hr />
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>

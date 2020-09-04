@@ -69,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
+  submit: {
+    width: '95%'
+  }
 }));
 
 export default function Profile(props) {
@@ -85,7 +88,7 @@ export default function Profile(props) {
   const [previewImage, setPreviewImage] = useState(null);
   const [inputState, setInputState] = useState('');
   const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    readonly: false,
   };
 
   const editorSkills = useRef(null);
@@ -94,7 +97,7 @@ export default function Profile(props) {
     <p>Ex.: Aqui vão as suas Ex: React, Android, Java, Javascript etc.</p>
   `);
 
-  const editorRequirement = useRef(null);
+  const editorAboutMe = useRef(null);
   const [inputAboutMe, setInputAboutMe] = useState(`
     <h3>Aqui vai uma descrição sobre você</h3>
     <p>Ex: tenho a tecnologia como um dos meus principais gostos na vida.</p>
@@ -191,7 +194,7 @@ export default function Profile(props) {
   };
 
   const redirectToProfile = () => {
-    props.history.push('/public-profile', { name: inputName, profileImage: previewImage, jobRole: inputJobRole, state: inputState, city: inputCity, email: inputEmail, cellphone: inputCellphone })
+    props.history.push('/public-profile', { name: inputName, profileImage: previewImage, jobRole: inputJobRole, state: inputState, city: inputCity, email: inputEmail, cellphone: inputCellphone, skills: inputSkills, professionalExperience: inputProfessionalExperience, aboutMe: inputAboutMe })
   }
 
   const handleRegister = () => {
@@ -230,6 +233,9 @@ export default function Profile(props) {
                   state: inputState,
                   isRecruiter: recruiterCheck,
                   jobRole: inputJobRole,
+                  aboutMe: inputAboutMe,
+                  skills: inputSkills,
+                  professionalExperience: inputProfessionalExperience
                 })
                 .then(function () {
                   // upload image
@@ -262,6 +268,9 @@ export default function Profile(props) {
             state: inputState,
             isRecruiter: recruiterCheck,
             jobRole: inputJobRole,
+            aboutMe: inputAboutMe,
+            skills: inputSkills,
+            professionalExperience: inputProfessionalExperience
           })
           .then(function () {
             notify('Dados atualizados com sucesso!', 1000, 'success');
@@ -377,13 +386,12 @@ export default function Profile(props) {
 
                     <Button
                       type="button"
-                      fullWidth
                       variant="contained"
                       onClick={redirectToProfile}
                       style={{
                         backgroundColor: `${customizations?.secondaryColor}`,
                         color: '#fff',
-                        marginRight: 10,
+                        padding: 10,
                       }}
                       className={classes.submit}
                     >
@@ -611,7 +619,7 @@ export default function Profile(props) {
                     >
                       <Grid item xs={12}>
                         <JoditEditor
-                          ref={editorRequirement}
+                          ref={editorAboutMe}
                           value={inputAboutMe}
                           config={config}
                           tabIndex={1} // tabIndex of textarea
