@@ -186,7 +186,7 @@ export default function Main(props) {
               </Tooltip>
             </Typography>
 
-            {!istAuthenticated() ? (
+            {!istAuthenticated() && (
               <div className={classe.heroButtons}>
                 <Grid container spacing={3} justify="center">
                   <Grid item>
@@ -203,20 +203,7 @@ export default function Main(props) {
                       </Button>
                     </Link>
                   </Grid>
-                  <Grid item>
-                    <Link to="/workers" style={{ textDecoration: 'none' }}>
-                      <Button
-                        size="large"
-                        variant="contained"
-                        style={{
-                          backgroundColor: `${customizations?.secondaryColor}`,
-                          color: '#fff',
-                        }}
-                      >
-                        RECRUTADOR
-                      </Button>
-                    </Link>
-                  </Grid>
+
                   <Grid item>
                     <Link to="/sign-up" style={{ textDecoration: 'none' }}>
                       <Button
@@ -233,10 +220,30 @@ export default function Main(props) {
                   </Grid>
                 </Grid>
               </div>
-            ) : (
-              ''
             )}
           </Container>
+          <Grid
+            item
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 20,
+            }}
+          >
+            <Link to="/workers" style={{ textDecoration: 'none' }}>
+              <Button
+                size="large"
+                variant="contained"
+                style={{
+                  backgroundColor: `${customizations?.secondaryColor}`,
+                  color: '#fff',
+                }}
+              >
+                ENCONTRAR PROGRAMADORES
+              </Button>
+            </Link>
+          </Grid>
         </div>
         {/* <h1 style={{ textAlign: "center", color: '#6d6d6d' }}>Nossos Cursos</h1> */}
         <Container className={classe.cardGrid} maxWidth="lg">
