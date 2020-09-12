@@ -3,21 +3,31 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { FilterList } from '@material-ui/icons/';
 import React, { useState } from 'react';
 import { ContentTypes, LeftBar, StyledButton, StyledHr } from './styles';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
-export default function LeftBarWorkers() {
-  const [recruiterCheck, setRecruiterCheck] = useState(false);
-  const [value, setValue] = React.useState(0);
+export default function LeftBarWorkers({
+  all,
+  frontend,
+  backend,
+  fullstack,
+  applyFilters,
+}) {
+  const [value, setValue] = React.useState('Todos perfis');
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
-
-  const handleChangeCheckBox = () => {
-    setRecruiterCheck(!recruiterCheck);
+  const handleChange = (event) => {
+    if (event.target.value == 'Frontend Developer') {
+      frontend();
+    } else if (event.target.value == 'Backend Developer') {
+      backend();
+    } else if (event.target.value == 'Fullstack Developer') {
+      fullstack();
+    } else {
+      all();
+    }
+    setValue(event.target.value);
   };
 
   return (
@@ -30,16 +40,45 @@ export default function LeftBarWorkers() {
         }}
       >
         <FilterList />
-        <h4>Filtros</h4>
+        <h4>Filtrar</h4>
       </div>
       <StyledHr />
       <span>Perfil</span>
       <ContentTypes>
-        <FormControlLabel
+        <FormControl component="fieldset">
+          <RadioGroup
+            aria-label="gender"
+            name="gender1"
+            value={value}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value="Todos perfis"
+              control={<Radio />}
+              label="Todos perfis"
+            />
+            <FormControlLabel
+              value="Backend Developer"
+              control={<Radio />}
+              label="Backend Developer"
+            />
+            <FormControlLabel
+              value="Frontend Developer"
+              control={<Radio />}
+              label="Frontend Developer"
+            />
+            <FormControlLabel
+              value="Fullstack Developer"
+              control={<Radio />}
+              label="Fullstack Developer"
+            />
+          </RadioGroup>
+        </FormControl>
+        {/* <FormControlLabel
           control={
             <Checkbox
-              checked={recruiterCheck}
-              onChange={handleChangeCheckBox}
+              checked={stateBackend}
+              onChange={handleChangeBackend}
               name="checkedB"
               color="primary"
             />
@@ -49,8 +88,8 @@ export default function LeftBarWorkers() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={recruiterCheck}
-              onChange={handleChangeCheckBox}
+              checked={stateFrontend}
+              onChange={handleChangeFrontend}
               name="checkedB"
               color="primary"
             />
@@ -60,17 +99,17 @@ export default function LeftBarWorkers() {
         <FormControlLabel
           control={
             <Checkbox
-              checked={recruiterCheck}
-              onChange={handleChangeCheckBox}
+              checked={stateFullStack}
+              onChange={handleChangeFullStack}
               name="checkedB"
               color="primary"
             />
           }
           label="FullStack"
-        />
+        /> */}
       </ContentTypes>
-      <StyledHr />
-      <span>Skills</span>
+      {/* <StyledHr /> */}
+      {/* <span>Skills</span>
       <ContentTypes>
         <FormControlLabel
           control={
@@ -105,8 +144,8 @@ export default function LeftBarWorkers() {
           }
           label="Javascript"
         />
-      </ContentTypes>
-      <ContentTypes>
+      </ContentTypes> */}
+      {/* <ContentTypes>
         <FormControlLabel
           control={
             <Checkbox
@@ -129,8 +168,8 @@ export default function LeftBarWorkers() {
           }
           label="PHP"
         />
-      </ContentTypes>
-      <StyledHr />
+      </ContentTypes> */}
+      {/* <StyledHr />
       <span>Frameworks</span>
       <ContentTypes>
         <FormControlLabel
@@ -179,11 +218,11 @@ export default function LeftBarWorkers() {
           }
           label="Node"
         />
-      </ContentTypes>
+      </ContentTypes> */}
 
       <StyledHr />
 
-      <StyledButton fullWidth variant="contained">
+      <StyledButton fullWidth variant="contained" onClick={applyFilters}>
         Aplicar filtros
       </StyledButton>
     </LeftBar>
