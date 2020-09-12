@@ -25,7 +25,19 @@ export default function Workers(props) {
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            const { id, name, jobRole, profileImage, city, state, email, cellphone, skills, professionalExperience, aboutMe } = doc.data();
+            const {
+              id,
+              name,
+              jobRole,
+              profileImage,
+              city,
+              state,
+              email,
+              cellphone,
+              skills,
+              professionalExperience,
+              aboutMe,
+            } = doc.data();
 
             const studentObject = {
               id,
@@ -38,7 +50,7 @@ export default function Workers(props) {
               cellphone,
               skills,
               professionalExperience,
-              aboutMe
+              aboutMe,
             };
             students.push(studentObject);
           });

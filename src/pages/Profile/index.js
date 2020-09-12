@@ -86,9 +86,6 @@ export default function Profile(props) {
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [inputState, setInputState] = useState('');
-  const config = {
-    readonly: false,
-  };
 
   const fileRef = useRef();
   const [recruiterCheck, setRecruiterCheck] = useState(false);
@@ -154,15 +151,7 @@ export default function Profile(props) {
   };
 
   const redirectToProfile = () => {
-    props.history.push('/public-profile', {
-      name: inputName,
-      profileImage: previewImage,
-      jobRole: inputJobRole,
-      state: inputState,
-      city: inputCity,
-      email: inputEmail,
-      cellphone: inputCellphone,
-    });
+    props.history.push(`/public-profile/${inputEmail}`);
   };
 
   const handleRegister = () => {

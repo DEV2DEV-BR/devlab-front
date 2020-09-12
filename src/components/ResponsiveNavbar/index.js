@@ -22,94 +22,92 @@ function ResponsiveNavbar(props) {
   };
 
   return (
-    <>
-      <Navbar
-        expand="lg"
-        style={{ backgroundColor: `${customizations?.primaryColor}` }}
-      >
-        <StyledLink to="/">
-          <Navbar.Brand style={{ color: '#fff' }}>
-            <b>{`<JACODE/> XD`}</b>
-          </Navbar.Brand>
-        </StyledLink>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto"></Nav>
-          <IconContainerButton>
-            <StyledLink to="/">
-              <IconButton
-                color="inherit"
-                style={{ marginRight: 15, padding: 0, color: '#fff' }}
+    <Navbar
+      expand="lg"
+      style={{ backgroundColor: `${customizations?.primaryColor}` }}
+    >
+      <StyledLink to="/">
+        <Navbar.Brand style={{ color: '#fff' }}>
+          <b>{`<JACODE/> XD`}</b>
+        </Navbar.Brand>
+      </StyledLink>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto"></Nav>
+        <IconContainerButton>
+          <StyledLink to="/">
+            <IconButton
+              color="inherit"
+              style={{ marginRight: 15, padding: 0, color: '#fff' }}
+            >
+              <Badge color="secondary">
+                <StorefrontIcon />
+              </Badge>
+              <p style={{ fontSize: 12, margin: 2 }}>Loja</p>
+            </IconButton>
+          </StyledLink>
+          <StyledLink to="/cart">
+            <IconButton
+              color="inherit"
+              style={{ marginRight: 15, padding: 0, color: '#fff' }}
+            >
+              <Badge
+                color="secondary"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '12px',
+                }}
               >
-                <Badge color="secondary">
-                  <StorefrontIcon />
-                </Badge>
-                <p style={{ fontSize: 12, margin: 2 }}>Loja</p>
-              </IconButton>
-            </StyledLink>
-            <StyledLink to="/cart">
-              <IconButton
-                color="inherit"
-                style={{ marginRight: 15, padding: 0, color: '#fff' }}
-              >
-                <Badge
-                  color="secondary"
+                {getCart()?.length} <ShoppingCartIcon />
+              </Badge>
+              <p style={{ fontSize: 12, margin: 2 }}>Carrinho</p>
+            </IconButton>
+          </StyledLink>
+
+          {!istAuthenticated() ? (
+            <>
+              <StyledLink to="/sign-in">
+                <Button
+                  variant="contained"
+                  size="small"
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    fontSize: '12px',
+                    backgroundColor: `${customizations?.secondaryColor}`,
+                    color: '#fff',
                   }}
                 >
-                  {getCart()?.length} <ShoppingCartIcon />
-                </Badge>
-                <p style={{ fontSize: 12, margin: 2 }}>Carrinho</p>
-              </IconButton>
-            </StyledLink>
-
-            {!istAuthenticated() ? (
-              <>
-                <StyledLink to="/sign-in">
-                  <Button
-                    variant="contained"
-                    size="small"
-                    style={{
-                      backgroundColor: `${customizations?.secondaryColor}`,
-                      color: '#fff',
-                    }}
-                  >
-                    Login
-                  </Button>
-                </StyledLink>
-              </>
-            ) : (
-              <>
-                <StyledLink to="/dashboard">
-                  <IconButton
-                    color="inherit"
-                    style={{ marginRight: 15, padding: 0, color: '#fff' }}
-                  >
-                    <Badge color="secondary">
-                      <AccountBoxIcon />
-                    </Badge>
-                    <p style={{ fontSize: 12, margin: 2 }}>Minha Conta</p>
-                  </IconButton>
-                </StyledLink>
-
+                  Login
+                </Button>
+              </StyledLink>
+            </>
+          ) : (
+            <>
+              <StyledLink to="/dashboard">
                 <IconButton
-                  onClick={handleLogout}
-                  style={{ margin: 0, padding: 0, color: '#fff' }}
+                  color="inherit"
+                  style={{ marginRight: 15, padding: 0, color: '#fff' }}
                 >
                   <Badge color="secondary">
-                    <ExitToAppIcon />
+                    <AccountBoxIcon />
                   </Badge>
-                  <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
+                  <p style={{ fontSize: 12, margin: 2 }}>Minha Conta</p>
                 </IconButton>
-              </>
-            )}
-          </IconContainerButton>
-        </Navbar.Collapse>
-      </Navbar>
-    </>
+              </StyledLink>
+
+              <IconButton
+                onClick={handleLogout}
+                style={{ margin: 0, padding: 0, color: '#fff' }}
+              >
+                <Badge color="secondary">
+                  <ExitToAppIcon />
+                </Badge>
+                <p style={{ fontSize: 12, margin: 2 }}>Sair</p>
+              </IconButton>
+            </>
+          )}
+        </IconContainerButton>
+      </Navbar.Collapse>
+    </Navbar>
   );
 }
 

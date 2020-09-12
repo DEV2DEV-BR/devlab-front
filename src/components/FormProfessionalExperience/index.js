@@ -33,7 +33,6 @@ const FormProfessionalExperience = () => {
   }, []);
 
   const handleRegister = () => {
-    console.log('register');
     setProgressLoad(true);
     const db = firebase.firestore();
 

@@ -24,6 +24,7 @@ import {
   StyledContentTop,
   StyledTabs,
 } from './styles';
+import firebase from 'firebase';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -69,46 +70,50 @@ export default function PublicProfile(props) {
   const [stateCellphone, setStateCellphone] = useState('');
   const [stateState, setState] = useState('');
   const [modalShow, setModalShow] = React.useState(false);
-  const [stateAboutMe, setStateAboutMe] = useState('');
   const [option, setOption] = useState('');
+  const [stateAboutMe, setStateAboutMe] = useState(null);
   const [
     stateProfessionalExperience,
     setStateProfessionalExperience,
-  ] = useState('');
-  const [stateSkills, setStateSkills] = useState('');
-
-  const config = {
-    readonly: true,
-    toolbar: false,
-    sourceEditor: 'area',
-  };
+  ] = useState(null);
+  const [stateSkills, setStateSkills] = useState(null);
+  const [enableEdit, setEnableEdit] = useState(false);
 
   useEffect(() => {
-    if (props.location) {
-      const {
-        name,
-        profileImage,
-        jobRole,
-        city,
-        state,
-        email,
-        cellphone,
-        aboutMe,
-        professionalExperience,
-        skills,
-      } = props.location.state;
-      setName(name);
-      setProfileImage(profileImage);
-      setJobRole(jobRole);
-      setCity(city);
-      setState(state);
-      setStateEmail(email);
-      setStateCellphone(cellphone);
-      setStateAboutMe(aboutMe);
-      setStateProfessionalExperience(professionalExperience);
-      setStateSkills(skills);
+    if (props.match) {
+      const { email } = props.match.params;
 
-      console.log(professionalExperience);
+      if (email === localStorage.getItem('@jacode-email')) {
+        setEnableEdit(true);
+      }
+
+      const db = firebase.firestore();
+
+      const usersRef = db.collection('users');
+
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          usersRef
+            .where('email', '==', email)
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                setName(doc.data().name);
+                setProfileImage(doc.data().profileImage);
+                setJobRole(doc.data().jobRole);
+                setCity(doc.data().city);
+                setState(doc.data().state);
+                setStateEmail(doc.data().email);
+                setStateCellphone(doc.data().cellphone);
+                setStateAboutMe(doc.data().aboutMe);
+                setStateProfessionalExperience(
+                  doc.data().professionalExperience
+                );
+                setStateSkills(doc.data().skills);
+              });
+            });
+        }
+      });
     }
   }, []);
 
@@ -130,19 +135,33 @@ export default function PublicProfile(props) {
 
   return (
     <>
-      <ResponsiveNavbar />
       <StyledContainer>
         <LeftBar>
           <StyledAvatar src={stateProfileImage} />
           <h5>{stateName}</h5>
           <b>{stateJobRole || 'Desenvolvedor'}</b>
           <hr />
-          <VisualFeedback subDescription="Adicione linguagens e frameworks" />
-          <Tooltip title="Adicionar/Editar" placement="bottom">
-            <IconButton aria-label="edit" onClick={() => handleEdit('skills')}>
-              <Edit />
-            </IconButton>
-          </Tooltip>
+          {stateSkills ? (
+            stateSkills
+          ) : (
+            <VisualFeedback
+              subDescription={
+                enableEdit
+                  ? 'Adicione linguagens e frameworks'
+                  : 'Esse usuário ainda não preencheu as informações!'
+              }
+            />
+          )}
+          {enableEdit && (
+            <Tooltip title="Adicionar/Editar" placement="bottom">
+              <IconButton
+                aria-label="edit"
+                onClick={() => handleEdit('skills')}
+              >
+                <Edit />
+              </IconButton>
+            </Tooltip>
+          )}
           <hr />
           <h5>Contato</h5>
           <ul>
@@ -166,8 +185,6 @@ export default function PublicProfile(props) {
             >
               <Tab label="Bio" {...a11yProps(0)} />
               <Tab label="Experiências profissionais" {...a11yProps(1)} />
-              {/* <Tab label="Skills e Linguagens" {...a11yProps(2)} /> */}
-              {/* <Tab label="Cursos feitos" {...a11yProps(3)} /> */}
             </StyledTabs>
           </StyledContentTop>
           <SwipeableViews
@@ -178,27 +195,51 @@ export default function PublicProfile(props) {
           >
             <TabPanel value={value} index={0} dir={theme.direction}>
               <h4>Sobre Mim</h4>
-              <Tooltip title="Adicionar/Editar" placement="bottom">
-                <IconButton
-                  aria-label="edit"
-                  onClick={() => handleEdit('aboutMe')}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-              <VisualFeedback subDescription="Escreva sobre você para que os recrutadores te conheçam melhor!" />
+              {enableEdit && (
+                <Tooltip title="Adicionar/Editar" placement="bottom">
+                  <IconButton
+                    aria-label="edit"
+                    onClick={() => handleEdit('aboutMe')}
+                  >
+                    <Edit />
+                  </IconButton>
+                </Tooltip>
+              )}
+              {stateAboutMe ? (
+                stateAboutMe
+              ) : (
+                <VisualFeedback
+                  subDescription={
+                    enableEdit
+                      ? 'Escreva sobre você para que os recrutadores te conheçam melhor!'
+                      : 'Esse usuário ainda não preencheu as informações'
+                  }
+                />
+              )}
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
               <h4>Experiencias</h4>
-              <Tooltip title="Adicionar/Editar" placement="bottom">
-                <IconButton
-                  aria-label="edit"
-                  onClick={() => handleEdit('professionalExperience')}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-              <VisualFeedback subDescription="Ao adicionar experiências profissionais você aumenta muito as suas chances de ser contratado." />
+              {enableEdit && (
+                <Tooltip title="Adicionar/Editar" placement="bottom">
+                  <IconButton
+                    aria-label="edit"
+                    onClick={() => handleEdit('professionalExperience')}
+                  >
+                    <Edit />
+                  </IconButton>
+                </Tooltip>
+              )}
+              {stateProfessionalExperience ? (
+                stateProfessionalExperience
+              ) : (
+                <VisualFeedback
+                  subDescription={
+                    enableEdit
+                      ? 'Ao adicionar experiências profissionais você aumenta muito as suas chances de ser contratado.'
+                      : 'Esse usuário ainda não preencheu as informações'
+                  }
+                />
+              )}
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
               <StyledChip

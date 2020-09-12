@@ -154,7 +154,7 @@ export default function Checkout(props) {
                   number: `${inputCpf}`,
                 },
               ],
-              phone_numbers: ['+5518997455866'],
+              phone_numbers: ['+5518981995548'],
               birthday: '1992-10-01',
             },
             billing: {
