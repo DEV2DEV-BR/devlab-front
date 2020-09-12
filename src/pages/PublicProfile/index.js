@@ -4,17 +4,17 @@ import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import { Edit } from '@material-ui/icons';
+import { Clear, Edit, Save } from '@material-ui/icons';
 import FaceIcon from '@material-ui/icons/Face';
+import { Skeleton } from '@material-ui/lab';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import Capa from '../../assets/capa.jpg';
 import ProfileItems from '../../components/ProfileItems';
 import VisualFeedback from '../../components/VisualFeedback';
-import { Skeleton } from '@material-ui/lab';
-import { Save, Clear } from '@material-ui/icons';
+import { notify } from '../../util/toast';
 import {
   Body,
   DivTabPannel,
@@ -26,8 +26,6 @@ import {
   StyledContentTop,
   StyledTabs,
 } from './styles';
-import { notify } from '../../util/toast';
-import MessageUpdateImage from '../../components/MessageUpdateImage';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,11 +73,19 @@ export default function PublicProfile(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [option, setOption] = useState('');
   const [stateAboutMe, setStateAboutMe] = useState(null);
+
   const [previewImage, setPreviewImage] = useState(null);
   const [oldImage, setOldImage] = useState(null);
   const [image, setImage] = useState(null);
+
+  const [oldImageBackground, setOldImageBackground] = useState(null);
+  const [previewImageBackground, setPreviewImageBackground] = useState(null);
+  const [imageBackground, setImageBackground] = useState(null);
+
   const [progressLoad, setProgressLoad] = useState(false);
-  const fileRef = useRef();
+  const fileRefAvatar = useRef();
+  const fileRefBanner = useRef();
+
   const [
     stateProfessionalExperience,
     setStateProfessionalExperience,
@@ -119,6 +125,8 @@ export default function PublicProfile(props) {
                   doc.data().professionalExperience
                 );
                 setStateSkills(doc.data().skills);
+                setPreviewImageBackground(doc.data().banner);
+                setOldImageBackground(doc.data().banner);
                 setLoad(false);
               });
             });
@@ -153,14 +161,30 @@ export default function PublicProfile(props) {
         reader.onload = function () {
           setPreviewImage(reader.result);
         };
-
-        reader.readAsDataURL(image);
       }
+
       setImage(image);
+      reader.readAsDataURL(image);
+    }
+  };
+  const handleChangeBanner = (e) => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+
+      if (image) {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+          setPreviewImageBackground(reader.result);
+        };
+      }
+
+      setImageBackground(image);
+      reader.readAsDataURL(image);
     }
   };
 
-  const confirmUpdateImage = () => {
+  const confirmUpdateAvatar = () => {
     if (image !== null) {
       setProgressLoad(true);
       const db = firebase.firestore();
@@ -190,7 +214,7 @@ export default function PublicProfile(props) {
                   profileImage: url,
                 })
                 .then(function () {
-                  notify('Imagem atualizada!', 1000, 'success');
+                  notify('Avatar atualizado!', 1000, 'success');
                 })
                 .catch(function (error) {
                   // The document probably doesn't exist.
@@ -206,6 +230,55 @@ export default function PublicProfile(props) {
     }
   };
 
+  const confirmUpdateBanner = () => {
+    if (imageBackground !== null) {
+      setProgressLoad(true);
+      const db = firebase.firestore();
+      var userRef = db.collection('users').doc(localStorage.getItem('user'));
+
+      const storage = firebase.storage();
+
+      const uploadTask = storage
+        .ref(
+          `profiles/${localStorage.getItem('@jacode-email')}/${
+            imageBackground.name
+          }`
+        )
+        .put(imageBackground);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {},
+        (error) => {
+          // Error function ...
+          console.log(error);
+        },
+        () => {
+          // complete function ...
+          storage
+            .ref(`profiles/${localStorage.getItem('@jacode-email')}`)
+            .child(imageBackground.name)
+            .getDownloadURL()
+            .then((url) => {
+              userRef
+                .update({
+                  banner: url,
+                })
+                .then(function () {
+                  notify('Capa atualizada!', 1000, 'success');
+                })
+                .catch(function (error) {
+                  // The document probably doesn't exist.
+                  console.error('Error updating document: ', error);
+                  notify('Falha ao atualizar os dados!', 1000, 'error');
+                });
+
+              setProgressLoad(false);
+              setImageBackground(null);
+            });
+        }
+      );
+    }
+  };
   return (
     <>
       <StyledContainer>
@@ -238,7 +311,7 @@ export default function PublicProfile(props) {
               <Tooltip title="Salvar" placement="bottom">
                 <IconButton
                   aria-label="save"
-                  onClick={() => confirmUpdateImage()}
+                  onClick={() => confirmUpdateAvatar()}
                   disabled={progressLoad}
                 >
                   <Save />
@@ -251,7 +324,7 @@ export default function PublicProfile(props) {
             type="file"
             id="file"
             onChange={handleChangeAvatar}
-            ref={fileRef}
+            ref={fileRefAvatar}
             style={{ visibility: 'hidden', height: 0, margin: 0, padding: 0 }}
           />
           <h5>{stateName}</h5>
@@ -297,7 +370,7 @@ export default function PublicProfile(props) {
             />
           )}
           {enableEdit && (
-            <Tooltip title="Adicionar/Editar" placement="bottom">
+            <Tooltip title="Editar" placement="bottom">
               <IconButton
                 aria-label="edit"
                 onClick={() => handleEdit('skills')}
@@ -356,7 +429,65 @@ export default function PublicProfile(props) {
         </LeftBar>
         <Body>
           <StyledContentTop>
-            <StyledBanner src={Capa} />
+            {enableEdit && imageBackground == null ? (
+              <Tooltip
+                title="Atualizar capa"
+                placement="left"
+                style={{ position: 'absolute', right: 0 }}
+              >
+                <IconButton
+                  aria-label="edit"
+                  onClick={() => {
+                    enableEdit && document.getElementById('banner').click();
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <div style={{ position: 'absolute', right: 0 }}>
+                <Tooltip title="Limpar" placement="bottom-start">
+                  <IconButton
+                    aria-label="save"
+                    onClick={() => {
+                      setPreviewImageBackground(oldImageBackground);
+                      setImageBackground(null);
+                    }}
+                    disabled={progressLoad}
+                  >
+                    <Clear />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Salvar" placement="bottom">
+                  <IconButton
+                    aria-label="save"
+                    onClick={() => confirmUpdateBanner()}
+                    disabled={progressLoad}
+                  >
+                    <Save />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
+
+            {load ? (
+              <Skeleton variant="rect" height={320} style={{ margin: 5 }} />
+            ) : (
+              <StyledBanner
+                src={previewImageBackground || Capa}
+                enableEdit
+                onClick={() => {
+                  enableEdit && document.getElementById('banner').click();
+                }}
+              />
+            )}
+            <input
+              type="file"
+              id="banner"
+              onChange={handleChangeBanner}
+              ref={fileRefBanner}
+              style={{ visibility: 'hidden', height: 0, margin: 0, padding: 0 }}
+            />
             <StyledTabs
               value={value}
               onChange={handleChange}
@@ -388,7 +519,7 @@ export default function PublicProfile(props) {
                 </>
               ) : (
                 enableEdit && (
-                  <Tooltip title="Adicionar/Editar" placement="bottom">
+                  <Tooltip title="Editar" placement="bottom">
                     <IconButton
                       aria-label="edit"
                       onClick={() => handleEdit('aboutMe')}
@@ -423,7 +554,7 @@ export default function PublicProfile(props) {
             <TabPanel value={value} index={1} dir={theme.direction}>
               <h4>Experiencias</h4>
               {enableEdit && (
-                <Tooltip title="Adicionar/Editar" placement="bottom">
+                <Tooltip title="Editar" placement="bottom">
                   <IconButton
                     aria-label="edit"
                     onClick={() => handleEdit('professionalExperience')}
