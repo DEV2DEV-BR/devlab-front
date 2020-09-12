@@ -58,7 +58,11 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: '5px',
     borderStyle: 'solid',
     borderColor: '#45c',
+    cursor: 'pointer',
 
+    '&:hover': {
+      opacity: 0.7,
+    },
     [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
       width: '120px',
       height: '120px',
@@ -133,7 +137,7 @@ export default function Profile(props) {
     setInputJobRole(event.target.value);
   };
 
-  const handleChangeImageCourse = (e) => {
+  const handleChangeAvatar = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
 
@@ -314,12 +318,25 @@ export default function Profile(props) {
                   <Avatar
                     className={classes.avatar}
                     src={previewImage}
+                    onClick={() => {
+                      document.getElementById('file').click();
+                    }}
                   ></Avatar>
+                  <i style={{ fontSize: 10, marginBottom: 20, marginTop: 10 }}>
+                    Clique na imagem para selecionar uma nova foto
+                  </i>
 
                   <input
                     type="file"
-                    onChange={handleChangeImageCourse}
+                    id="file"
+                    onChange={handleChangeAvatar}
                     ref={fileRef}
+                    style={{
+                      visibility: 'hidden',
+                      height: 0,
+                      margin: 0,
+                      padding: 0,
+                    }}
                   />
 
                   <FormControlLabel
@@ -550,6 +567,7 @@ export default function Profile(props) {
                       display: 'flex',
                       flexDirection: 'row',
                       width: '100%',
+                      padding: '0 15px 0 15px',
                       justifyContent: 'space-between',
                     }}
                   >
