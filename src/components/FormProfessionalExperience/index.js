@@ -5,7 +5,7 @@ import { Save, Clear } from '@material-ui/icons';
 import firebase from 'firebase';
 import { notify } from '../../util/toast';
 
-const FormProfessionalExperience = () => {
+const FormProfessionalExperience = ({ update }) => {
   const [input, setInput] = useState('');
   const [progressLoad, setProgressLoad] = useState(false);
 
@@ -48,6 +48,7 @@ const FormProfessionalExperience = () => {
         notify('Dados atualizados com sucesso!', 1000, 'success');
 
         setProgressLoad(false);
+        update();
         // end upload
       })
       .catch(function (error) {

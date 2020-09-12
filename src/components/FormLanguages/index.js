@@ -5,7 +5,7 @@ import { Save, Clear } from '@material-ui/icons';
 import firebase from 'firebase';
 import { notify } from '../../util/toast';
 
-const FormLanguages = () => {
+const FormLanguages = ({ update }) => {
   const [input, setInput] = useState('');
   const [progressLoad, setProgressLoad] = useState(false);
 
@@ -49,6 +49,7 @@ const FormLanguages = () => {
 
         setProgressLoad(false);
         // end upload
+        update();
       })
       .catch(function (error) {
         // The document probably doesn't exist.

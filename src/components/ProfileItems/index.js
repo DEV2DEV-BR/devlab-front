@@ -5,7 +5,7 @@ import FormAboutMe from '../../components/FormAboutMe';
 import FormLanguages from '../../components/FormLanguages';
 import FormProfessionalExperience from '../../components/FormProfessionalExperience';
 
-const ProfileItems = ({ modalShow, handleClose, option }) => {
+const ProfileItems = ({ modalShow, handleClose, option, update }) => {
   return (
     <Modal
       show={modalShow}
@@ -22,9 +22,11 @@ const ProfileItems = ({ modalShow, handleClose, option }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {option === 'aboutMe' && <FormAboutMe />}
-        {option === 'skills' && <FormLanguages />}
-        {option === 'professionalExperience' && <FormProfessionalExperience />}
+        {option === 'aboutMe' && <FormAboutMe update={update} />}
+        {option === 'skills' && <FormLanguages update={update} />}
+        {option === 'professionalExperience' && (
+          <FormProfessionalExperience update={update} />
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleClose}>Close</Button>

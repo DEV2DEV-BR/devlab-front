@@ -135,6 +135,30 @@ export default function PublicProfile(props) {
     }
   }, []);
 
+  const update = () => {
+    const { email } = props.match.params;
+    setLoad(true);
+    const db = firebase.firestore();
+
+    const usersRef = db.collection('users');
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        usersRef
+          .where('email', '==', email)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              setStateAboutMe(doc.data().aboutMe);
+              setStateProfessionalExperience(doc.data().professionalExperience);
+              setStateSkills(doc.data().skills);
+              setLoad(false);
+            });
+          });
+      }
+    });
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -623,6 +647,7 @@ export default function PublicProfile(props) {
         modalShow={modalShow}
         handleClose={handleClose}
         option={option}
+        update={update}
       />
     </>
   );
