@@ -14,7 +14,7 @@ const ProfileItems = ({ modalShow, handleClose, option }) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
           {option === 'aboutMe' && 'Sobre Mim'}
           {option === 'skills' && 'Skills'}
