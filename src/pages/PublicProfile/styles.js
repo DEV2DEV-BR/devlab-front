@@ -115,6 +115,7 @@ export const StyledBanner = styled.img`
     visibility: hidden;
     height: 0px;
   }
+  cursor: ${(props) => props.enableEdit && 'pointer'};
 `;
 
 export const StyledChip = styled(Chip)`
