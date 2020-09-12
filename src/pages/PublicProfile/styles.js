@@ -17,10 +17,11 @@ export const LeftBar = styled(Container)`
   display: flex;
   flex-direction: column;
   padding-top: 30px;
-  height: 100vh;
+  height: 100%;
   align-items: center;
   justify-content: flex-start;
   width: 20%;
+  text-align: center;
   background-color: #f7f2f2;
 
   h5 {
@@ -53,17 +54,18 @@ export const LeftBar = styled(Container)`
 export const StyledAvatar = styled(Avatar)`
   width: 180px;
   height: 180px;
-  margin-bottom: 15px;
   background-color: #d5d5d5;
   border-width: 5px;
   border-style: solid;
   border-color: #45c;
-
+  cursor: ${(props) => props.enableEdit && 'pointer'};
   @media (max-width: 1000px) {
     width: 120px;
     height: 120px;
   }
-
+  :hover {
+    opacity: ${(props) => props.enableEdit && 0.7};
+  }
   @media (max-width: 800px) {
     width: 100px;
     height: 100px;
