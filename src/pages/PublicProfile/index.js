@@ -1,18 +1,20 @@
+import { IconButton, Tooltip } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
-import { Tooltip, IconButton } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import FaceIcon from '@material-ui/icons/Face';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
 import { Edit } from '@material-ui/icons';
+import FaceIcon from '@material-ui/icons/Face';
+import firebase from 'firebase';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState, useRef } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import Capa from '../../assets/capa.jpg';
-import ResponsiveNavbar from '../../components/NavbarDashboard';
-import VisualFeedback from '../../components/VisualFeedback';
 import ProfileItems from '../../components/ProfileItems';
+import VisualFeedback from '../../components/VisualFeedback';
+import { Skeleton } from '@material-ui/lab';
+import { Save, Clear } from '@material-ui/icons';
 import {
   Body,
   DivTabPannel,
@@ -24,7 +26,8 @@ import {
   StyledContentTop,
   StyledTabs,
 } from './styles';
-import firebase from 'firebase';
+import { notify } from '../../util/toast';
+import MessageUpdateImage from '../../components/MessageUpdateImage';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -61,9 +64,9 @@ function a11yProps(index) {
 
 export default function PublicProfile(props) {
   const theme = useTheme();
+  const [load, setLoad] = React.useState(true);
   const [value, setValue] = useState(0);
   const [stateName, setName] = useState('');
-  const [stateProfileImage, setProfileImage] = useState('');
   const [stateJobRole, setJobRole] = useState('');
   const [stateCity, setCity] = useState('');
   const [stateEmail, setStateEmail] = useState('');
@@ -72,6 +75,11 @@ export default function PublicProfile(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [option, setOption] = useState('');
   const [stateAboutMe, setStateAboutMe] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [oldImage, setOldImage] = useState(null);
+  const [image, setImage] = useState(null);
+  const [progressLoad, setProgressLoad] = useState(false);
+  const fileRef = useRef();
   const [
     stateProfessionalExperience,
     setStateProfessionalExperience,
@@ -99,7 +107,8 @@ export default function PublicProfile(props) {
             .then((querySnapshot) => {
               querySnapshot.forEach((doc) => {
                 setName(doc.data().name);
-                setProfileImage(doc.data().profileImage);
+                setPreviewImage(doc.data().profileImage);
+                setOldImage(doc.data().profileImage);
                 setJobRole(doc.data().jobRole);
                 setCity(doc.data().city);
                 setState(doc.data().state);
@@ -110,6 +119,7 @@ export default function PublicProfile(props) {
                   doc.data().professionalExperience
                 );
                 setStateSkills(doc.data().skills);
+                setLoad(false);
               });
             });
         }
@@ -133,15 +143,149 @@ export default function PublicProfile(props) {
     setModalShow(false);
   };
 
+  const handleChangeAvatar = (e) => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+
+      if (image) {
+        var reader = new FileReader();
+
+        reader.onload = function () {
+          setPreviewImage(reader.result);
+        };
+
+        reader.readAsDataURL(image);
+      }
+      setImage(image);
+    }
+  };
+
+  const confirmUpdateImage = () => {
+    if (image !== null) {
+      setProgressLoad(true);
+      const db = firebase.firestore();
+      var userRef = db.collection('users').doc(localStorage.getItem('user'));
+
+      const storage = firebase.storage();
+
+      const uploadTask = storage
+        .ref(`profiles/${localStorage.getItem('@jacode-email')}/${image.name}`)
+        .put(image);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {},
+        (error) => {
+          // Error function ...
+          console.log(error);
+        },
+        () => {
+          // complete function ...
+          storage
+            .ref(`profiles/${localStorage.getItem('@jacode-email')}`)
+            .child(image.name)
+            .getDownloadURL()
+            .then((url) => {
+              userRef
+                .update({
+                  profileImage: url,
+                })
+                .then(function () {
+                  notify('Imagem atualizada!', 1000, 'success');
+                })
+                .catch(function (error) {
+                  // The document probably doesn't exist.
+                  console.error('Error updating document: ', error);
+                  notify('Falha ao atualizar os dados!', 1000, 'error');
+                });
+
+              setProgressLoad(false);
+              setImage(null);
+            });
+        }
+      );
+    }
+  };
+
   return (
     <>
       <StyledContainer>
         <LeftBar>
-          <StyledAvatar src={stateProfileImage} />
+          <StyledAvatar
+            src={previewImage}
+            onClick={() => {
+              enableEdit && document.getElementById('file').click();
+            }}
+            enableEdit
+          />
+          {enableEdit && image == null ? (
+            <i style={{ fontSize: 10, marginBottom: 20, marginTop: 10 }}>
+              Clique na imagem para selecionar uma nova foto
+            </i>
+          ) : (
+            <div>
+              <Tooltip title="Limpar" placement="bottom-start">
+                <IconButton
+                  aria-label="save"
+                  onClick={() => {
+                    setPreviewImage(oldImage);
+                    setImage(null);
+                  }}
+                  disabled={progressLoad}
+                >
+                  <Clear />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Salvar" placement="bottom">
+                <IconButton
+                  aria-label="save"
+                  onClick={() => confirmUpdateImage()}
+                  disabled={progressLoad}
+                >
+                  <Save />
+                </IconButton>
+              </Tooltip>
+            </div>
+          )}
+          <hr />
+          <input
+            type="file"
+            id="file"
+            onChange={handleChangeAvatar}
+            ref={fileRef}
+            style={{ visibility: 'hidden', height: 0, margin: 0, padding: 0 }}
+          />
           <h5>{stateName}</h5>
           <b>{stateJobRole || 'Desenvolvedor'}</b>
           <hr />
-          {stateSkills ? (
+          <h5>Skills</h5>
+          {load ? (
+            <>
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+            </>
+          ) : stateSkills ? (
             stateSkills
           ) : (
             <VisualFeedback
@@ -164,13 +308,51 @@ export default function PublicProfile(props) {
           )}
           <hr />
           <h5>Contato</h5>
-          <ul>
-            <li>{stateEmail}</li>
-            <li>{stateCellphone}</li>
-            <li>
-              {stateState}, {stateCity}
-            </li>
-          </ul>
+
+          {load ? (
+            <>
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+              <Skeleton
+                variant="rect"
+                width={200}
+                height={10}
+                style={{ margin: 5 }}
+              />
+            </>
+          ) : stateEmail || stateCellphone ? (
+            <ul>
+              <li>{stateEmail}</li>
+              <li>{stateCellphone}</li>
+              <li>
+                {stateState}, {stateCity}
+              </li>
+            </ul>
+          ) : (
+            <VisualFeedback
+              subDescription={
+                enableEdit
+                  ? 'Adicione linguagens e frameworks'
+                  : 'Esse usuário ainda não preencheu as informações!'
+              }
+            />
+          )}
         </LeftBar>
         <Body>
           <StyledContentTop>
@@ -195,17 +377,38 @@ export default function PublicProfile(props) {
           >
             <TabPanel value={value} index={0} dir={theme.direction}>
               <h4>Sobre Mim</h4>
-              {enableEdit && (
-                <Tooltip title="Adicionar/Editar" placement="bottom">
-                  <IconButton
-                    aria-label="edit"
-                    onClick={() => handleEdit('aboutMe')}
-                  >
-                    <Edit />
-                  </IconButton>
-                </Tooltip>
+              {load ? (
+                <>
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                </>
+              ) : (
+                enableEdit && (
+                  <Tooltip title="Adicionar/Editar" placement="bottom">
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => handleEdit('aboutMe')}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </Tooltip>
+                )
               )}
-              {stateAboutMe ? (
+
+              {load ? (
+                <>
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                  <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
+                </>
+              ) : stateAboutMe ? (
                 stateAboutMe
               ) : (
                 <VisualFeedback
