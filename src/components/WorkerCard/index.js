@@ -2,11 +2,18 @@ import React from 'react';
 import { Card, Name, StyledAvatar } from './styles';
 import ProfileImage from '../../assets/profile.png';
 
-function WorkerCard({ name, profileImage, jobRole, state, city, history }) {
-
+function WorkerCard({
+  name,
+  profileImage,
+  jobRole,
+  state,
+  city,
+  history,
+  email,
+}) {
   const redirectToProfile = () => {
-    history.push('/public-profile', { name, profileImage, jobRole, state, city })
-  }
+    history.push(`/public-profile/${email}`);
+  };
 
   return (
     <Card onClick={redirectToProfile}>

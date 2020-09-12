@@ -20,6 +20,7 @@ const VisualFeedback = ({
         viewBox="0 -12 512.00032 512"
         width="42pt"
         xmlns="http://www.w3.org/2000/svg"
+        style={{ marginBottom: 20 }}
       >
         <path
           fill="#d5d5d5"

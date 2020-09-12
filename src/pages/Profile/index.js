@@ -1,24 +1,24 @@
 import { Button } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
+import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import firebase from 'firebase';
-import React, { useEffect, useState, useRef } from 'react';
-import Copyright from '../../components/Copyright';
-import { customizations } from '../../configs/customizations';
-import { notify } from '../../util/toast';
-import Avatar from '@material-ui/core/Avatar';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import firebase from 'firebase';
+import React, { useEffect, useRef, useState } from 'react';
+import Copyright from '../../components/Copyright';
+import { customizations } from '../../configs/customizations';
+import { notify } from '../../util/toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
+    maxWidth: '95%',
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -57,7 +58,11 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: '5px',
     borderStyle: 'solid',
     borderColor: '#45c',
+    cursor: 'pointer',
 
+    '&:hover': {
+      opacity: 0.7,
+    },
     [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
       width: '120px',
       height: '120px',
@@ -66,6 +71,9 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
+  },
+  submit: {
+    width: '95%',
   },
 }));
 
@@ -82,6 +90,7 @@ export default function Profile(props) {
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [inputState, setInputState] = useState('');
+
   const fileRef = useRef();
   const [recruiterCheck, setRecruiterCheck] = useState(false);
 
@@ -128,7 +137,7 @@ export default function Profile(props) {
     setInputJobRole(event.target.value);
   };
 
-  const handleChangeImageCourse = (e) => {
+  const handleChangeAvatar = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
 
@@ -143,6 +152,10 @@ export default function Profile(props) {
       }
       setImage(image);
     }
+  };
+
+  const redirectToProfile = () => {
+    props.history.push(`/public-profile/${inputEmail}`);
   };
 
   const handleRegister = () => {
@@ -305,12 +318,25 @@ export default function Profile(props) {
                   <Avatar
                     className={classes.avatar}
                     src={previewImage}
+                    onClick={() => {
+                      document.getElementById('file').click();
+                    }}
                   ></Avatar>
+                  <i style={{ fontSize: 10, marginBottom: 20, marginTop: 10 }}>
+                    Clique na imagem para selecionar uma nova foto
+                  </i>
 
                   <input
                     type="file"
-                    onChange={handleChangeImageCourse}
+                    id="file"
+                    onChange={handleChangeAvatar}
                     ref={fileRef}
+                    style={{
+                      visibility: 'hidden',
+                      height: 0,
+                      margin: 0,
+                      padding: 0,
+                    }}
                   />
 
                   <FormControlLabel
@@ -325,6 +351,20 @@ export default function Profile(props) {
                     }
                     label="Sou Recrutador"
                   />
+
+                  <Button
+                    type="button"
+                    variant="contained"
+                    onClick={redirectToProfile}
+                    style={{
+                      backgroundColor: `${customizations?.secondaryColor}`,
+                      color: '#fff',
+                      padding: 10,
+                    }}
+                    className={classes.submit}
+                  >
+                    VER MEU PERFIL PÚBLICO
+                  </Button>
 
                   <FormControl
                     variant="outlined"
@@ -527,6 +567,7 @@ export default function Profile(props) {
                       display: 'flex',
                       flexDirection: 'row',
                       width: '100%',
+                      padding: '0 15px 0 15px',
                       justifyContent: 'space-between',
                     }}
                   >
