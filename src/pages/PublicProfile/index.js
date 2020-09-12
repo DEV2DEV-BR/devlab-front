@@ -319,29 +319,31 @@ export default function PublicProfile(props) {
               Clique na imagem para selecionar uma nova foto
             </i>
           ) : (
-            <div>
-              <Tooltip title="Limpar" placement="bottom-start">
-                <IconButton
-                  aria-label="save"
-                  onClick={() => {
-                    setPreviewImage(oldImage);
-                    setImage(null);
-                  }}
-                  disabled={progressLoad}
-                >
-                  <Clear />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Salvar" placement="bottom">
-                <IconButton
-                  aria-label="save"
-                  onClick={() => confirmUpdateAvatar()}
-                  disabled={progressLoad}
-                >
-                  <Save />
-                </IconButton>
-              </Tooltip>
-            </div>
+            enableEdit && (
+              <div>
+                <Tooltip title="Limpar" placement="bottom-start">
+                  <IconButton
+                    aria-label="save"
+                    onClick={() => {
+                      setPreviewImage(oldImage);
+                      setImage(null);
+                    }}
+                    disabled={progressLoad}
+                  >
+                    <Clear />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Salvar" placement="bottom">
+                  <IconButton
+                    aria-label="save"
+                    onClick={() => confirmUpdateAvatar()}
+                    disabled={progressLoad}
+                  >
+                    <Save />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )
           )}
           <hr />
           <input
@@ -469,29 +471,31 @@ export default function PublicProfile(props) {
                 </IconButton>
               </Tooltip>
             ) : (
-              <div style={{ position: 'absolute', right: 0 }}>
-                <Tooltip title="Limpar" placement="bottom-start">
-                  <IconButton
-                    aria-label="save"
-                    onClick={() => {
-                      setPreviewImageBackground(oldImageBackground);
-                      setImageBackground(null);
-                    }}
-                    disabled={progressLoad}
-                  >
-                    <Clear />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Salvar" placement="bottom">
-                  <IconButton
-                    aria-label="save"
-                    onClick={() => confirmUpdateBanner()}
-                    disabled={progressLoad}
-                  >
-                    <Save />
-                  </IconButton>
-                </Tooltip>
-              </div>
+              enableEdit && (
+                <div style={{ position: 'absolute', right: 0 }}>
+                  <Tooltip title="Limpar" placement="bottom-start">
+                    <IconButton
+                      aria-label="save"
+                      onClick={() => {
+                        setPreviewImageBackground(oldImageBackground);
+                        setImageBackground(null);
+                      }}
+                      disabled={progressLoad}
+                    >
+                      <Clear />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Salvar" placement="bottom">
+                    <IconButton
+                      aria-label="save"
+                      onClick={() => confirmUpdateBanner()}
+                      disabled={progressLoad}
+                    >
+                      <Save />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              )
             )}
 
             {load ? (
@@ -553,7 +557,6 @@ export default function PublicProfile(props) {
                   </Tooltip>
                 )
               )}
-
               {load ? (
                 <>
                   <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
