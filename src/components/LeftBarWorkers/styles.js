@@ -14,7 +14,7 @@ export const LeftBar = styled(Container)`
   height: 100vh !important;
   align-items: center;
   justify-content: flex-start;
-  width: 28%;
+  width: 28% !important;
   background-color: #f7f2f2;
 
   span {
