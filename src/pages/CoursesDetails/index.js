@@ -488,24 +488,24 @@ export default function CoursesDetails(props) {
                         </Button>
                       </>
                     ) : (
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        className={classes.button}
-                        onClick={() => handleStartFreeCourse(courseData.id)}
-                      >
-                        <p
-                          style={{
-                            margin: '0px 0px 0px 10px',
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            color: '#fff',
-                          }}
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          className={classes.button}
+                          onClick={() => handleStartFreeCourse(courseData.id)}
                         >
-                          CURSO GRÁTIS
+                          <p
+                            style={{
+                              margin: '0px 0px 0px 10px',
+                              fontSize: 16,
+                              fontWeight: 'bold',
+                              color: '#fff',
+                            }}
+                          >
+                            CURSO GRÁTIS
                         </p>
-                      </Button>
-                    )}
+                        </Button>
+                      )}
                   </Grid>
                 </div>
               )}
@@ -594,13 +594,13 @@ export default function CoursesDetails(props) {
                                       }
                                     ></MdPlayCircleFilled>
                                   ) : (
-                                    <MdShoppingCart
-                                      size={25}
-                                      onClick={() =>
-                                        handleStartFreeCourse(courseData.id)
-                                      }
-                                    />
-                                  )}
+                                      <MdShoppingCart
+                                        size={25}
+                                        onClick={() =>
+                                          handleStartFreeCourse(courseData.id)
+                                        }
+                                      />
+                                    )}
                                 </TableCell>
                               </Tooltip>
                             </TableRow>
@@ -610,8 +610,8 @@ export default function CoursesDetails(props) {
                     </TableContainer>
                   </>
                 ) : (
-                  ''
-                )}
+                    ''
+                  )}
               </Grid>
             </Container>
           </Grid>

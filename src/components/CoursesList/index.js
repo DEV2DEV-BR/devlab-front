@@ -187,14 +187,14 @@ const CoursesList = (props) => {
                 onClick={() => handleOpenCourseDetail(m.id)}
               />
             ) : (
-              <CardMedia
-                className={classes.media}
-                image={m.image}
-                title={m.title}
-                style={{ cursor: 'pointer' }}
-                onClick={() => handleRedirectAllClasses(m.id)}
-              />
-            )}
+                <CardMedia
+                  className={classes.media}
+                  image={m.image}
+                  title={m.title}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleRedirectAllClasses(m.id)}
+                />
+              )}
 
             <CardHeader
               avatar={
@@ -245,17 +245,17 @@ const CoursesList = (props) => {
                   </Button>
                 </div>
               ) : (
-                <>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    <b>Descrição: </b>
-                    {m.shortDescription}
-                  </Typography>
-                </>
-              )}
+                  <>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      <b>Descrição: </b>
+                      {m.shortDescription}
+                    </Typography>
+                  </>
+                )}
             </CardContent>
             {props.buy && (
               <CardActions disableSpacing>
@@ -323,36 +323,36 @@ const CoursesList = (props) => {
                     </Button>
                   </>
                 ) : (
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={() => handleStartFreeCourse(m.id)}
-                    style={{
-                      backgroundColor: `${customizations?.secondaryColor}`,
-                    }}
-                  >
-                    <p
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={() => handleStartFreeCourse(m.id)}
                       style={{
-                        margin: '0px 0px 0px 10px',
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
+                        backgroundColor: `${customizations?.secondaryColor}`,
                       }}
                     >
-                      CURSO GRÁTIS
+                      <p
+                        style={{
+                          margin: '0px 0px 0px 10px',
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                          color: '#fff',
+                        }}
+                      >
+                        CURSO GRÁTIS
                     </p>
-                  </Button>
-                )}
+                    </Button>
+                  )}
               </CardActions>
             )}
           </Card>
         ))
       ) : (
-        <VisualFeedback
-          description="Você ainda não tem cursos!"
-          subDescription="volte para a loja e veja nossas opções!"
-        />
-      )}
+            <VisualFeedback
+              description="Você ainda não tem cursos!"
+              subDescription="volte para a loja e veja nossas opções!"
+            />
+          )}
     </>
   );
 };

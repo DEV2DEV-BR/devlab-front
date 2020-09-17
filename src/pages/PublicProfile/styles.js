@@ -14,14 +14,14 @@ export const StyledContainer = styled.div`
 `;
 
 export const LeftBar = styled(Container)`
-  display: flex;
-  flex-direction: column;
-  padding-top: 30px;
-  height: 100%;
-  align-items: center;
-  justify-content: flex-start;
-  width: 20%;
-  text-align: center;
+  display: flex !important;
+  flex-direction: column !important;
+  padding-top: 30px !important;
+  height: 100% !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 20% !important;
+  text-align: center!important;
   background-color: #f7f2f2;
 
   h5 {
@@ -46,29 +46,29 @@ export const LeftBar = styled(Container)`
   }
 
   @media (max-width: 1000px) {
-    width: 100%;
-    height: 70vh;
+    width: 100% !important;
+    height: 70vh !important;
   }
 `;
 
 export const StyledAvatar = styled(Avatar)`
-  width: 180px;
-  height: 180px;
+  width: 180px !important;
+  height: 180px !important;
   background-color: #d5d5d5;
   border-width: 5px;
   border-style: solid;
   border-color: #45c;
   cursor: ${(props) => props.enableEdit && 'pointer'};
   @media (max-width: 1000px) {
-    width: 120px;
-    height: 120px;
+    width: 120px !important;
+    height: 120px !important;
   }
   :hover {
     opacity: ${(props) => props.enableEdit && 0.7};
   }
   @media (max-width: 800px) {
-    width: 100px;
-    height: 100px;
+    width: 100px !important;
+    height: 100px !important;
   }
 `;
 
