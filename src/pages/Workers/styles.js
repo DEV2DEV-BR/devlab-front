@@ -26,8 +26,8 @@ export const Body = styled(Grid)`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding-bottom: 10px;
-  margin-top: 20px;
+  padding-bottom: 10px !important;
+  margin-top: 20px !important;
 
   @media (max-width: 800px) {
     flex-direction: column;

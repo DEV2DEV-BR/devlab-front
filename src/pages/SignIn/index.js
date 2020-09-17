@@ -215,19 +215,19 @@ export default function SignIn(props) {
                 <p style={{ margin: 10 }}>Aguarde...</p>
               </div>
             ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                style={{
-                  backgroundColor: `${customizations?.primaryColor}`,
-                  color: '#fff',
-                }}
-                className={classes.submit}
-              >
-                LOGIN
-              </Button>
-            )}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  style={{
+                    backgroundColor: `${customizations?.primaryColor}`,
+                    color: '#fff',
+                  }}
+                  className={classes.submit}
+                >
+                  LOGIN
+                </Button>
+              )}
             <Grid container>
               <Grid item xs>
                 <Link to="/">Voltar para o início</Link>
