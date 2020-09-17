@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import FormAboutMe from '../../components/FormAboutMe';
 import FormLanguages from '../../components/FormLanguages';
 import FormProfessionalExperience from '../../components/FormProfessionalExperience';
+import FormJobRole from '../../components/FormJobRole';
 
 const ProfileItems = ({ modalShow, handleClose, option, update }) => {
   return (
@@ -19,6 +20,7 @@ const ProfileItems = ({ modalShow, handleClose, option, update }) => {
           {option === 'aboutMe' && 'Sobre Mim'}
           {option === 'skills' && 'Skills'}
           {option === 'professionalExperience' && 'Experiências profisionais'}
+          {option === 'jobRole' && 'Cargo'}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -26,6 +28,9 @@ const ProfileItems = ({ modalShow, handleClose, option, update }) => {
         {option === 'skills' && <FormLanguages update={update} />}
         {option === 'professionalExperience' && (
           <FormProfessionalExperience update={update} />
+        )}
+        {option === 'jobRole' && (
+          <FormJobRole update={update} />
         )}
       </Modal.Body>
       <Modal.Footer>
