@@ -102,19 +102,19 @@ const CoursesList = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  const onBlur = () => {
-    props.history.push('/dashboard');
-  };
+  // const onBlur = () => {
+  //   props.history.push('/dashboard');
+  // };
 
-  useEffect(() => {
-    window.addEventListener('blur', onBlur);
-    return () => {
-      window.removeEventListener('blur', onBlur);
-      setCourseData('');
-      setProgress('');
-    };
-    // eslint-disable-next-line
-  });
+  // useEffect(() => {
+  //   window.addEventListener('blur', onBlur);
+  //   return () => {
+  //     window.removeEventListener('blur', onBlur);
+  //     setCourseData('');
+  //     // setProgress('');
+  //   };
+  //   // eslint-disable-next-line
+  // });
 
   return (
     <>
@@ -180,38 +180,38 @@ const CoursesList = (props) => {
                 </div>
               </Button>
             ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={() => handleEnrrol(courseData.id)}
-                style={{
-                  backgroundColor: `${customizations?.secondaryColor}`,
-                  position: 'relative',
-                }}
-              >
-                <div
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  onClick={() => handleEnrrol(courseData.id)}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
+                    backgroundColor: `${customizations?.secondaryColor}`,
+                    position: 'relative',
                   }}
                 >
-                  <MdMovie size={18} color="#fff" />
-                  <p
+                  <div
                     style={{
-                      margin: '0px 0px 0px 10px',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      color: '#fff',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
                     }}
                   >
-                    MATRICULAR
+                    <MdMovie size={18} color="#fff" />
+                    <p
+                      style={{
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
+                      }}
+                    >
+                      MATRICULAR
                   </p>
-                </div>
-              </Button>
-            )}
+                  </div>
+                </Button>
+              )}
           </div>
         </CardContent>
       </Card>
