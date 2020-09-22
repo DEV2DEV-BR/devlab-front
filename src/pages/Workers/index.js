@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LeftBarWorkers from '../../components/LeftBarWorkers';
-import { Body, StyledContainer } from './styles';
+import { Body, StyledContainer, BodyContainer } from './styles';
 import WorkerCard from '../../components/WorkerCard';
-import Container from '@material-ui/core/Container';
 import firebase from 'firebase';
 import Skeleton from '@material-ui/lab/Skeleton';
 import VisualFeedback from '../../components/VisualFeedback';
@@ -165,7 +164,7 @@ export default function Workers(props) {
           }}
           applyFilters={applyFilters}
         />
-        <Container maxWidth="lg">
+        <BodyContainer maxWidth="lg">
           <Body container spacing={4}>
             {progress ? (
               <>
@@ -220,7 +219,7 @@ export default function Workers(props) {
               </div>
             )}
           </Body>
-        </Container>
+        </BodyContainer>
       </StyledContainer>
     </>
   );

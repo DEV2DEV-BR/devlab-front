@@ -4,7 +4,7 @@ import { customizations } from '../../configs/customizations';
 
 export const StyledContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -31,5 +31,11 @@ export const Body = styled(Grid)`
 
   @media (max-width: 800px) {
     flex-direction: column;
+  }
+`;
+
+export const BodyContainer = styled(Container)`
+  @media (max-width: 800px) {
+    margin-top: 80px;
   }
 `;
