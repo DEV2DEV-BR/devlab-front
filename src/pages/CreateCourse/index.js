@@ -158,7 +158,7 @@ export default function CreateCourse(props) {
             .put(image);
           uploadTask.on(
             'state_changed',
-            (snapshot) => {},
+            (snapshot) => { },
             (error) => {
               // Error function ...
               console.log(error);
@@ -252,7 +252,7 @@ export default function CreateCourse(props) {
             .put(image);
           uploadTask.on(
             'state_changed',
-            (snapshot) => {},
+            (snapshot) => { },
             (error) => {
               // Error function ...
               console.log(error);
@@ -341,6 +341,7 @@ export default function CreateCourse(props) {
                       fullWidth
                       id="fullName"
                       ref={name}
+                      value={inputName}
                       onBlur={(newContent) => setInputName(newContent)}
                       label="Nome do Curso"
                       autoFocus
@@ -364,6 +365,7 @@ export default function CreateCourse(props) {
                       fullWidth
                       id="duration"
                       type="number"
+                      value={inputDuration}
                       ref={duration}
                       onBlur={(newContent) => setInputDuration(newContent)}
                       label="Duração em horas"
@@ -389,31 +391,9 @@ export default function CreateCourse(props) {
                       type="number"
                       id="price"
                       ref={price}
+                      value={inputPrice}
                       onBlur={(newContent) => setInputPrice(newContent)}
                       label="Preço"
-                    />
-                  </Grid>
-                </Grid>
-              </FormControl>
-
-              <FormControl
-                variant="outlined"
-                fullWidth
-                className={classes.formControl}
-                style={{ margin: 10 }}
-              >
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="fcodePayment"
-                      name="codePayment"
-                      variant="outlined"
-                      required
-                      fullWidth
-                      id="codePayment"
-                      ref={payment}
-                      onBlur={(newContent) => setInputCodePayment(newContent)}
-                      label="Código pagamento pagamento pagseguro"
                     />
                   </Grid>
                 </Grid>
@@ -436,6 +416,7 @@ export default function CreateCourse(props) {
                         fullWidth
                         id="shortDescription"
                         ref={shortDescription}
+                        value={inputShortDescription}
                         onBlur={(newContent) =>
                           setInputShortDescription(newContent)
                         }
@@ -458,7 +439,7 @@ export default function CreateCourse(props) {
                       config={config}
                       tabIndex={1} // tabIndex of textarea
                       onBlur={(newContent) => setDescription(newContent)} // preferred to use only this option to update the content for performance reasons
-                      onChange={(newContent) => {}}
+                      onChange={(newContent) => { }}
                     />
                   </Grid>
                 </FormControl>
@@ -476,7 +457,7 @@ export default function CreateCourse(props) {
                       config={config}
                       tabIndex={1} // tabIndex of textarea
                       onBlur={(newContent) => setRequirements(newContent)} // preferred to use only this option to update the content for performance reasons
-                      onChange={(newContent) => {}}
+                      onChange={(newContent) => { }}
                     />
                   </Grid>
                 </FormControl>
@@ -520,38 +501,38 @@ export default function CreateCourse(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                <div style={{ display: 'flex', width: '100%' }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    disabled={!!progress}
-                    style={{
-                      backgroundColor: `${customizations?.secondaryColor}`,
-                      color: '#fff',
-                    }}
-                    onClick={
-                      props.history.location.state
-                        ? handleEditCourse
-                        : handleRegister
-                    }
-                    className={classes.submitLeft}
-                  >
-                    CADASTRAR
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      disabled={!!progress}
+                      style={{
+                        backgroundColor: `${customizations?.secondaryColor}`,
+                        color: '#fff',
+                      }}
+                      onClick={
+                        props.history.location.state
+                          ? handleEditCourse
+                          : handleRegister
+                      }
+                      className={classes.submitLeft}
+                    >
+                      CADASTRAR
                   </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: `${customizations?.primaryColor}`,
-                      color: '#fff',
-                    }}
-                    onClick={handleClear}
-                    className={classes.submitRight}
-                  >
-                    LIMPAR
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: `${customizations?.primaryColor}`,
+                        color: '#fff',
+                      }}
+                      onClick={handleClear}
+                      className={classes.submitRight}
+                    >
+                      LIMPAR
                   </Button>
-                </div>
-              )}
+                  </div>
+                )}
             </form>
           </Grid>
         </Container>
