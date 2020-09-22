@@ -24,10 +24,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    maxWidth: 300,
+    maxWidth: 280,
     margin: 5,
     padding: 0,
     boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
   },
   rootMyCourses: {
     display: 'flex',
@@ -37,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     margin: 5,
     padding: 0,
     boxShadow: '0px 0px 0px black, 0 0 10px #282a36, 0 0 1px #282a36 ;',
+
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
   },
   media: {
     height: '100px',
