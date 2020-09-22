@@ -5,20 +5,19 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
+import VisualFeedback from '../../components/VisualFeedback';
 import { customizations } from '../../configs/customizations';
 import { istAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
 import { addToCart } from '../../util/utils';
-import VisualFeedback from '../../components/VisualFeedback';
-import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -187,14 +186,14 @@ const CoursesList = (props) => {
                 onClick={() => handleOpenCourseDetail(m.id)}
               />
             ) : (
-                <CardMedia
-                  className={classes.media}
-                  image={m.image}
-                  title={m.title}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRedirectAllClasses(m.id)}
-                />
-              )}
+              <CardMedia
+                className={classes.media}
+                image={m.image}
+                title={m.title}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRedirectAllClasses(m.id)}
+              />
+            )}
 
             <CardHeader
               avatar={
@@ -245,17 +244,17 @@ const CoursesList = (props) => {
                   </Button>
                 </div>
               ) : (
-                  <>
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      <b>Descrição: </b>
-                      {m.shortDescription}
-                    </Typography>
-                  </>
-                )}
+                <>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <b>Descrição: </b>
+                    {m.shortDescription}
+                  </Typography>
+                </>
+              )}
             </CardContent>
             {props.buy && (
               <CardActions disableSpacing>
@@ -323,36 +322,36 @@ const CoursesList = (props) => {
                     </Button>
                   </>
                 ) : (
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      onClick={() => handleStartFreeCourse(m.id)}
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => handleStartFreeCourse(m.id)}
+                    style={{
+                      backgroundColor: `${customizations?.secondaryColor}`,
+                    }}
+                  >
+                    <p
                       style={{
-                        backgroundColor: `${customizations?.secondaryColor}`,
+                        margin: '0px 0px 0px 10px',
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        color: '#fff',
                       }}
                     >
-                      <p
-                        style={{
-                          margin: '0px 0px 0px 10px',
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          color: '#fff',
-                        }}
-                      >
-                        CURSO GRÁTIS
+                      CURSO GRÁTIS
                     </p>
-                    </Button>
-                  )}
+                  </Button>
+                )}
               </CardActions>
             )}
           </Card>
         ))
       ) : (
-            <VisualFeedback
-              description="Você ainda não tem cursos!"
-              subDescription="volte para a loja e veja nossas opções!"
-            />
-          )}
+        <VisualFeedback
+          description="Você ainda não tem cursos!"
+          subDescription="volte para a loja e veja nossas opções!"
+        />
+      )}
     </>
   );
 };

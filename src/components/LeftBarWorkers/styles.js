@@ -38,8 +38,8 @@ export const LeftBar = styled(Container)`
     justify-content: flex-start;
   }
   @media (max-width: 800px) {
-    width: 100%;
-    height: 35%;
+    width: 100% !important;
+    height: 50vh !important;
   }
 `;
 
@@ -59,6 +59,7 @@ export const Body = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+
   padding-bottom: 10px;
 `;
 
