@@ -20,7 +20,7 @@ export const Header = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-  height: 300px;
+  min-height: 300px;
   color: #fff;
 
   img {
