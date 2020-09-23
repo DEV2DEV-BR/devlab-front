@@ -21,7 +21,7 @@ export const LeftBar = styled(Container)`
   align-items: center !important;
   justify-content: flex-start !important;
   width: 20% !important;
-  text-align: center!important;
+  text-align: center !important;
   background-color: #f7f2f2;
 
   h5 {

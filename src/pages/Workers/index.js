@@ -35,6 +35,7 @@ export default function Workers(props) {
           .where('jobRole', '==', filter)
           .where('userType', '==', 'student')
           .where('isRecruiter', '==', false)
+          .where('publicProfile', '==', false)
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -78,6 +79,7 @@ export default function Workers(props) {
         studentsRef
           .where('userType', '==', 'student')
           .where('isRecruiter', '==', false)
+          .where('publicProfile', '==', false)
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {

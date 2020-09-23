@@ -15,6 +15,7 @@ import Capa from '../../assets/capa.jpg';
 import ProfileItems from '../../components/ProfileItems';
 import VisualFeedback from '../../components/VisualFeedback';
 import { notify } from '../../util/toast';
+import JoditEditor from 'jodit-react';
 import {
   Body,
   DivTabPannel,
@@ -92,6 +93,14 @@ export default function PublicProfile(props) {
   ] = useState(null);
   const [stateSkills, setStateSkills] = useState(null);
   const [enableEdit, setEnableEdit] = useState(false);
+
+  const config = {
+    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    toolbar: false,
+    resizer: false,
+    readonly: true,
+    controls: false,
+  };
 
   useEffect(() => {
     if (props.match) {
@@ -222,7 +231,7 @@ export default function PublicProfile(props) {
         .put(image);
       uploadTask.on(
         'state_changed',
-        (snapshot) => { },
+        (snapshot) => {},
         (error) => {
           // Error function ...
           console.log(error);
@@ -265,13 +274,14 @@ export default function PublicProfile(props) {
 
       const uploadTask = storage
         .ref(
-          `profiles/${localStorage.getItem('@jacode-email')}/${imageBackground.name
+          `profiles/${localStorage.getItem('@jacode-email')}/${
+            imageBackground.name
           }`
         )
         .put(imageBackground);
       uploadTask.on(
         'state_changed',
-        (snapshot) => { },
+        (snapshot) => {},
         (error) => {
           // Error function ...
           console.log(error);
@@ -319,32 +329,32 @@ export default function PublicProfile(props) {
               Clique na imagem para selecionar uma nova foto
             </i>
           ) : (
-              enableEdit && (
-                <div>
-                  <Tooltip title="Limpar" placement="bottom-start">
-                    <IconButton
-                      aria-label="save"
-                      onClick={() => {
-                        setPreviewImage(oldImage);
-                        setImage(null);
-                      }}
-                      disabled={progressLoad}
-                    >
-                      <Clear />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Salvar" placement="bottom">
-                    <IconButton
-                      aria-label="save"
-                      onClick={() => confirmUpdateAvatar()}
-                      disabled={progressLoad}
-                    >
-                      <Save />
-                    </IconButton>
-                  </Tooltip>
-                </div>
-              )
-            )}
+            enableEdit && (
+              <div>
+                <Tooltip title="Limpar" placement="bottom-start">
+                  <IconButton
+                    aria-label="save"
+                    onClick={() => {
+                      setPreviewImage(oldImage);
+                      setImage(null);
+                    }}
+                    disabled={progressLoad}
+                  >
+                    <Clear />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Salvar" placement="bottom">
+                  <IconButton
+                    aria-label="save"
+                    onClick={() => confirmUpdateAvatar()}
+                    disabled={progressLoad}
+                  >
+                    <Save />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )
+          )}
           <hr />
           <input
             type="file"
@@ -354,14 +364,16 @@ export default function PublicProfile(props) {
             style={{ visibility: 'hidden', height: 0, margin: 0, padding: 0 }}
           />
           <h5>{stateName}</h5>
-          {enableEdit && <Tooltip title="Editar" placement="bottom">
-            <IconButton
-              aria-label="edit"
-              onClick={() => handleEdit('jobRole')}
-            >
-              <Edit />
-            </IconButton>
-          </Tooltip>}
+          {enableEdit && (
+            <Tooltip title="Editar" placement="bottom">
+              <IconButton
+                aria-label="edit"
+                onClick={() => handleEdit('jobRole')}
+              >
+                <Edit />
+              </IconButton>
+            </Tooltip>
+          )}
           <b>{stateJobRole || 'Desenvolvedor'}</b>
           <hr />
           <h5>Skills</h5>
@@ -395,14 +407,14 @@ export default function PublicProfile(props) {
           ) : stateSkills ? (
             stateSkills
           ) : (
-                <VisualFeedback
-                  subDescription={
-                    enableEdit
-                      ? 'Adicione linguagens e frameworks'
-                      : 'Esse usuário ainda não preencheu as informações!'
-                  }
-                />
-              )}
+            <VisualFeedback
+              subDescription={
+                enableEdit
+                  ? 'Adicione linguagens e frameworks'
+                  : 'Esse usuário ainda não preencheu as informações!'
+              }
+            />
+          )}
           {enableEdit && (
             <Tooltip title="Editar" placement="bottom">
               <IconButton
@@ -452,14 +464,14 @@ export default function PublicProfile(props) {
               </li>
             </ul>
           ) : (
-                <VisualFeedback
-                  subDescription={
-                    enableEdit
-                      ? 'Adicione linguagens e frameworks'
-                      : 'Esse usuário ainda não preencheu as informações!'
-                  }
-                />
-              )}
+            <VisualFeedback
+              subDescription={
+                enableEdit
+                  ? 'Adicione linguagens e frameworks'
+                  : 'Esse usuário ainda não preencheu as informações!'
+              }
+            />
+          )}
         </LeftBar>
         <Body>
           <StyledContentTop>
@@ -479,44 +491,44 @@ export default function PublicProfile(props) {
                 </IconButton>
               </Tooltip>
             ) : (
-                enableEdit && (
-                  <div style={{ position: 'absolute', right: 0 }}>
-                    <Tooltip title="Limpar" placement="bottom-start">
-                      <IconButton
-                        aria-label="save"
-                        onClick={() => {
-                          setPreviewImageBackground(oldImageBackground);
-                          setImageBackground(null);
-                        }}
-                        disabled={progressLoad}
-                      >
-                        <Clear />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Salvar" placement="bottom">
-                      <IconButton
-                        aria-label="save"
-                        onClick={() => confirmUpdateBanner()}
-                        disabled={progressLoad}
-                      >
-                        <Save />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-                )
-              )}
+              enableEdit && (
+                <div style={{ position: 'absolute', right: 0 }}>
+                  <Tooltip title="Limpar" placement="bottom-start">
+                    <IconButton
+                      aria-label="save"
+                      onClick={() => {
+                        setPreviewImageBackground(oldImageBackground);
+                        setImageBackground(null);
+                      }}
+                      disabled={progressLoad}
+                    >
+                      <Clear />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Salvar" placement="bottom">
+                    <IconButton
+                      aria-label="save"
+                      onClick={() => confirmUpdateBanner()}
+                      disabled={progressLoad}
+                    >
+                      <Save />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              )
+            )}
 
             {load ? (
               <Skeleton variant="rect" height={320} style={{ margin: 5 }} />
             ) : (
-                <StyledBanner
-                  src={previewImageBackground || Capa}
-                  enableEdit
-                  onClick={() => {
-                    enableEdit && document.getElementById('banner').click();
-                  }}
-                />
-              )}
+              <StyledBanner
+                src={previewImageBackground || Capa}
+                enableEdit
+                onClick={() => {
+                  enableEdit && document.getElementById('banner').click();
+                }}
+              />
+            )}
             <input
               type="file"
               id="banner"
@@ -554,17 +566,17 @@ export default function PublicProfile(props) {
                   <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
                 </>
               ) : (
-                  enableEdit && (
-                    <Tooltip title="Editar" placement="bottom">
-                      <IconButton
-                        aria-label="edit"
-                        onClick={() => handleEdit('aboutMe')}
-                      >
-                        <Edit />
-                      </IconButton>
-                    </Tooltip>
-                  )
-                )}
+                enableEdit && (
+                  <Tooltip title="Editar" placement="bottom">
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => handleEdit('aboutMe')}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </Tooltip>
+                )
+              )}
               {load ? (
                 <>
                   <Skeleton variant="rect" height={10} style={{ margin: 5 }} />
@@ -577,17 +589,17 @@ export default function PublicProfile(props) {
               ) : stateAboutMe ? (
                 stateAboutMe
               ) : (
-                    <VisualFeedback
-                      subDescription={
-                        enableEdit
-                          ? 'Escreva sobre você para que os recrutadores te conheçam melhor!'
-                          : 'Esse usuário ainda não preencheu as informações'
-                      }
-                    />
-                  )}
+                <VisualFeedback
+                  subDescription={
+                    enableEdit
+                      ? 'Escreva sobre você para que os recrutadores te conheçam melhor!'
+                      : 'Esse usuário ainda não preencheu as informações'
+                  }
+                />
+              )}
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
-              <h4>Experiencias</h4>
+              <h4>Experiências</h4>
               {enableEdit && (
                 <Tooltip title="Editar" placement="bottom">
                   <IconButton
@@ -599,16 +611,20 @@ export default function PublicProfile(props) {
                 </Tooltip>
               )}
               {stateProfessionalExperience ? (
-                stateProfessionalExperience
+                <JoditEditor
+                  value={stateProfessionalExperience}
+                  config={config}
+                  tabIndex={1} // tabIndex of textarea
+                />
               ) : (
-                  <VisualFeedback
-                    subDescription={
-                      enableEdit
-                        ? 'Ao adicionar experiências profissionais você aumenta muito as suas chances de ser contratado.'
-                        : 'Esse usuário ainda não preencheu as informações'
-                    }
-                  />
-                )}
+                <VisualFeedback
+                  subDescription={
+                    enableEdit
+                      ? 'Ao adicionar experiências profissionais você aumenta muito as suas chances de ser contratado.'
+                      : 'Esse usuário ainda não preencheu as informações'
+                  }
+                />
+              )}
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
               <StyledChip
