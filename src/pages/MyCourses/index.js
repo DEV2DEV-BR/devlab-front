@@ -270,6 +270,7 @@ export default function Dashboard(props) {
                         alt="course"
                         style={{
                           width: '100px',
+                          height: '65px',
                           borderRadius: 5,
                         }}
                       />

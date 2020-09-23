@@ -156,13 +156,14 @@ export default function UploadFiles(props) {
 
           const uploadClasse = storage
             .ref(
-              `courses/${localStorage.getItem('@jacode-email')}/${name}/${image.name
+              `courses/${localStorage.getItem('@jacode-email')}/${name}/${
+                image.name
               }`
             )
             .put(image);
           uploadClasse.on(
             'state_changed',
-            (snapshot) => { },
+            (snapshot) => {},
             (error) => {
               // Error function ...
               console.log(error);
@@ -256,7 +257,11 @@ export default function UploadFiles(props) {
                     <img
                       src={courseData.image || LoadingImage}
                       alt="course"
-                      style={{ width: '150px', borderRadius: 5 }}
+                      style={{
+                        width: '100px',
+                        height: '65px',
+                        borderRadius: 5,
+                      }}
                     />
                     <div
                       style={{
@@ -266,9 +271,9 @@ export default function UploadFiles(props) {
                         padding: 10,
                       }}
                     >
-                      <h2 style={{ color: '#7a7171', margin: 0, padding: 0 }}>
+                      <h5 style={{ color: '#7a7171', margin: 0, padding: 0 }}>
                         {courseData.name}
-                      </h2>
+                      </h5>
                       <p style={{ color: '#918787', margin: 0, padding: 0 }}>
                         Nº {classesData.length}
                       </p>
@@ -362,34 +367,34 @@ export default function UploadFiles(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                  <div style={{ display: 'flex', width: '100%' }}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      disabled={!!progress}
-                      style={{
-                        backgroundColor: `${customizations?.secondaryColor}`,
-                        color: '#fff',
-                      }}
-                      onClick={() => handleRegister(courseData.name)}
-                      className={classes.submitLeft}
-                    >
-                      CADASTRAR
+                <div style={{ display: 'flex', width: '100%' }}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    disabled={!!progress}
+                    style={{
+                      backgroundColor: `${customizations?.secondaryColor}`,
+                      color: '#fff',
+                    }}
+                    onClick={() => handleRegister(courseData.name)}
+                    className={classes.submitLeft}
+                  >
+                    CADASTRAR
                   </Button>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      style={{
-                        backgroundColor: `${customizations?.primaryColor}`,
-                        color: '#fff',
-                      }}
-                      onClick={handleClear}
-                      className={classes.submitRight}
-                    >
-                      LIMPAR
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      backgroundColor: `${customizations?.primaryColor}`,
+                      color: '#fff',
+                    }}
+                    onClick={handleClear}
+                    className={classes.submitRight}
+                  >
+                    LIMPAR
                   </Button>
-                  </div>
-                )}
+                </div>
+              )}
             </form>
           </Grid>
         </Container>
