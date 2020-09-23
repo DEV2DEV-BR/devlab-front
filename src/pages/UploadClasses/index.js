@@ -14,7 +14,8 @@ import LoadingImage from '../../assets/loading.gif';
 import Copyright from '../../components/Copyright';
 import { customizations } from '../../configs/customizations';
 import { notify } from '../../util/toast';
-
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -69,8 +70,13 @@ export default function UploadFiles(props) {
   const [classesData, setClassesData] = useState([]);
   const [courseData, setCourseData] = useState([]);
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
+  };
+  const handleChangeIsOpen = () => {
+    setIsOpen(!isOpen);
   };
 
   const handleChange = (e) => {
@@ -150,14 +156,13 @@ export default function UploadFiles(props) {
 
           const uploadClasse = storage
             .ref(
-              `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-                image.name
+              `courses/${localStorage.getItem('@jacode-email')}/${name}/${image.name
               }`
             )
             .put(image);
           uploadClasse.on(
             'state_changed',
-            (snapshot) => {},
+            (snapshot) => { },
             (error) => {
               // Error function ...
               console.log(error);
@@ -185,6 +190,7 @@ export default function UploadFiles(props) {
                       createdAt: date,
                       date: createdAt,
                       description,
+                      open: isOpen,
                       id: '',
                     })
                     .then(function (doc) {
@@ -316,7 +322,27 @@ export default function UploadFiles(props) {
                     />
                   </Grid>
                 </FormControl>
-
+                <FormControl
+                  variant="outlined"
+                  fullWidth
+                  className={classes.formControl}
+                  style={{ margin: 10 }}
+                >
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      style={{ marginTop: 20 }}
+                      control={
+                        <Checkbox
+                          checked={isOpen}
+                          onChange={handleChangeIsOpen}
+                          name="checkedB"
+                          color="primary"
+                        />
+                      }
+                      label="Aula livre"
+                    />
+                  </Grid>
+                </FormControl>
                 <div style={{ margin: '10px 10px 20px 10px' }}>
                   <input type="file" onChange={handleChange} />
                 </div>
@@ -336,34 +362,34 @@ export default function UploadFiles(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                <div style={{ display: 'flex', width: '100%' }}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    disabled={!!progress}
-                    style={{
-                      backgroundColor: `${customizations?.secondaryColor}`,
-                      color: '#fff',
-                    }}
-                    onClick={() => handleRegister(courseData.name)}
-                    className={classes.submitLeft}
-                  >
-                    CADASTRAR
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      disabled={!!progress}
+                      style={{
+                        backgroundColor: `${customizations?.secondaryColor}`,
+                        color: '#fff',
+                      }}
+                      onClick={() => handleRegister(courseData.name)}
+                      className={classes.submitLeft}
+                    >
+                      CADASTRAR
                   </Button>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      backgroundColor: `${customizations?.primaryColor}`,
-                      color: '#fff',
-                    }}
-                    onClick={handleClear}
-                    className={classes.submitRight}
-                  >
-                    LIMPAR
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      style={{
+                        backgroundColor: `${customizations?.primaryColor}`,
+                        color: '#fff',
+                      }}
+                      onClick={handleClear}
+                      className={classes.submitRight}
+                    >
+                      LIMPAR
                   </Button>
-                </div>
-              )}
+                  </div>
+                )}
             </form>
           </Grid>
         </Container>
