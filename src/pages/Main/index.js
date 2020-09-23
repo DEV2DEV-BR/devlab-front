@@ -119,7 +119,7 @@ export default function Main(props) {
             >
               Bem vindo à JACODE CURSOS!
               <br />
-              Aqui você embarca de um jeito e sai de outro!
+              Invista naquilo que mais importa, invista em você!
             </Typography>
             <Typography
               variant="h5"
