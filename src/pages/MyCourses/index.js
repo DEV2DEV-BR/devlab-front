@@ -58,8 +58,10 @@ export default function Dashboard(props) {
   const [title, setTitle] = useState('');
   const [action, setAction] = useState('');
   const [textButton, setTextButton] = useState('');
+  const [currentCourse, setCurrentCourse] = useState('');
 
   const handleClickOpen = (action, course) => {
+    setCurrentCourse(course);
     if (action === 'toggle') {
       setTitle(
         `Você deseja ${course.enable ? 'desativar' : 'ativar'} o curso:  ${
@@ -268,7 +270,6 @@ export default function Dashboard(props) {
                         alt="course"
                         style={{
                           width: '100px',
-                          height: '60px',
                           borderRadius: 5,
                         }}
                       />
@@ -280,9 +281,9 @@ export default function Dashboard(props) {
                           marginLeft: 12,
                         }}
                       >
-                        <h2 style={{ color: '#7a7171', margin: 0, padding: 0 }}>
+                        <h4 style={{ color: '#7a7171', margin: 0, padding: 0 }}>
                           {course.name}
-                        </h2>
+                        </h4>
                         <p style={{ color: '#918787', margin: 0, padding: 0 }}>
                           {course.duration} Horas
                         </p>
@@ -345,11 +346,12 @@ export default function Dashboard(props) {
                 <Button onClick={handleClose} color="primary">
                   Cancelar
                 </Button>
+
                 <Button
                   onClick={() =>
                     action === 'toggle'
-                      ? toggleStateCourse(course)
-                      : handleEdit(course.id)
+                      ? toggleStateCourse(currentCourse)
+                      : handleEdit(currentCourse.id)
                   }
                   color="secondary"
                   autoFocus
