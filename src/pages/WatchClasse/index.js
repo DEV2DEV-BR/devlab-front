@@ -17,6 +17,7 @@ import {
   ReplayControl,
 } from 'video-react';
 import Copyright from '../../components/Copyright';
+import VisualFeedback from '../../components/VisualFeedback';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -275,26 +276,42 @@ export default function WatchClasse(props) {
                             justifyContent: 'center',
                           }}
                         >
-                          {classesData.map((classe) => (
-                            <Player
-                              key={classe.id}
-                              src={classe.url_video}
-                              playsInline
-                              fluid={false}
-                              width={800}
-                              poster=""
-                              ref={playerRef}
-                            >
-                              <ControlBar autoHide={false}>
-                                <PlaybackRateMenuButton
-                                  rates={[5, 2, 1, 0.5, 0.1]}
-                                />
-                                <ReplayControl seconds={30} order={2.3} />
-                                <ForwardControl seconds={30} order={3.3} />
-                              </ControlBar>
-                              <BigPlayButton position="center" />
-                            </Player>
-                          ))}
+                          {classesData.map((classe) =>
+                            classe.url_video != '' ? (
+                              <Player
+                                key={classe.id}
+                                src={classe.url_video}
+                                playsInline
+                                fluid={false}
+                                width={800}
+                                poster=""
+                                ref={playerRef}
+                              >
+                                <ControlBar autoHide={false}>
+                                  <PlaybackRateMenuButton
+                                    rates={[5, 2, 1, 0.5, 0.1]}
+                                  />
+                                  <ReplayControl seconds={30} order={2.3} />
+                                  <ForwardControl seconds={30} order={3.3} />
+                                </ControlBar>
+                                <BigPlayButton position="center" />
+                              </Player>
+                            ) : (
+                              <VisualFeedback
+                                key={classe.id}
+                                style={{
+                                  marginTop: '30px',
+                                  marginBottom: '50px',
+                                }}
+                                description={
+                                  'Essa aula não possui vídeo, apenas texto!'
+                                }
+                                subDescription={
+                                  'Leia o artigo e/ou a descrição (esse será o conteúdo dessa aula)'
+                                }
+                              />
+                            )
+                          )}
                         </Grid>
                         {/* <Button onClick={() => saveProgress()}>Save</Button>
                         <Button onClick={() => goTo(progressClasse)}>
