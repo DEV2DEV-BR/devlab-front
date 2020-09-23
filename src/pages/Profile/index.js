@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down(600 + theme.spacing(2) * 2)]: {
       width: '100%',
     },
-  }
+  },
 }));
 
 export default function Profile(props) {
@@ -101,9 +101,13 @@ export default function Profile(props) {
 
   const fileRef = useRef();
   const [recruiterCheck, setRecruiterCheck] = useState(false);
+  const [publicProfile, setPublicProfile] = useState(false);
 
   const handleChangeRecruiter = () => {
     setRecruiterCheck(!recruiterCheck);
+  };
+  const handleChangePublicProfile = () => {
+    setPublicProfile(!publicProfile);
   };
 
   const loadData = () => {
@@ -125,8 +129,9 @@ export default function Profile(props) {
               setInputCity(doc.data()?.city || '');
               setInputState(doc.data()?.state || '');
               setInputCellphone(doc.data()?.cellphone || '');
-              setInputJobRole(doc.data()?.function || '');
+              setInputJobRole(doc.data()?.jobRole || '');
               setRecruiterCheck(doc.data()?.isRecruiter || false);
+              setPublicProfile(doc.data()?.publicProfile || false);
               setProgressLoad(false);
             });
           });
@@ -202,6 +207,7 @@ export default function Profile(props) {
                   state: inputState,
                   isRecruiter: recruiterCheck,
                   jobRole: inputJobRole,
+                  publicProfile: publicProfile,
                 })
                 .then(function () {
                   // upload image
@@ -234,6 +240,7 @@ export default function Profile(props) {
             state: inputState,
             isRecruiter: recruiterCheck,
             jobRole: inputJobRole,
+            publicProfile: publicProfile,
           })
           .then(function () {
             notify('Dados atualizados com sucesso!', 1000, 'success');
@@ -257,7 +264,7 @@ export default function Profile(props) {
           .put(image);
         uploadTask.on(
           'state_changed',
-          (snapshot) => { },
+          (snapshot) => {},
           (error) => {
             // Error function ...
             console.log(error);
@@ -299,11 +306,7 @@ export default function Profile(props) {
 
       <main className={classes.content}>
         <Container maxWidth="lg" className={classes.container}>
-          <Grid
-            container
-            spacing={3}
-            className={classes.contentAll}
-          >
+          <Grid container spacing={3} className={classes.contentAll}>
             <div
               style={{
                 display: 'flex',
@@ -318,31 +321,32 @@ export default function Profile(props) {
                   <p style={{ fontSize: 18, marginLeft: 10 }}>Carregando...</p>
                 </Backdrop>
               ) : (
-                  <>
-                    <Avatar
-                      className={classes.avatar}
-                      src={previewImage}
-                      onClick={() => {
-                        document.getElementById('file').click();
-                      }}
-                    ></Avatar>
-                    <i style={{ fontSize: 10, marginBottom: 20, marginTop: 10 }}>
-                      Clique na imagem para selecionar uma nova foto
+                <>
+                  <Avatar
+                    className={classes.avatar}
+                    src={previewImage}
+                    onClick={() => {
+                      document.getElementById('file').click();
+                    }}
+                  ></Avatar>
+                  <i style={{ fontSize: 10, marginBottom: 20, marginTop: 10 }}>
+                    Clique na imagem para selecionar uma nova foto
                   </i>
 
-                    <input
-                      type="file"
-                      id="file"
-                      onChange={handleChangeAvatar}
-                      ref={fileRef}
-                      style={{
-                        visibility: 'hidden',
-                        height: 0,
-                        margin: 0,
-                        padding: 0,
-                      }}
-                    />
+                  <input
+                    type="file"
+                    id="file"
+                    onChange={handleChangeAvatar}
+                    ref={fileRef}
+                    style={{
+                      visibility: 'hidden',
+                      height: 0,
+                      margin: 0,
+                      padding: 0,
+                    }}
+                  />
 
+                  <div>
                     <FormControlLabel
                       style={{ marginTop: 20 }}
                       control={
@@ -356,253 +360,267 @@ export default function Profile(props) {
                       label="Sou Recrutador"
                     />
 
+                    <FormControlLabel
+                      style={{ marginTop: 20 }}
+                      control={
+                        <Checkbox
+                          checked={publicProfile}
+                          onChange={handleChangePublicProfile}
+                          name="checkedB"
+                          color="primary"
+                        />
+                      }
+                      label="Não deixar meu perfil público"
+                    />
+                  </div>
+
+                  <Button
+                    type="button"
+                    variant="contained"
+                    onClick={redirectToProfile}
+                    style={{
+                      backgroundColor: `${customizations?.secondaryColor}`,
+                      color: '#fff',
+                      padding: 10,
+                    }}
+                    className={classes.submit}
+                  >
+                    VER MEU PERFIL PÚBLICO
+                  </Button>
+
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                    style={{ marginTop: 40 }}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        autoComplete="fname"
+                        name="fullName"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="fullName"
+                        value={inputName}
+                        onChange={(event) => setInputName(event.target.value)}
+                        label="Nome Completo"
+                        autoFocus
+                      />
+                    </Grid>
+                  </FormControl>
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        disabled
+                        id="email"
+                        value={inputEmail}
+                        onChange={(event) => setInputEmail(event.target.value)}
+                        label="E-mail"
+                        name="email"
+                        autoComplete="email"
+                      />
+                    </Grid>
+                  </FormControl>
+
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="cellphone"
+                        value={inputCellphone}
+                        onChange={(event) =>
+                          setInputCellphone(event.target.value)
+                        }
+                        label="Celular"
+                        name="cellphone"
+                        autoComplete="cellphone"
+                      />
+                    </Grid>
+                  </FormControl>
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="city"
+                        value={inputCity}
+                        onChange={(event) => setInputCity(event.target.value)}
+                        label="Cidade"
+                        name="city"
+                        autoComplete="city"
+                      />
+                    </Grid>
+                  </FormControl>
+
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      Estado
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={inputState}
+                      onChange={handleChange}
+                      label="Estado"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={'AC'}>AC</MenuItem>
+                      <MenuItem value={'AL'}>AL</MenuItem>
+                      <MenuItem value={'AP'}>AP</MenuItem>
+                      <MenuItem value={'AM'}>AM</MenuItem>
+                      <MenuItem value={'BA'}>BA</MenuItem>
+                      <MenuItem value={'CE'}>CE</MenuItem>
+                      <MenuItem value={'DF'}>DF</MenuItem>
+                      <MenuItem value={'ES'}>ES</MenuItem>
+                      <MenuItem value={'GO'}>GO</MenuItem>
+                      <MenuItem value={'MA'}>MA</MenuItem>
+                      <MenuItem value={'MT'}>MT</MenuItem>
+                      <MenuItem value={'MS'}>MS</MenuItem>
+                      <MenuItem value={'MG'}>MG</MenuItem>
+                      <MenuItem value={'PA'}>PA</MenuItem>
+                      <MenuItem value={'PB'}>PB</MenuItem>
+                      <MenuItem value={'PR'}>PR</MenuItem>
+                      <MenuItem value={'PE'}>PE</MenuItem>
+                      <MenuItem value={'PI'}>PI</MenuItem>
+                      <MenuItem value={'RJ'}>RJ</MenuItem>
+                      <MenuItem value={'RN'}>RN</MenuItem>
+                      <MenuItem value={'RS'}>RS</MenuItem>
+                      <MenuItem value={'RO'}>RO</MenuItem>
+                      <MenuItem value={'RR'}>RR</MenuItem>
+                      <MenuItem value={'SC'}>SC</MenuItem>
+                      <MenuItem value={'SP'}>SP</MenuItem>
+                      <MenuItem value={'SE'}>SE</MenuItem>
+                      <MenuItem value={'TO'}>TO</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    className={classes.formControl}
+                  >
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      Função
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={inputJobRole}
+                      onChange={handleChangeFunction}
+                      label="Função"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={'Frontend Developer'}>Frontend</MenuItem>
+                      <MenuItem value={'Backend Developer'}>Backend</MenuItem>
+                      <MenuItem value={'Fullstack Developer'}>
+                        Fullstack
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        name="password"
+                        label="Senha"
+                        value={inputPassword}
+                        onChange={(event) =>
+                          setInputPassword(event.target.value)
+                        }
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                      />
+                    </Grid>
+                  </FormControl>
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        name="confirm-password"
+                        label="Confirmação de senha"
+                        type="password"
+                        value={inputConfirmPassword}
+                        onChange={(event) =>
+                          setInputConfirmPassword(event.target.value)
+                        }
+                        id="confirm-password"
+                        autoComplete="current-password"
+                      />
+                    </Grid>
+                  </FormControl>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                      padding: '0 15px 0 15px',
+                      justifyContent: 'space-between',
+                    }}
+                  >
                     <Button
-                      type="button"
+                      type="submit"
+                      fullWidth
                       variant="contained"
-                      onClick={redirectToProfile}
+                      onClick={handleRegister}
                       style={{
                         backgroundColor: `${customizations?.secondaryColor}`,
                         color: '#fff',
-                        padding: 10,
+                        marginRight: 10,
                       }}
                       className={classes.submit}
                     >
-                      VER MEU PERFIL PÚBLICO
-                  </Button>
-
-                    <FormControl
-                      variant="outlined"
+                      ATUALIZAR
+                    </Button>
+                    <Button
                       fullWidth
-                      className={classes.formControl}
-                      style={{ marginTop: 40 }}
-                    >
-                      <Grid item xs={12}>
-                        <TextField
-                          autoComplete="fname"
-                          name="fullName"
-                          variant="outlined"
-                          required
-                          fullWidth
-                          id="fullName"
-                          value={inputName}
-                          onChange={(event) => setInputName(event.target.value)}
-                          label="Nome Completo"
-                          autoFocus
-                        />
-                      </Grid>
-                    </FormControl>
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                    >
-                      <Grid item xs={12}>
-                        <TextField
-                          variant="outlined"
-                          fullWidth
-                          disabled
-                          id="email"
-                          value={inputEmail}
-                          onChange={(event) => setInputEmail(event.target.value)}
-                          label="E-mail"
-                          name="email"
-                          autoComplete="email"
-                        />
-                      </Grid>
-                    </FormControl>
-
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                    >
-                      <Grid item xs={12}>
-                        <TextField
-                          variant="outlined"
-                          fullWidth
-                          id="cellphone"
-                          value={inputCellphone}
-                          onChange={(event) =>
-                            setInputCellphone(event.target.value)
-                          }
-                          label="Celular"
-                          name="cellphone"
-                          autoComplete="cellphone"
-                        />
-                      </Grid>
-                    </FormControl>
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                    >
-                      <Grid item xs={12}>
-                        <TextField
-                          variant="outlined"
-                          fullWidth
-                          id="city"
-                          value={inputCity}
-                          onChange={(event) => setInputCity(event.target.value)}
-                          label="Cidade"
-                          name="city"
-                          autoComplete="city"
-                        />
-                      </Grid>
-                    </FormControl>
-
-                    <FormControl
-                      fullWidth
-                      variant="outlined"
-                      className={classes.formControl}
-                    >
-                      <InputLabel id="demo-simple-select-outlined-label">
-                        Estado
-                    </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={inputState}
-                        onChange={handleChange}
-                        label="Estado"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={'AC'}>AC</MenuItem>
-                        <MenuItem value={'AL'}>AL</MenuItem>
-                        <MenuItem value={'AP'}>AP</MenuItem>
-                        <MenuItem value={'AM'}>AM</MenuItem>
-                        <MenuItem value={'BA'}>BA</MenuItem>
-                        <MenuItem value={'CE'}>CE</MenuItem>
-                        <MenuItem value={'DF'}>DF</MenuItem>
-                        <MenuItem value={'ES'}>ES</MenuItem>
-                        <MenuItem value={'GO'}>GO</MenuItem>
-                        <MenuItem value={'MA'}>MA</MenuItem>
-                        <MenuItem value={'MT'}>MT</MenuItem>
-                        <MenuItem value={'MS'}>MS</MenuItem>
-                        <MenuItem value={'MG'}>MG</MenuItem>
-                        <MenuItem value={'PA'}>PA</MenuItem>
-                        <MenuItem value={'PB'}>PB</MenuItem>
-                        <MenuItem value={'PR'}>PR</MenuItem>
-                        <MenuItem value={'PE'}>PE</MenuItem>
-                        <MenuItem value={'PI'}>PI</MenuItem>
-                        <MenuItem value={'RJ'}>RJ</MenuItem>
-                        <MenuItem value={'RN'}>RN</MenuItem>
-                        <MenuItem value={'RS'}>RS</MenuItem>
-                        <MenuItem value={'RO'}>RO</MenuItem>
-                        <MenuItem value={'RR'}>RR</MenuItem>
-                        <MenuItem value={'SC'}>SC</MenuItem>
-                        <MenuItem value={'SP'}>SP</MenuItem>
-                        <MenuItem value={'SE'}>SE</MenuItem>
-                        <MenuItem value={'TO'}>TO</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <FormControl
-                      fullWidth
-                      variant="outlined"
-                      className={classes.formControl}
-                    >
-                      <InputLabel id="demo-simple-select-outlined-label">
-                        Função
-                    </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={inputJobRole}
-                        onChange={handleChangeFunction}
-                        label="Função"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={'Frontend Developer'}>Frontend</MenuItem>
-                        <MenuItem value={'Backend Developer'}>Backend</MenuItem>
-                        <MenuItem value={'Fullstack Developer'}>
-                          Fullstack
-                      </MenuItem>
-                      </Select>
-                    </FormControl>
-
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                    >
-                      <Grid item xs={12}>
-                        <TextField
-                          variant="outlined"
-                          fullWidth
-                          name="password"
-                          label="Senha"
-                          value={inputPassword}
-                          onChange={(event) =>
-                            setInputPassword(event.target.value)
-                          }
-                          type="password"
-                          id="password"
-                          autoComplete="current-password"
-                        />
-                      </Grid>
-                    </FormControl>
-                    <FormControl
-                      variant="outlined"
-                      fullWidth
-                      className={classes.formControl}
-                    >
-                      <Grid item xs={12}>
-                        <TextField
-                          variant="outlined"
-                          fullWidth
-                          name="confirm-password"
-                          label="Confirmação de senha"
-                          type="password"
-                          value={inputConfirmPassword}
-                          onChange={(event) =>
-                            setInputConfirmPassword(event.target.value)
-                          }
-                          id="confirm-password"
-                          autoComplete="current-password"
-                        />
-                      </Grid>
-                    </FormControl>
-
-                    <div
+                      variant="contained"
                       style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        width: '100%',
-                        padding: '0 15px 0 15px',
-                        justifyContent: 'space-between',
+                        backgroundColor: `${customizations?.primaryColor}`,
+                        color: '#fff',
                       }}
+                      className={classes.submitRight}
                     >
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        onClick={handleRegister}
-                        style={{
-                          backgroundColor: `${customizations?.secondaryColor}`,
-                          color: '#fff',
-                          marginRight: 10,
-                        }}
-                        className={classes.submit}
-                      >
-                        ATUALIZAR
+                      Cancelar
                     </Button>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        style={{
-                          backgroundColor: `${customizations?.primaryColor}`,
-                          color: '#fff',
-                        }}
-                        className={classes.submitRight}
-                      >
-                        Cancelar
-                    </Button>
-                    </div>
-                  </>
-                )}
+                  </div>
+                </>
+              )}
             </div>
           </Grid>
         </Container>

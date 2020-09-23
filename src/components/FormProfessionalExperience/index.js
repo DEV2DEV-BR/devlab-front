@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Tooltip, IconButton } from '@material-ui/core';
 import { Save, Clear } from '@material-ui/icons';
 import firebase from 'firebase';
 import { notify } from '../../util/toast';
+import JoditEditor from 'jodit-react';
 
 const FormProfessionalExperience = ({ update }) => {
-  const [input, setInput] = useState('');
   const [progressLoad, setProgressLoad] = useState(false);
+
+  const editorProfessionalExperience = useRef(null);
+  const [professionalExperience, setProfessionalExperience] = useState(
+    'Aqui vão suas experiências profissionais.'
+  );
+  const config = {
+    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+  };
 
   const loadData = () => {
     const db = firebase.firestore();
@@ -21,7 +29,7 @@ const FormProfessionalExperience = ({ update }) => {
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-              setInput(doc.data().professionalExperience);
+              setProfessionalExperience(doc.data().professionalExperience);
             });
           });
       }
@@ -41,7 +49,7 @@ const FormProfessionalExperience = ({ update }) => {
     // Update successful.
     userRef
       .update({
-        professionalExperience: input,
+        professionalExperience: professionalExperience,
       })
       .then(function () {
         // upload image
@@ -61,15 +69,14 @@ const FormProfessionalExperience = ({ update }) => {
 
   return (
     <Form>
-      <Form.Group controlId="exampleForm.ControlTextarea1">
-        <Form.Control
-          as="textarea"
-          rows="6"
-          value={input}
-          placeholder="Faça uma boa descrição para que os recrutadores te conheçam melhor."
-          onChange={(event) => setInput(event.target.value)}
-        />
-      </Form.Group>
+      <JoditEditor
+        ref={editorProfessionalExperience}
+        value={professionalExperience}
+        config={config}
+        tabIndex={1} // tabIndex of textarea
+        onBlur={(newContent) => setProfessionalExperience(newContent)} // preferred to use only this option to update the content for performance reasons
+        onChange={(newContent) => {}}
+      />
       <Tooltip title="Salvar Alterações" placement="bottom-start">
         <IconButton
           aria-label="save"
@@ -82,7 +89,7 @@ const FormProfessionalExperience = ({ update }) => {
       <Tooltip title="Limpar" placement="bottom-start">
         <IconButton
           aria-label="save"
-          onClick={() => setInput('')}
+          onClick={() => setProfessionalExperience('')}
           disabled={progressLoad}
         >
           <Clear />
