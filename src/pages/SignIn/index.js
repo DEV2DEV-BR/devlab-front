@@ -19,6 +19,8 @@ import BackgroundSignIn from '../../assets/background-signIn.jpg';
 import { customizations } from '../../configs/customizations';
 import { email, login } from '../../services/auth';
 import { notify } from '../../util/toast';
+import ModalRecovery from '../../components/ModalRecovery';
+import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 
 function Copyright() {
   return (
@@ -74,6 +76,7 @@ export default function SignIn(props) {
   const [progress, setProgress] = useState(false);
   const [idCourseFree, setIdCourseFree] = useState('');
   const [toCartRedirect, setToCartRedirect] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     if (props.history.location.state) {
@@ -88,6 +91,14 @@ export default function SignIn(props) {
     }
     //eslint-disable-next-line
   }, []);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleLogin = async (event) => {
     setProgress(true);
@@ -158,63 +169,76 @@ export default function SignIn(props) {
   };
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Login
-          </Typography>
-          <form className={classes.form} onSubmit={handleLogin}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="E-mail"
-              name="email"
-              value={inputEmail}
-              onChange={(event) => setInputEmail(event.target.value)}
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Senha"
-              type="password"
-              value={inputPassword}
-              onChange={(event) => setInputPassword(event.target.value)}
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Lembrar minha senha"
-            />
+    <>
+      <ResponsiveNavbar history={props?.history} />
+      <Grid container component="main" className={classes.root}>
+        <ModalRecovery open={open} handleClose={handleClose} />
+        <CssBaseline />
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Login
+            </Typography>
+            <form className={classes.form} onSubmit={handleLogin}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="E-mail"
+                name="email"
+                value={inputEmail}
+                onChange={(event) => setInputEmail(event.target.value)}
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Senha"
+                type="password"
+                value={inputPassword}
+                onChange={(event) => setInputPassword(event.target.value)}
+                id="password"
+                autoComplete="current-password"
+              />
 
-            {progress ? (
-              <div
+              <Grid
+                container
                 style={{
                   display: 'flex',
-                  flexDirection: 'row',
-                  width: '100%',
-                  justifyContent: 'center',
-                  padding: 20,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
                 }}
               >
-                <CircularProgress />
-                <p style={{ margin: 10 }}>Aguarde...</p>
-              </div>
-            ) : (
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Lembrar minha senha"
+                />
+              </Grid>
+
+              {progress ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'center',
+                    padding: 20,
+                  }}
+                >
+                  <CircularProgress />
+                  <p style={{ margin: 10 }}>Aguarde...</p>
+                </div>
+              ) : (
                 <Button
                   type="submit"
                   fullWidth
@@ -228,22 +252,25 @@ export default function SignIn(props) {
                   LOGIN
                 </Button>
               )}
-            <Grid container>
-              <Grid item xs>
-                <Link to="/">Voltar para o início</Link>
+              <Grid container>
+                <Grid item xs>
+                  <a href="#" onClick={() => handleClickOpen()}>
+                    Esqueci minha senha
+                  </a>
+                </Grid>
+                <Grid item>
+                  <Link to="/sign-up">
+                    {'Não tem acesso ainda? Cadastre-se!'}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link to="/sign-up">
-                  {'Não tem acesso ainda? Cadastre-se!'}
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </form>
+          </div>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 }
