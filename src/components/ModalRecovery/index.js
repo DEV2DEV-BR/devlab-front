@@ -20,6 +20,7 @@ export default function ModalRecovery({ open, handleClose }) {
       .then(function () {
         notify('E-mail enviado com sucesso!', 1000, 'success');
         handleClose();
+        setEmail('');
       })
       .catch(function (error) {
         notify(
