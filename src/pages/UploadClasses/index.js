@@ -16,6 +16,9 @@ import { customizations } from '../../configs/customizations';
 import { notify } from '../../util/toast';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -71,6 +74,12 @@ export default function UploadFiles(props) {
   const [courseData, setCourseData] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [value, setValue] = React.useState('com-video');
+
+  const handleChangeCheck = (event) => {
+    setValue(event.target.value);
+  };
 
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
@@ -134,88 +143,97 @@ export default function UploadFiles(props) {
     // eslint-disable-next-line
   }, []);
 
+  const persistClasse = (url) => {
+    const { id } = props.history.location.state;
+    const cloudFirestore = firebase.firestore().collection('courses').doc(id);
+
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth();
+    let fullYear = date.getFullYear();
+    let createdAt = `${day}-${month}-${fullYear}`;
+
+    cloudFirestore
+      .collection('classes')
+      .add({
+        title: inputTitleClasse,
+        position: classesData.length + 1,
+        url_video: url,
+        createdAt: date,
+        date: createdAt,
+        description,
+        open: isOpen,
+        id: '',
+      })
+      .then(function (doc) {
+        cloudFirestore.collection('classes').doc(doc.id).update({
+          id: doc.id,
+        });
+        setProgress(false);
+        handleClear();
+        notify('Aula enviada com sucesso!', 1000, 'success');
+      })
+      .catch(function (error) {
+        console.error('Error adding domcument', error);
+      });
+  };
   const extensionsPermitted = ['mp3', 'mp4', 'avi'];
 
   const handleRegister = (name) => {
-    const { id } = props.history.location.state;
+    let extension = '';
 
-    if (image !== null) {
-      const extension = image.name.split('.').pop();
-
-      if (extensionsPermitted.includes(extension)) {
-        if (inputTitleClasse !== '' && description !== '') {
-          let date = new Date();
-          let day = date.getDate();
-          let month = date.getMonth();
-          let fullYear = date.getFullYear();
-          let createdAt = `${day}-${month}-${fullYear}`;
-
-          const storage = firebase.storage();
-
-          setProgress(true);
-
-          const uploadClasse = storage
-            .ref(
-              `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-                image.name
-              }`
-            )
-            .put(image);
-          uploadClasse.on(
-            'state_changed',
-            (snapshot) => {},
-            (error) => {
-              // Error function ...
-              console.log(error);
-            },
-            () => {
-              // complete function ...
-              storage
-                .ref('courses')
-                .child(localStorage.getItem('@jacode-email'))
-                .child(name)
-                .child(image.name)
-                .getDownloadURL()
-                .then((url) => {
-                  const cloudFirestore = firebase
-                    .firestore()
-                    .collection('courses')
-                    .doc(id);
-
-                  cloudFirestore
-                    .collection('classes')
-                    .add({
-                      title: inputTitleClasse,
-                      position: classesData.length + 1,
-                      url_video: url,
-                      createdAt: date,
-                      date: createdAt,
-                      description,
-                      open: isOpen,
-                      id: '',
-                    })
-                    .then(function (doc) {
-                      cloudFirestore.collection('classes').doc(doc.id).update({
-                        id: doc.id,
-                      });
-                      setProgress(false);
-                      handleClear();
-                      notify('Aula enviada com sucesso!', 1000, 'success');
-                    })
-                    .catch(function (error) {
-                      console.error('Error adding domcument', error);
-                    });
-                });
-            }
-          );
-        } else {
-          notify('Preencha todos os campos!', 1000, 'error');
-        }
+    if (value === 'com-video') {
+      if (image === null) {
+        notify('Selecione um arquivo para enviar!', 1000, 'error');
+        return;
       } else {
-        notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
+        extension = image.name.split('.').pop();
+
+        if (!extensionsPermitted.includes(extension)) {
+          notify('Esse tipo de arquivo não é permitido!', 1000, 'error');
+          return;
+        }
+      }
+    }
+
+    if (inputTitleClasse !== '' && description !== '') {
+      const storage = firebase.storage();
+
+      setProgress(true);
+
+      if (value === 'com-video') {
+        const uploadClasse = storage
+          .ref(
+            `courses/${localStorage.getItem('@jacode-email')}/${name}/${
+              image.name
+            }`
+          )
+          .put(image);
+        uploadClasse.on(
+          'state_changed',
+          (snapshot) => {},
+          (error) => {
+            // Error function ...
+            console.log(error);
+          },
+          () => {
+            // complete function ...
+            storage
+              .ref('courses')
+              .child(localStorage.getItem('@jacode-email'))
+              .child(name)
+              .child(image.name)
+              .getDownloadURL()
+              .then((url) => {
+                persistClasse(url);
+              });
+          }
+        );
+      } else {
+        persistClasse('');
       }
     } else {
-      notify('Selecione um arquivo para enviar!', 1000, 'error');
+      notify('Preencha todos os campos!', 1000, 'error');
     }
   };
 
@@ -348,8 +366,30 @@ export default function UploadFiles(props) {
                     />
                   </Grid>
                 </FormControl>
+
                 <div style={{ margin: '10px 10px 20px 10px' }}>
-                  <input type="file" onChange={handleChange} />
+                  <div>
+                    <RadioGroup
+                      aria-label="gender"
+                      name="gender1"
+                      value={value}
+                      onChange={handleChangeCheck}
+                    >
+                      <FormControlLabel
+                        value="com-video"
+                        control={<Radio />}
+                        label="Com vídeo"
+                      />
+                      <FormControlLabel
+                        value="sem-video"
+                        control={<Radio />}
+                        label="Sem vídeo"
+                      />
+                    </RadioGroup>
+                  </div>
+                  {value == 'com-video' && (
+                    <input type="file" onChange={handleChange} />
+                  )}
                 </div>
               </Grid>
 
