@@ -133,14 +133,14 @@ export default function Checkout(props) {
       inputCod !== ''
     ) {
       pagarme.client
-        .connect({ encryption_key: process.env.REACT_APP_PAGARME_STG })
+        .connect({ encryption_key: process.env.REACT_APP_PAGARME })
         .then((client) =>
           client.transactions.create({
             amount: `${totalPrice * 100}`,
             card_number: `${inputCard}`,
-            card_holder_name: `${inputName}`,
-            card_expiration_date: `${inputMonth + inputYear}`,
             card_cvv: `${inputCod}`,
+            card_expiration_date: `${inputMonth + inputYear}`,
+            card_holder_name: `${inputName}`,
             customer: {
               external_id: '#3311',
               name: `${inputName}`,

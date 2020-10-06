@@ -30,11 +30,9 @@ export const addToCart = async (course, props, buy) => {
 export const removeItemToCart = (course) => {
   const currentCart = JSON.parse(localStorage?.getItem('localCart')) || [];
 
-  const arr = [...currentCart];
+  let arr = [...currentCart];
 
-  if (arr.some((c) => c?.id === course?.id)) {
-    arr.pop(course);
-  }
+  arr = arr.filter(item => item.id !== course.id)
 
   localStorage.setItem('localCart', JSON.stringify(arr));
 };
