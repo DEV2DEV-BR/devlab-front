@@ -120,9 +120,7 @@ export default function Checkout(props) {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    setDisabled(true);
-
-    console.log(parseFloat(totalPrice));
+    setDisabled(true);    
 
     if (
       inputName !== '' &&
@@ -198,8 +196,8 @@ export default function Checkout(props) {
       <SpaceBar />
       <Body>
         <Main>
-          {coursesData.map((course) => (
-            <InternalContainer maxWidth="lg" key={course.id}>
+          
+            <InternalContainer maxWidth="lg">
               <StyledGrid
                 container
                 spacing={3}
@@ -300,7 +298,7 @@ export default function Checkout(props) {
                 </Form>
               </StyledGrid>
             </InternalContainer>
-          ))}
+          
         </Main>
         <Resume>
           <h5 style={{ width: '100%', marginTop: '20px' }}>Resumo do pedido</h5>
