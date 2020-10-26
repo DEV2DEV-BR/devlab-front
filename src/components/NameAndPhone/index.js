@@ -77,6 +77,7 @@ export default function SignUp({ handleNext, completData, changeState }) {
         state: '',
         jobRole: '',
         profileImage: '',
+        publicProfile: !recruiterCheck,
         id: '',
       })
       .then(function (docRef) {

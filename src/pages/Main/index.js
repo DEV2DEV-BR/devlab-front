@@ -117,9 +117,10 @@ export default function Main(props) {
                 boxShadow: '5px',
               }}
             >
-              Bem vindo à JACODE CURSOS!
+              Bem vindo à <h1>JACODE CURSOS!</h1>
               <br />
-              Invista naquilo que mais importa, invista em você!
+              {/* Invista naquilo que mais importa, invista em você! */}
+              Fale com o instrutor no telegram e whatsapp <h1>(018) 98172-8104</h1>
             </Typography>
             <Typography
               variant="h5"
