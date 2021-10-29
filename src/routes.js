@@ -37,13 +37,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route path={["/", "/sign-in"]} exact component={SignIn} />
-      <Route path="/sign-up" component={SignUp} />
-
       <UsersProvider>
-        <PrivateRoute path="/dashboard" component={Dashboard} />
-        <PrivateRoute path="/profile" component={Profile} />
+        <Route path={["/", "/sign-in"]} exact component={SignIn} />
+        <Route path="/sign-up" component={SignUp} />
         <CoursesProvider>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/classes-by-course" component={ClassesByCourse} />
           <PrivateRoute path="/watch-classe" component={WatchClasse} />
           <PrivateRoute path="/list-my-courses" component={MyCourses} />

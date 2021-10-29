@@ -10,17 +10,17 @@ import { Link } from 'react-router-dom';
 import Copyright from '../../components/Copyright';
 import ModalRecovery from '../../components/ModalRecovery';
 import { customizations } from '../../configs/customizations';
+import useUsers from '../../hooks/Users/useUsers';
 import apiBackend from '../../services/apiBackend';
 import { returnError } from '../../util/handleError';
 import { useStyles } from './styles';
-import useUsers from '../../hooks/Users/useUsers';
 
 export default function SignIn(props) {
   const classes = useStyles();
-  const { storageUserData, userData } = useUsers();
+  const { storageUserData } = useUsers();
 
-  const [inputEmail, setInputEmail] = useState('');
-  const [inputPassword, setInputPassword] = useState('');
+  const [inputEmail, setInputEmail] = useState('danieldeandradelopes@gmail.com');
+  const [inputPassword, setInputPassword] = useState('lop32145');
   const [progress, setProgress] = useState(false);
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
@@ -29,13 +29,12 @@ export default function SignIn(props) {
     event.preventDefault();
     try {
       setProgress(true);
-      const response = await apiBackend.post('/auth', {
+      const { data } = await apiBackend.post('/auth', {
         email: inputEmail,
         password: inputPassword
       });
-      console.log(response)
 
-      storageUserData('data');
+      storageUserData(data);
     } catch (error) {
       returnError(error);
     }

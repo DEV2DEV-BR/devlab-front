@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
 import { useLocalStorage } from 'react-use';
 
 function useUsersProvider() {
   const [userData, setUserData, removeUserData] = useLocalStorage('user', '');
 
   function storageUserData(user) {
-    console.log(user)
-    // setUserData(user);
+    setUserData(user);
   }
 
   return {
