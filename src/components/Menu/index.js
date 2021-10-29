@@ -97,11 +97,9 @@ export default function TemporaryDrawer() {
       {userData.userType === 'student' && (
         <>
           <List>
-            {['Perfil', 'Meus Pedidos'].map((text, index) => (
+            {['Perfil'].map((text, index) => (
               <Link
-                to={
-                  index === 0 ? '/profile' : index === 1 && 'payment-requested'
-                }
+                to={index === 0 && '/profile'}
                 className={classes.items}
                 key={index}
               >
@@ -118,9 +116,7 @@ export default function TemporaryDrawer() {
           <List>
             {['Meus Cursos'].map((text, index) => (
               <Link
-                to={
-                  index === 0 ? '/dashboard' : index === 1 && 'my-certificates'
-                }
+                to={index === 0 && '/dashboard'}
                 className={classes.items}
                 key={index}
               >

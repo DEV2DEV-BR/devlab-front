@@ -2,12 +2,10 @@ import { Button } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
-import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -264,7 +262,7 @@ export default function Profile(props) {
           .put(image);
         uploadTask.on(
           'state_changed',
-          (snapshot) => {},
+          (snapshot) => { },
           (error) => {
             // Error function ...
             console.log(error);
@@ -345,48 +343,6 @@ export default function Profile(props) {
                       padding: 0,
                     }}
                   />
-
-                  <div>
-                    <FormControlLabel
-                      style={{ marginTop: 20 }}
-                      control={
-                        <Checkbox
-                          checked={recruiterCheck}
-                          onChange={handleChangeRecruiter}
-                          name="checkedB"
-                          color="primary"
-                        />
-                      }
-                      label="Sou Recrutador"
-                    />
-
-                    <FormControlLabel
-                      style={{ marginTop: 20 }}
-                      control={
-                        <Checkbox
-                          checked={publicProfile}
-                          onChange={handleChangePublicProfile}
-                          name="checkedB"
-                          color="primary"
-                        />
-                      }
-                      label="Não deixar meu perfil público"
-                    />
-                  </div>
-
-                  <Button
-                    type="button"
-                    variant="contained"
-                    onClick={redirectToProfile}
-                    style={{
-                      backgroundColor: `${customizations?.secondaryColor}`,
-                      color: '#fff',
-                      padding: 10,
-                    }}
-                    className={classes.submit}
-                  >
-                    VER MEU PERFIL PÚBLICO
-                  </Button>
 
                   <FormControl
                     variant="outlined"
@@ -513,31 +469,6 @@ export default function Profile(props) {
                       <MenuItem value={'SP'}>SP</MenuItem>
                       <MenuItem value={'SE'}>SE</MenuItem>
                       <MenuItem value={'TO'}>TO</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <FormControl
-                    fullWidth
-                    variant="outlined"
-                    className={classes.formControl}
-                  >
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Função
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={inputJobRole}
-                      onChange={handleChangeFunction}
-                      label="Função"
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={'Frontend Developer'}>Frontend</MenuItem>
-                      <MenuItem value={'Backend Developer'}>Backend</MenuItem>
-                      <MenuItem value={'Fullstack Developer'}>
-                        Fullstack
-                      </MenuItem>
                     </Select>
                   </FormControl>
 

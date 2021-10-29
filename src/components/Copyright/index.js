@@ -11,7 +11,7 @@ export default function Copyright() {
         target="_blank"
         href="https://www.linkedin.com/in/daniel-de-andrade-lopes-5242b4b1/"
       >
-        by Daniel Lopes
+        DEV2DEV
       </Links>{' '}
       {new Date().getFullYear()}
     </Typography>
