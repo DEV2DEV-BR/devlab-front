@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import React, { useEffect, useRef, useState } from 'react';
 import ModalWithMedia from '../../components/ModalWithMedia';
-import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import { istAuthenticated } from '../../services/auth';
 import { addToCart } from '../../util/utils';
 import Paper from '@material-ui/core/Paper';
@@ -124,7 +123,6 @@ export default function CoursesDetails(props) {
 
   return (
     <>
-      <ResponsiveNavbar history={props?.history} />
 
       <ModalWithMedia
         open={open}

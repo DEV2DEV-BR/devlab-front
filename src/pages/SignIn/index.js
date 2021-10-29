@@ -20,7 +20,6 @@ import { customizations } from '../../configs/customizations';
 import { email, login } from '../../services/auth';
 import { notify } from '../../util/toast';
 import ModalRecovery from '../../components/ModalRecovery';
-import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 
 function Copyright() {
   return (
@@ -170,7 +169,6 @@ export default function SignIn(props) {
 
   return (
     <>
-      <ResponsiveNavbar history={props?.history} />
       <Grid container component="main" className={classes.root}>
         <ModalRecovery open={open} handleClose={handleClose} />
         <CssBaseline />

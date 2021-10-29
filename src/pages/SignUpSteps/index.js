@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import EmailAndPassword from '../../components/EmailAndPassword';
 import NameAndPhone from '../../components/NameAndPhone';
-import ResponsiveNavbar from '../../components/ResponsiveNavbar';
 import SignInComponent from '../../components/SignInComponent';
 
 const ColorlibConnector = withStyles({
@@ -150,7 +149,6 @@ export default function SignUpSteps(props) {
 
   return (
     <div className={classes.root}>
-      <ResponsiveNavbar history={props?.history} />
       <Stepper
         alternativeLabel
         activeStep={activeStep}

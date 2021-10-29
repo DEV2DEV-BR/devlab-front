@@ -82,18 +82,6 @@ export default function NavBarDashboard(props) {
               <b>Bem vindo:</b> {userData.name}
             </Name>
             <IconContainerButton>
-              <StyledIconButton color="inherit" onClick={redirectToShop}>
-                <Badge color="secondary">
-                  <StorefrontIcon />
-                </Badge>
-                <p style={{ fontSize: 12, margin: 2 }}>Voltar para Loja</p>
-              </StyledIconButton>
-              <StyledIconButton color="inherit" onClick={redirectToCart}>
-                <Badge color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
-                <p style={{ fontSize: 12, margin: 2 }}>Carrinho</p>
-              </StyledIconButton>
               <StyledIconButton color="inherit" onClick={handleLogout}>
                 <Badge color="secondary">
                   <ExitToAppIcon />
