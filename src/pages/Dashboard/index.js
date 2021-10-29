@@ -3,13 +3,11 @@ import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import Copyright from '../../components/Copyright';
 import CoursesList from '../../components/CoursesList';
 import Reports from '../../components/Reports';
-import NameAndPhone from '../../components/NameAndPhone';
-import firebase from 'firebase';
-import MenuIcons from '../../components/MenuIcons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,7 +88,6 @@ export default function Dashboard(props) {
       <CssBaseline />
 
       <main className={classes.content}>
-        {localStorage?.getItem('isRecruiter') === 'true' && <MenuIcons />}
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           {localStorage?.getItem('userType') === 'teacher' && (
@@ -99,21 +96,10 @@ export default function Dashboard(props) {
             </Grid>
           )}
 
-          {completedData && localStorage?.getItem('userType') === 'student' ? (
+          {localStorage?.getItem('userType') === 'student' && (
             <Grid container spacing={3} className={classes.courseList}>
               <CoursesList buy={false} history={history} />
             </Grid>
-          ) : (
-            completedData === false && (
-              <Grid
-                container
-                spacing={3}
-                className={classes.messageCompletData}
-              >
-                <h3>Para continuar complete seus dados</h3>
-                <NameAndPhone completData={true} changeState={changeState} />
-              </Grid>
-            )
           )}
         </Container>
         <Box pt={4} style={{ position: 'absolute', bottom: 0, width: '100%' }}>

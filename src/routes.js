@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import NavbarDashBoard from './components/NavbarDashboard';
 import ClassesByCourse from './pages/ClassesByCourse';
-import CoursesDetails from './pages/CoursesDetails';
 import CreateCourse from './pages/CreateCourse';
 import Dashboard from './pages/Dashboard';
 import MyCourses from './pages/MyCourses';
@@ -10,7 +9,7 @@ import MyStudents from './pages/MyStudents';
 import Profile from './pages/Profile';
 import RegisterCourse from './pages/RegisterCourse';
 import SignIn from './pages/SignIn';
-import SignUpSteps from './pages/SignUpSteps';
+import SignUp from './pages/SignUp';
 import UploadClasses from './pages/UploadClasses';
 import WatchClasse from './pages/WatchClasse';
 import { istAuthenticated } from './services/auth';
@@ -37,8 +36,7 @@ const Routes = () => (
   <BrowserRouter>
     <Switch>
       <Route path={["/","/sign-in"]} exact component={SignIn} />
-      <Route path="/sign-up" component={SignUpSteps} />
-      <Route path="/course-details" component={CoursesDetails} />
+      <Route path="/sign-up" component={SignUp} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/profile" component={Profile} />
       <PrivateRoute path="/create-course" component={CreateCourse} />
