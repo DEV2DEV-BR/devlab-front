@@ -10,7 +10,6 @@ import Dashboard from './pages/Dashboard';
 import Main from './pages/Main';
 import MyCourses from './pages/MyCourses';
 import MyStudents from './pages/MyStudents';
-import Workers from './pages/Workers';
 import PaymentRequest from './pages/PaymentRequested';
 import Profile from './pages/Profile';
 import PublicProfile from './pages/PublicProfile';
@@ -19,6 +18,7 @@ import SignIn from './pages/SignIn';
 import SignUpSteps from './pages/SignUpSteps';
 import UploadClasses from './pages/UploadClasses';
 import WatchClasse from './pages/WatchClasse';
+import Workers from './pages/Workers';
 import { istAuthenticated } from './services/auth';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
