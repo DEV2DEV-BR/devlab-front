@@ -5,20 +5,19 @@ import {
   Typography
 } from '@material-ui/core';
 import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
-import clsx from 'clsx';
-import firebase from 'firebase';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Copyright from '../../components/Copyright';
 import ModalRecovery from '../../components/ModalRecovery';
 import { customizations } from '../../configs/customizations';
-import { email, login } from '../../services/auth';
-import { notify } from '../../util/toast';
-import { useStyles } from './styles';
 import apiBackend from '../../services/apiBackend';
 import { returnError } from '../../util/handleError';
+import { useStyles } from './styles';
+import useUsers from '../../hooks/Users/useUsers';
+
 export default function SignIn(props) {
   const classes = useStyles();
+  const { storageUserData, userData } = useUsers();
 
   const [inputEmail, setInputEmail] = useState('');
   const [inputPassword, setInputPassword] = useState('');
@@ -34,7 +33,9 @@ export default function SignIn(props) {
         email: inputEmail,
         password: inputPassword
       });
-      console.log(response);
+      console.log(response)
+
+      storageUserData('data');
     } catch (error) {
       returnError(error);
     }

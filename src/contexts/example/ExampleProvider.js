@@ -1,7 +1,7 @@
 import useExampleProvider from '../../hooks/example/useExampleProvider';
 import ExampleContext from './ExampleContext';
 
-export function ExampleProvider(props) {
+export default function ExampleProvider(props) {
   const valuesProvider = useExampleProvider();
 
   return (
