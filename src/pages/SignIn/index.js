@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Copyright from '../../components/Copyright';
 import ModalRecovery from '../../components/ModalRecovery';
 import { customizations } from '../../configs/customizations';
@@ -16,11 +16,12 @@ import { returnError } from '../../util/handleError';
 import { useStyles } from './styles';
 
 export default function SignIn(props) {
+  const history = useHistory();
   const classes = useStyles();
   const { storageUserData } = useUsers();
 
-  const [inputEmail, setInputEmail] = useState('danieldeandradelopes@gmail.com');
-  const [inputPassword, setInputPassword] = useState('lop32145');
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
   const [progress, setProgress] = useState(false);
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
@@ -34,7 +35,9 @@ export default function SignIn(props) {
         password: inputPassword
       });
 
+      history.push('/dashboard');
       storageUserData(data);
+
     } catch (error) {
       returnError(error);
     }
@@ -136,9 +139,9 @@ export default function SignIn(props) {
               )}
               <Grid container>
                 <Grid item xs>
-                  <a href="#" onClick={() => setOpen(true)}>
+                  <span className={classes.link} onClick={() => setOpen(true)}>
                     Esqueci minha senha
-                  </a>
+                  </span>
                 </Grid>
                 <Grid item>
                   <Link to="/sign-up">

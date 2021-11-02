@@ -45,12 +45,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard(props) {
   const classes = useStyles();
 
-  const [history, setHistory] = useState(props.history);
-  const [completedData, setCompletedData] = useState(null);
-
-  const changeState = () => {
-    setCompletedData(!completedData);
-  };
+  const [history] = useState(props.history);
 
   const validData = async () => {
     const db = firebase.firestore();
@@ -63,11 +58,7 @@ export default function Dashboard(props) {
           .where('uid', '==', user.uid)
           .get()
           .then((querySnapshot) => {
-            if (querySnapshot.docs.length > 0) {
-              setCompletedData(true);
-            } else {
-              setCompletedData(false);
-            }
+
           })
           .catch((error) => {
             console.log(error);
@@ -78,9 +69,6 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     validData();
-    return () => {
-      setHistory('');
-    };
   }, []);
 
   return (

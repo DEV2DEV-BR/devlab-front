@@ -277,7 +277,7 @@ export default function WatchClasse(props) {
                           }}
                         >
                           {classesData.map((classe) =>
-                            classe.url_video != '' ? (
+                            classe.url_video !== '' ? (
                               <Player
                                 key={classe.id}
                                 src={classe.url_video}

@@ -3,7 +3,7 @@ import firebase from 'firebase';
 export const TOKEN_KEY = '@jacode-token';
 export const EMAIL_USER = '@jacode-email';
 
-export const istAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
+export const isAuthenticated = () => localStorage.getItem('user') !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const getEmail = () => localStorage.getItem(EMAIL_USER);
 

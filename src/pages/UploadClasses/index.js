@@ -204,14 +204,13 @@ export default function UploadFiles(props) {
       if (value === 'com-video') {
         const uploadClasse = storage
           .ref(
-            `courses/${localStorage.getItem('@jacode-email')}/${name}/${
-              image.name
+            `courses/${localStorage.getItem('@jacode-email')}/${name}/${image.name
             }`
           )
           .put(image);
         uploadClasse.on(
           'state_changed',
-          (snapshot) => {},
+          (snapshot) => { },
           (error) => {
             // Error function ...
             console.log(error);
@@ -387,7 +386,7 @@ export default function UploadFiles(props) {
                       />
                     </RadioGroup>
                   </div>
-                  {value == 'com-video' && (
+                  {value === 'com-video' && (
                     <input type="file" onChange={handleChange} />
                   )}
                 </div>

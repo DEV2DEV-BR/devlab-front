@@ -101,13 +101,6 @@ export default function Profile(props) {
   const [recruiterCheck, setRecruiterCheck] = useState(false);
   const [publicProfile, setPublicProfile] = useState(false);
 
-  const handleChangeRecruiter = () => {
-    setRecruiterCheck(!recruiterCheck);
-  };
-  const handleChangePublicProfile = () => {
-    setPublicProfile(!publicProfile);
-  };
-
   const loadData = () => {
     setProgressLoad(true);
     const db = firebase.firestore();
@@ -144,9 +137,6 @@ export default function Profile(props) {
   const handleChange = (event) => {
     setInputState(event.target.value);
   };
-  const handleChangeFunction = (event) => {
-    setInputJobRole(event.target.value);
-  };
 
   const handleChangeAvatar = (e) => {
     if (e.target.files[0]) {
@@ -165,10 +155,6 @@ export default function Profile(props) {
     }
   };
 
-  const redirectToProfile = () => {
-    props.history.push(`/public-profile/${inputEmail}`);
-  };
-
   const handleRegister = () => {
     setProgressLoad(true);
     const db = firebase.firestore();
@@ -182,7 +168,7 @@ export default function Profile(props) {
       inputState !== ''
     ) {
       if (!recruiterCheck) {
-        if (inputJobRole == '') {
+        if (inputJobRole === '') {
           notify('Preencha todos os campos!', 1000, 'error');
           setProgressLoad(false);
           return;

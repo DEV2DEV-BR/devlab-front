@@ -1,22 +1,18 @@
 import Badge from '@material-ui/core/Badge';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import StorefrontIcon from '@material-ui/icons/Storefront';
 import firebase from 'firebase';
 import React, { useEffect, useState } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
-import { notify } from '../../util/toast';
+import { Link } from 'react-router-dom';
 import Menu from '../../components/Menu';
+import { customizations } from '../../configs/customizations';
 import { logout } from '../../services/auth';
+import { notify } from '../../util/toast';
 import {
   Container,
   IconContainerButton,
-  Name,
-  StyledIconButton,
-  StyledForm,
+  Name, StyledForm, StyledIconButton
 } from './styles';
-import { Link } from 'react-router-dom';
-import { customizations } from '../../configs/customizations';
 
 export default function NavBarDashboard(props) {
   const [userData, setuserData] = useState([]);
@@ -52,14 +48,6 @@ export default function NavBarDashboard(props) {
     localStorage.clear();
     notify('Até logo, já estamos com saudades!', 2000, 'info');
     props.history.push('/');
-  };
-
-  const redirectToShop = () => {
-    props.history.push('/');
-  };
-
-  const redirectToCart = () => {
-    props.history.push('/cart');
   };
 
   return (

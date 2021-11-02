@@ -12,7 +12,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import UploadClasses from './pages/UploadClasses';
 import WatchClasse from './pages/WatchClasse';
-import { istAuthenticated } from './services/auth';
+import { isAuthenticated } from './services/auth';
 import UsersProvider from './contexts/Users/UsersProvider'
 import CoursesProvider from './contexts/Courses/CoursesProvider'
 
@@ -20,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      istAuthenticated() ? (
+      isAuthenticated() ? (
         <>
           <NavbarDashBoard {...props} />
           <Component {...props} />

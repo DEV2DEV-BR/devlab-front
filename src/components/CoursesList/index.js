@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart, MdMovie } from 'react-icons/md';
 import VisualFeedback from '../../components/VisualFeedback';
 import { customizations } from '../../configs/customizations';
-import { istAuthenticated } from '../../services/auth';
+import { isAuthenticated } from '../../services/auth';
 import { format } from '../../util/format';
 import { addToCart } from '../../util/utils';
 
@@ -112,14 +112,14 @@ const CoursesList = (props) => {
 
   const handleBuyCourse = (course) => {
     addToCart(course, props, true);
-    if (!istAuthenticated()) {
+    if (!isAuthenticated()) {
       props.history.push('/sign-in', { idCourseFree: 0, toCart: true });
       return;
     }
   };
 
   const handleStartFreeCourse = (idCourseFree) => {
-    if (!istAuthenticated()) {
+    if (!isAuthenticated()) {
       props.history.push('/sign-in', { idCourseFree, toCart: false });
       return;
     }

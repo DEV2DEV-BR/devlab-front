@@ -37,5 +37,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   textField: {
     marginTop: theme.spacing(1)
+  },
+  link: {
+    cursor: 'pointer',
+    color: '#0056b3'
   }
 }));

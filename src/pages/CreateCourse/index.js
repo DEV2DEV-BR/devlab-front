@@ -79,10 +79,9 @@ export default function CreateCourse(props) {
 
   const shortDescription = useRef(null);
   const [inputShortDescription, setInputShortDescription] = useState('');
-  const payment = useRef(null);
   const [inputCodePayment, setInputCodePayment] = useState('');
   const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    readonly: false,
   };
 
   useEffect(() => {
@@ -501,38 +500,38 @@ export default function CreateCourse(props) {
                   <p style={{ margin: 10 }}>Enviando...</p>
                 </div>
               ) : (
-                  <div style={{ display: 'flex', width: '100%' }}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      disabled={!!progress}
-                      style={{
-                        backgroundColor: `${customizations?.secondaryColor}`,
-                        color: '#fff',
-                      }}
-                      onClick={
-                        props.history.location.state
-                          ? handleEditCourse
-                          : handleRegister
-                      }
-                      className={classes.submitLeft}
-                    >
-                      CADASTRAR
+                <div style={{ display: 'flex', width: '100%' }}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    disabled={!!progress}
+                    style={{
+                      backgroundColor: `${customizations?.secondaryColor}`,
+                      color: '#fff',
+                    }}
+                    onClick={
+                      props.history.location.state
+                        ? handleEditCourse
+                        : handleRegister
+                    }
+                    className={classes.submitLeft}
+                  >
+                    CADASTRAR
                   </Button>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      style={{
-                        backgroundColor: `${customizations?.primaryColor}`,
-                        color: '#fff',
-                      }}
-                      onClick={handleClear}
-                      className={classes.submitRight}
-                    >
-                      LIMPAR
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      backgroundColor: `${customizations?.primaryColor}`,
+                      color: '#fff',
+                    }}
+                    onClick={handleClear}
+                    className={classes.submitRight}
+                  >
+                    LIMPAR
                   </Button>
-                  </div>
-                )}
+                </div>
+              )}
             </form>
           </Grid>
         </Container>

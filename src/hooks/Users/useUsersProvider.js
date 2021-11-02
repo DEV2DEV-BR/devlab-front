@@ -9,7 +9,8 @@ function useUsersProvider() {
 
   return {
     userData,
-    storageUserData
+    storageUserData,
+    removeUserData
   }
 }
 
