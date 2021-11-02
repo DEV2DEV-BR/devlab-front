@@ -81,6 +81,7 @@ export default function SignIn(props) {
                   fullWidth
                   value={inputPassword}
                   onChange={(event) => setInputPassword(event.target.value)}
+                  onKeyDown={(event) => event.key === 'enter' && handleLogin}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
